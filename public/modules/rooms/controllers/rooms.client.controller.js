@@ -17,7 +17,6 @@ angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams',
 			// Redirect after save
 			room.$save(function(response) {
 				$location.path('rooms/' + response.ID);
-
 				// Clear form fields
 				$scope.name = '';
 			}, function(errorResponse) {
@@ -27,7 +26,7 @@ angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams',
 
 		// Remove existing Room
 		$scope.remove = function(room) {
-			if ( room ) { 
+			if ( room ) {
 				room.$remove();
 
 				for (var i in $scope.rooms) {

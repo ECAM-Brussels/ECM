@@ -14,7 +14,6 @@ var mongoose = require('mongoose'),
 exports.create = function(req, res) {
 	var room = new Room(req.body);
 	room.user = req.user;
-
 	room.save(function(err) {
 		if (err) {
 			return res.status(400).send({
@@ -87,10 +86,10 @@ exports.list = function(req, res) {
 /**
  * Room middleware
  */
-exports.roomByID = function(req, res, next, id) { 
+exports.roomByID = function(req, res, next, id) {
 	Room.findOne({ ID : id }).populate('user', 'displayName').exec(function(err, room) {
 		if (err) return next(err);
-		if (! room) return next(new Error('Failed to load Room ' + id));
+		if (! room) return next();//next(new Error('Failed to load Room ' + id));
 		req.room = room ;
 		next();
 	});

@@ -10,6 +10,7 @@ module.exports = function(app) {
 		.post(users.requiresLogin, rooms.create);
 
 	app.route('/rooms/:roomId')
+    .post(users.requiresLogin, rooms.create)
 		.get(rooms.read)
 		.put(users.requiresLogin, rooms.hasAuthorization, rooms.update)
 		.delete(users.requiresLogin, rooms.hasAuthorization, rooms.delete);
