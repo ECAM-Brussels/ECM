@@ -10,12 +10,24 @@ var mongoose = require('mongoose'),
  * Room Schema
  */
 var RoomSchema = new Schema({
-	name: {
+	ID: {
+    type:String,
+    default:'0A00',
+    required: 'ID cannot be null',
+    trim: true
+  },
+  name: {
 		type: String,
 		default: '',
 		required: 'Please fill Room name',
 		trim: true
 	},
+  seats: {
+    type:int,
+    default:0,
+    required: 'There must be seats',
+    trim: true
+  },
 	created: {
 		type: Date,
 		default: Date.now
