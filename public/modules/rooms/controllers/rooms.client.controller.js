@@ -9,7 +9,9 @@ angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams',
 		$scope.create = function() {
 			// Create new Room object
 			var room = new Rooms ({
-				name: this.name
+				name: this.name,
+        ID: this.ID,
+        seats: this.seats
 			});
 
 			// Redirect after save
