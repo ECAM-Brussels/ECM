@@ -91,6 +91,7 @@ exports.roomByID = function(req, res, next, id) {
 	Room.findByName(id).populate('user', 'displayName').exec(function(err, room) {
 		if (err) return next(err);
 		if (! room) return next(new Error('Failed to load Room ' + id));
+    console.log(room);
 		req.room = room ;
 		next();
 	});
