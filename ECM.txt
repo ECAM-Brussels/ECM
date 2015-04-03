@@ -1,0 +1,41 @@
+ECM
+=========
+
+-view name-
+( example )
+
+Rooms     : Administration
+  - List rooms
+  - New room
+    * ID (1E10)
+    * Name ("Local informatique")
+    * Exam_size -Exam size-   (10)
+    * Normal_size -Normal size- (20)
+
+Exam      : Profs
+  - List my exams
+    (on an exam)
+    * Send PDF
+    * Preview
+
+Courses   : Profs
+  - List courses
+  - New course
+    * ID    ("LI4C")
+    * Name  ("Licenses")
+    * Teacher(s)  (["Sébastien Combéfis", "Alexis Paques"])
+    * Weighting -Pondération- (6)
+
+
+Students  : Administration
+  - List students
+  - New student
+    * Matricule   (11226)
+    * First_name -First name- ("Alexis")
+    * Last_name  -Last name- ("Paques")
+    * Middle_names -Middle names- ["Martin", "Pierre", "Léopold", "Gérard", "Freddel", "Freddy", "Poro"]
+    * Year ("4MEO")
+  - Import from xls
+
+Print     : Imprimeur/Administration
+  - Generate_pdf -Generate printable PDF-
