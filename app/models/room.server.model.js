@@ -39,8 +39,4 @@ var RoomSchema = new Schema({
   }
 });
 
-RoomSchema.static('findByName', function (id, callback) {
-  return this.find({ ID: id }, callback);
-});
-
 mongoose.model('Room', RoomSchema);
