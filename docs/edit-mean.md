@@ -27,5 +27,6 @@ Edit edit the client's views in:
 - edit = La page d'édition
 
 Edit the way you control data in:
+------------------------------------
 
     > /app/controllers/*.server.model.js
