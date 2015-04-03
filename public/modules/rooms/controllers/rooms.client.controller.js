@@ -16,7 +16,7 @@ angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams',
 
 			// Redirect after save
 			room.$save(function(response) {
-				$location.path('rooms/' + response._id);
+				$location.path('rooms/' + response.ID);
 
 				// Clear form fields
 				$scope.name = '';
@@ -47,7 +47,7 @@ angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams',
 			var room = $scope.room;
 
 			room.$update(function() {
-				$location.path('rooms/' + room._id);
+				$location.path('rooms/' + room.ID);
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});

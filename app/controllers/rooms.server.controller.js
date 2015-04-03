@@ -88,12 +88,20 @@ exports.list = function(req, res) {
  * Room middleware
  */
 exports.roomByID = function(req, res, next, id) { 
-	Room.findOne({ ID : id }).populate('user', 'displayName').exec(function(err, room) {
-		if (err) return next(err);
-		if (! room) return next(new Error('Failed to load Room ' + id));
-		req.room = room ;
-		next();
-	});
+  if(id.length > 10)
+      Room.findById(id).populate('user', 'displayName').exec(function(err, room) {
+      if (err) return next(err);
+      if (! room) return next(new Error('Failed to load Room ' + id));
+      req.room = room ;
+      next();
+    });
+  else
+  	Room.findOne({ ID : id }).populate('user', 'displayName').exec(function(err, room) {
+  		if (err) return next(err);
+  		if (! room) return next(new Error('Failed to load Room ' + id));
+  		req.room = room ;
+  		next();
+  	});
 };
 
 /**
