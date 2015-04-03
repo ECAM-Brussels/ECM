@@ -3,7 +3,7 @@
         <h1>Rooms</h1>
     </div>
     <div class="list-group">
-        <a data-ng-repeat="room in rooms" data-ng-href="#!/rooms/{{room._id}}" class="list-group-item">
+        <a data-ng-repeat="room in rooms" data-ng-href="#!/rooms/{{room.ID}}" class="list-group-item">
 			<small class="list-group-item-text">
 				Posted on
 				<span data-ng-bind="room.created | date:'medium'"></span>
