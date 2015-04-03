@@ -14,7 +14,8 @@ var RoomSchema = new Schema({
     type:String,
     default:'0A00',
     required: 'ID cannot be null',
-    trim: true
+    trim: true,
+    unique: true
   },
   name: {
     type: String,
