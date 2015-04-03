@@ -17,7 +17,7 @@ var RoomSchema = new Schema({
     trim: true
   },
   name: {
-		type: String,
+		type: Number,
 		default: '',
 		required: 'Please fill Room name',
 		trim: true
