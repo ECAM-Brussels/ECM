@@ -17,13 +17,13 @@ var RoomSchema = new Schema({
     trim: true
   },
   name: {
-		type: Number,
+		type: String,
 		default: '',
 		required: 'Please fill Room name',
 		trim: true
 	},
   seats: {
-    type:int,
+    type:Number,
     default:0,
     required: 'There must be seats',
     trim: true
