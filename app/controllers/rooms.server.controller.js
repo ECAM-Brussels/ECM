@@ -88,7 +88,7 @@ exports.list = function(req, res) {
  * Room middleware
  */
 exports.roomByID = function(req, res, next, id) { 
-	Room.findById(id).populate('user', 'displayName').exec(function(err, room) {
+	Room.findByName(id).populate('user', 'displayName').exec(function(err, room) {
 		if (err) return next(err);
 		if (! room) return next(new Error('Failed to load Room ' + id));
 		req.room = room ;
