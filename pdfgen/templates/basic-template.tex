@@ -1,0 +1,55 @@
+\documentclass[a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8x]{inputenc}
+\usepackage{lmodern}
+
+\usepackage{vmargin}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{fancyhdr}
+\usepackage{forloop}
+
+\setlength{\oddsidemargin}{1.5cm}
+\setlength{\textwidth}{18cm}
+\setlength{\topmargin}{1.5cm}
+\setlength{\headsep}{0.5cm}
+\setlength{\parindent}{0cm}
+
+\fancyhead{}
+\fancyfoot{}
+\fancyhead[C]{{\renewcommand{\arraystretch}{1.5}\begin{tabularx}{\textwidth}{|lXr|}
+\hline
+\large\bfseries Licenses & & Lundi 6 avril 2015 \\
+Alexis \textsc{Paques} (11226) & \centering\Large LI4C --- Examen & Auditoire 1E10 \\
+& & Siège \oldstylenums{2} \\
+\hline
+\end{tabularx}}}
+\fancyfoot[RO,LE]{Page~\thepage}
+\renewcommand{\headrulewidth}{0pt}\renewcommand{\footrulewidth}{0pt}
+\pagestyle{fancy}
+
+\begin{document}
+	%%% Page de garde
+	\ \vspace{1.5cm}
+	
+	Hello
+	
+	\vspace{15.5cm}
+	{\renewcommand{\arraystretch}{3.5}\begin{tabularx}{0.5\textwidth}{|X|}
+	\hline
+	\LARGE Partie A \\
+	\LARGE Partie B \\
+	\LARGE Partie C \\
+	\hline
+	\LARGE Total \\
+	\hline
+	\end{tabularx}}
+	
+	%%% Questions
+	\newcounter{p}
+	\forloop{p}{1}{\value{p} < 4}{
+		\clearpage
+		\includegraphics[width=17.9cm,page=\value{p}]{/Users/combefis/Desktop/p63-nikov.pdf}
+	}
+\end{document}
