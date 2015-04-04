@@ -87,11 +87,12 @@ exports.list = function(req, res) {
  * Room middleware
  */
 exports.roomByID = function(req, res, next, id) {
+  if(req.method === 'POST') return next();
 	Room.findOne({ ID : id }).populate('user', 'displayName').exec(function(err, room) {
 		if (err) return next(err);
-		if (! room) return next();//next(new Error('Failed to load Room ' + id));
+		if (! room) return next(new Error('Failed to load Room ' + id));
 		req.room = room ;
-		next();
+		return next();
 	});
 };
 
