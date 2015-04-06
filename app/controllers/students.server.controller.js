@@ -9,12 +9,17 @@ var mongoose = require('mongoose'),
 	_ = require('lodash');
 
 /**
+ * Transform a String (CSV), to array of String
+ */
+
+
+/**
  * Create a Student
  */
 exports.create = function(req, res) {
 	var student = new Student(req.body);
 	student.user = req.user;
-
+  console.log(student);
 	student.save(function(err) {
 		if (err) {
 			return res.status(400).send({
@@ -88,7 +93,8 @@ exports.list = function(req, res) {
  * Student middleware
  */
 exports.studentByID = function(req, res, next, id) { 
-	Student.findById(id).populate('user', 'displayName').exec(function(err, student) {
+	if(req.method === 'POST') return next();
+  Student.findOne({ matricule : id }).populate('user', 'displayName').exec(function(err, student) {
 		if (err) return next(err);
 		if (! student) return next(new Error('Failed to load Student ' + id));
 		req.student = student ;
@@ -105,3 +111,4 @@ exports.hasAuthorization = function(req, res, next) {
 	}
 	next();
 };
+

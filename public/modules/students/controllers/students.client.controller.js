@@ -1,5 +1,12 @@
 'use strict';
 
+function arrayify(text){
+  console.log(text);
+  if(text === undefined) return [''];
+  if(text === '') return [''];
+  else return text.split(',');
+}
+
 // Students controller
 angular.module('students').controller('StudentsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Students',
 	function($scope, $stateParams, $location, Authentication, Students) {
@@ -9,12 +16,16 @@ angular.module('students').controller('StudentsController', ['$scope', '$statePa
 		$scope.create = function() {
 			// Create new Student object
 			var student = new Students ({
-				name: this.name
+				first_name: this.first_name,
+        last_name: this.last_name,
+        middle_names : arrayify(this.middle_names),
+        groups : arrayify(this.groups),
+        matricule: this.matricule
 			});
 
 			// Redirect after save
 			student.$save(function(response) {
-				$location.path('students/' + response._id);
+				$location.path('students/' + response.matricule);
 
 				// Clear form fields
 				$scope.name = '';
@@ -45,7 +56,7 @@ angular.module('students').controller('StudentsController', ['$scope', '$statePa
 			var student = $scope.student;
 
 			student.$update(function() {
-				$location.path('students/' + student._id);
+				$location.path('students/' + student.matricule);
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});

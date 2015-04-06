@@ -10,6 +10,15 @@ var mongoose = require('mongoose'),
  * Course Schema
  */
 var CourseSchema = new Schema({
+  ID: {
+    type: String,
+    defult: '',
+    required: 'Please fill the ID like LI4C',
+    trim: true,
+    unique:true
+  },
+  coordinators: [{ type: Schema.ObjectId, ref: 'User'}],
+  activities: [{ type: Schema.ObjectId, ref: 'Activity'}],
 	name: {
 		type: String,
 		default: '',

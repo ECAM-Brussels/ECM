@@ -3,7 +3,9 @@
         <h1>Students</h1>
     </div>
     <div class="list-group">
-        <a data-ng-repeat="student in students" data-ng-href="#!/students/{{student._id}}" class="list-group-item">
+        <a data-ng-repeat="student in students" data-ng-href="#!/students/{{student.matricule}}" class="list-group-item">
+        <span data-ng-bind="student.matricule"></span><br>
+        <span data-ng-bind="student.first_name"></span> <span data-ng-bind="student.last_name">
 			<small class="list-group-item-text">
 				Posted on
 				<span data-ng-bind="student.created | date:'medium'"></span>
