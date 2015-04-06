@@ -39,7 +39,7 @@ var ExamSchema = new Schema({
 		ref: 'User'
 	},
   affectation: [{
-    type: { String : Number}
+    type: Schema.Types.Mixed
   }]
 });
 
