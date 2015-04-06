@@ -19,7 +19,6 @@ var mongoose = require('mongoose'),
 exports.create = function(req, res) {
 	var student = new Student(req.body);
 	student.user = req.user;
-  console.log(student);
 	student.save(function(err) {
 		if (err) {
 			return res.status(400).send({

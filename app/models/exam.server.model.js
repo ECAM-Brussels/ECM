@@ -38,9 +38,9 @@ var ExamSchema = new Schema({
 		type: Schema.ObjectId,
 		ref: 'User'
 	},
-  affectation: {
+  affectation: [{
     type: { String : Number}
-  }
+  }]
 });
 
 mongoose.model('Exam', ExamSchema);
