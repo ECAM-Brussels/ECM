@@ -2,8 +2,11 @@
 	<div class="page-header">
 		<h1 data-ng-bind="course.name"></h1>
 	</div>
+  <h2 data-ng-bind="course.name"></h2>
+  <h3 data-ng-bind="course.coordinators"></h3>
+  <h3 data-ng-bind="course.activities"></h3>
 	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == course.user._id))">
-		<a class="btn btn-primary" href="/#!/courses/{{course._id}}/edit">
+		<a class="btn btn-primary" href="/#!/courses/{{course.ID}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
 		</a>
 		<a class="btn btn-primary" data-ng-click="remove();">

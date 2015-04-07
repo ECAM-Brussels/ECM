@@ -17,7 +17,7 @@ angular.module('courses').controller('CoursesController', ['$scope', '$statePara
 
 			// Redirect after save
 			course.$save(function(response) {
-				$location.path('courses/' + response._id);
+				$location.path('courses/' + response.ID);
 
 				// Clear form fields
 				$scope.name = '';
@@ -48,7 +48,7 @@ angular.module('courses').controller('CoursesController', ['$scope', '$statePara
 			var course = $scope.course;
 
 			course.$update(function() {
-				$location.path('courses/' + course._id);
+				$location.path('courses/' + course.ID);
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
