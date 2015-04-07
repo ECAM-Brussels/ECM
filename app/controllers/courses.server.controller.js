@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Course = mongoose.model('Course'),
 	_ = require('lodash');
-
+ 
 /**
  * Create a Course
  */
@@ -88,7 +88,8 @@ exports.list = function(req, res) {
  * Course middleware
  */
 exports.courseByID = function(req, res, next, id) { 
-	Course.findById(id).populate('user', 'displayName').exec(function(err, course) {
+  if(req.method === 'POST') return next();
+	Course.findOne({ID : id}).populate('user', 'displayName').exec(function(err, course) {
 		if (err) return next(err);
 		if (! course) return next(new Error('Failed to load Course ' + id));
 		req.course = course ;

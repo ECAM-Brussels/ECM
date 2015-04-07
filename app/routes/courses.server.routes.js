@@ -10,6 +10,7 @@ module.exports = function(app) {
 		.post(users.requiresLogin, courses.create);
 
 	app.route('/courses/:courseId')
+    .post(users.requiresLogin, courses.create)
 		.get(courses.read)
 		.put(users.requiresLogin, courses.hasAuthorization, courses.update)
 		.delete(users.requiresLogin, courses.hasAuthorization, courses.delete);

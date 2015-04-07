@@ -9,7 +9,10 @@ angular.module('courses').controller('CoursesController', ['$scope', '$statePara
 		$scope.create = function() {
 			// Create new Course object
 			var course = new Courses ({
-				name: this.name
+        ID: this.ID,
+				name: this.name,
+        coordinators: this.coordinators,
+        activities: this.activities
 			});
 
 			// Redirect after save

@@ -1,12 +1,5 @@
 'use strict';
 
-function arrayify(text){
-  console.log(text);
-  if(text === undefined) return [''];
-  if(text === '') return [''];
-  else return text.split(',');
-}
-
 // Students controller
 angular.module('students').controller('StudentsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Students',
 	function($scope, $stateParams, $location, Authentication, Students) {
@@ -18,8 +11,8 @@ angular.module('students').controller('StudentsController', ['$scope', '$statePa
 			var student = new Students ({
 				first_name: this.first_name,
         last_name: this.last_name,
-        middle_names : arrayify(this.middle_names),
-        groups : arrayify(this.groups),
+        middle_names : this.middle_names,
+        groups : this.groups,
         matricule: this.matricule
 			});
 
