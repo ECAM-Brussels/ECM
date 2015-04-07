@@ -9,12 +9,15 @@ angular.module('activities').controller('ActivitiesController', ['$scope', '$sta
 		$scope.create = function() {
 			// Create new Activity object
 			var activity = new Activities ({
-				name: this.name
+				name: this.name,
+        ID: this.ID,
+        teachers: this.teachers,
+        weight: this.weight
 			});
 
 			// Redirect after save
 			activity.$save(function(response) {
-				$location.path('activities/' + response._id);
+				$location.path('activities/' + response.ID);
 
 				// Clear form fields
 				$scope.name = '';
@@ -45,7 +48,7 @@ angular.module('activities').controller('ActivitiesController', ['$scope', '$sta
 			var activity = $scope.activity;
 
 			activity.$update(function() {
-				$location.path('activities/' + activity._id);
+				$location.path('activities/' + activity.ID);
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});

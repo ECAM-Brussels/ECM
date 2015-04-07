@@ -19,4 +19,3 @@ module.exports = _.extend(
 	require('./users/users.profile.server.controller'),
   require('./users/users.find.server.controller.js')
 );
-

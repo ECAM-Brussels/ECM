@@ -1,9 +1,4 @@
-<section data-ng-controller="StudentsController" data-ng-init="find()"><section data-ng-controller="UsersController" data-ng-init="find()">
-    <div class="list-group">
-      <p data-ng-repeat="user in users">
-        <span data-ng-bind="user._id"></span>
-      </p>
-
+<section data-ng-controller="StudentsController" data-ng-init="find()">
     </div>
     <div class="page-header">
         <h1>Students</h1>
@@ -24,5 +19,4 @@
     <div class="alert alert-warning text-center" data-ng-hide="!students.$resolved || students.length">
     	No Students yet, why don't you <a href="/#!/students/create">create one</a>?
     </div>
-</section>
 </section>

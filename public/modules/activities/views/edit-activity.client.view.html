@@ -1,4 +1,4 @@
-<section data-ng-controller="ActivitiesController" data-ng-init="findOne()">
+<section data-ng-controller="ActivitiesController" data-ng-init="findOne()"><section data-ng-controller="UsersController" data-ng-init="find()">
     <div class="page-header">
         <h1>Edit Activity</h1>
     </div>
@@ -12,6 +12,18 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="control-label" for="teachers">Teachers</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="activity.teachers" id="teachers" class="form-control" ng-list="/,/" placeholder="Teachers" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="weight">Weight</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="activity.weight" id="weight" class="form-control" placeholder="ECTS" required>
+                    </div>
+                </div>
+                <div class="form-group">
                     <input type="submit" value="Update" class="btn btn-default">
                 </div>
 				<div data-ng-show="error" class="text-danger">
@@ -20,4 +32,5 @@
             </fieldset>
         </form>
     </div>
+</section>
 </section>

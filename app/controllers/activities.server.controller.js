@@ -88,7 +88,8 @@ exports.list = function(req, res) {
  * Activity middleware
  */
 exports.activityByID = function(req, res, next, id) { 
-	Activity.findById(id).populate('user', 'displayName').exec(function(err, activity) {
+	if(req.method === 'POST') return next();
+  Activity.findOne({ID : id}).populate('user', 'displayName').exec(function(err, activity) {
 		if (err) return next(err);
 		if (! activity) return next(new Error('Failed to load Activity ' + id));
 		req.activity = activity ;
