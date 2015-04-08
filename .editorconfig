@@ -14,23 +14,26 @@ insert_final_newline = true
 # Standard at: https://github.com/felixge/node-style-guide 
 [**.js, **.json]
 trim_trailing_whitespace = true
-indent_style = tab
+indent_style = space
 quote_type = single
+indent_size = 2
 curly_bracket_next_line = false
-spaces_around_operators = true
+space_around_operators = true
 space_after_control_statements = true
 space_after_anonymous_functions = false
-spaces_in_brackets = false
+space_in_brackets = false
+
 
 # No Standard.  Please document a standard if different from .js
 [**.yml, **.html, **.css]
 trim_trailing_whitespace = true
-indent_style = tab
+indent_style = space
+indent_size = 4
 
 # No standard.  Please document a standard if different from .js
 [**.md]
-indent_style = tab
+indent_style = space
 
 # Standard at: 
 [Makefile]
-indent_style = tab
+indent_style = space

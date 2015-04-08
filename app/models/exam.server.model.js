@@ -12,7 +12,7 @@ var mongoose = require('mongoose'),
 var ExamSchema = new Schema({
   activity: {
     type: Schema.ObjectId,
-    ref: 'activity',
+    ref: 'Activity',
     required : 'Please fill the Exam activity'
   },
   date: {

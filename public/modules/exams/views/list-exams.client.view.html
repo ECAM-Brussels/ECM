@@ -4,13 +4,11 @@
     </div>
     <div class="list-group">
         <a data-ng-repeat="exam in exams" data-ng-href="#!/exams/{{exam._id}}" class="list-group-item">
-			<small class="list-group-item-text">
-				Posted on
-				<span data-ng-bind="exam.created | date:'medium'"></span>
-				by
-				<span data-ng-bind="exam.user.displayName"></span>
-			</small>
-			<h4 class="list-group-item-heading" data-ng-bind="exam.name"></h4>
+        <h4> {{exam.name}} : {{exam.activity.ID}}  </h4>
+
+        <h5> The {{exam.date | date:'dd/MM/yyyy'}} in <span ng-repeat="room in exam.rooms">{{room.ID}} </span></h5>
+
+        <h5> For groups <span ng-repeat="group in exam.groups">{{group}} </span></h5>
         </a>
     </div>
     <div class="alert alert-warning text-center" data-ng-hide="!exams.$resolved || exams.length">
