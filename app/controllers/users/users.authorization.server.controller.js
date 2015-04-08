@@ -4,7 +4,8 @@
  */
 var _ = require('lodash'),
   mongoose = require('mongoose'),
-  User = mongoose.model('User');
+  User = mongoose.model('User'),
+  fs = require('fs');
 /**
  * User middleware
  */
