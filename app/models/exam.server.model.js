@@ -20,10 +20,10 @@ var ExamSchema = new Schema({
     default: Date.now
   },
   rooms: [{ type: Schema.ObjectId, ref: 'Room'}],
-  groups: {
-    type: [String],
+  groups: [{
+    type: String,
     trim: true
-  },
+  }],
 	name: {
 		type: String,
 		default: '',

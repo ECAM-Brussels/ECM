@@ -12,6 +12,36 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="control-label" for="activity">Activity</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="exam.activity" id="activity" class="form-control" placeholder="LI4T" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="date">Date</label>
+                    <div class="controls">
+                        <input type="date" data-ng-model="exam.date" id="date" class="form-control" placeholder="2015-06-15" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="rooms">Rooms</label>
+                    <div class="controls">
+                        <input type="text" ng-list="/,/" data-ng-model="exam.rooms" id="rooms" class="form-control" placeholder="1E10" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="groups">Groups</label>
+                    <div class="controls">
+                        <input type="text" ng-list="/,/" data-ng-model="exam.groups" id="groups" class="form-control" placeholder="4MEO, 4MIN" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="affectation">Affectation</label>
+                    <div class="controls">
+                        <input type="text" ng-list="/,/" data-ng-model="exam.affectation" id="affectation" class="form-control" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group">
                     <input type="submit" value="Update" class="btn btn-default">
                 </div>
 				<div data-ng-show="error" class="text-danger">
