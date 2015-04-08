@@ -4,7 +4,7 @@
 angular.module('exams').run(['Menus',
 	function(Menus) {
 		// Set top bar menu items
-		Menus.addMenuItem('topbar', 'Exams', 'exams', 'dropdown', '/exams(/create)?');
+		Menus.addMenuItem('topbar', 'Exams', 'exams', 'dropdown', '/exams(/create)?', false, ['admin', 'manager', 'teacher', 'printer']);
 		Menus.addSubMenuItem('topbar', 'exams', 'List Exams', 'exams');
 		Menus.addSubMenuItem('topbar', 'exams', 'New Exam', 'exams/create');
 	}
