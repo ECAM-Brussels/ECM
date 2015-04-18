@@ -1,11 +1,6 @@
-<section data-ng-controller="ActivitiesController" data-ng-init="find()"><section data-ng-controller="UsersController" data-ng-init="findTeachers()">
+<section data-ng-controller="ActivitiesController" data-ng-init="find()">
     <div class="page-header">
         <h1>Activities</h1>
-    </div>
-    <div class="list-group">
-      <p data-ng-repeat="user in users">
-        <span data-ng-bind="user._id"></span>
-      </p>
     </div>
     <div class="list-group">
         <a data-ng-repeat="activity in activities" data-ng-href="#!/activities/{{activity.ID}}" class="list-group-item">
@@ -21,5 +16,4 @@
     <div class="alert alert-warning text-center" data-ng-hide="!activities.$resolved || activities.length">
     	No Activities yet, why don't you <a href="/#!/activities/create">create one</a>?
     </div>
-</section>
 </section>

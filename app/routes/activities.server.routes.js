@@ -8,13 +8,16 @@ module.exports = function(app) {
   app.route('/activities')
     .get(users.requiresLogin, users.hasAuthorization(authorized), activities.list)
     .post(users.requiresLogin, users.hasAuthorization(authorized), activities.create);
-
+  
+  app.route('/list/teachers')
+    .get(users.requiresLogin, users.hasAuthorization(authorized), activities.listTeachers);
+ 
   app.route('/activities/:activityId')
     .post(users.requiresLogin, users.hasAuthorization(authorized), activities.create)
     .get(users.requiresLogin, users.hasAuthorization(authorized), activities.read)
     .put(users.requiresLogin, users.hasAuthorization(authorized), activities.update)
     .delete(users.requiresLogin, users.hasAuthorization(authorized), activities.delete);
 
-  // Finish by binding the Activity middleware
+   // Finish by binding the Activity middleware
   app.param('activityId', activities.activityByID);
 };

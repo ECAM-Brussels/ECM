@@ -1,9 +1,59 @@
 'use strict';
 
 // Activities controller
-angular.module('activities').controller('ActivitiesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Activities',
-	function($scope, $stateParams, $location, Authentication, Activities) {
+angular.module('activities').controller('ActivitiesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Activities', '$http',
+	function($scope, $stateParams, $location, Authentication, Activities, $http) {
 		$scope.authentication = Authentication;
+
+    // Get TEACHERS
+    $http.get('/list/teachers').success(function(data, status, headers, config) {
+       $scope.allTeachers = data;
+    });
+
+    $scope.selectedTeachers = [];
+
+    var ObjsToIDs = function(obj){
+      var result = [];
+      for (var i = obj.length - 1; i >= 0; i--) {
+        result[i] = obj[i]._id;
+      }
+      return result;
+    };
+
+    $scope.teacherExist = function(obj) {
+      return $scope.allTeachers.indexOf(obj) > -1;
+    };
+
+    $scope.delete = function(obj){
+      var indexOfObj = $scope.selected.indexOf(obj);
+      if(indexOfObj > -1){
+        $scope.selected.splice(indexOfObj, 1);
+      }
+    };
+    
+    $scope.filterFunction = function(obj) {
+      console.log('coucou');
+        return (obj.displayName.match(/^Ma/));
+    };
+
+    $scope.addTeacher = function(obj){
+      if($scope.teacherExist(obj)){
+        if($scope.selectedTeachers.indexOf(obj) < 0){
+          $scope.selectedTeachers.push(obj);
+        }
+        return true;
+      }
+      return false;
+    };
+
+    $scope.removeTeachers = function(obj){
+      var indexOfObj = $scope.selectedTeachers.indexOf(obj);
+      if(indexOfObj > -1){
+        $scope.selected.splice(indexOfObj, 1);
+        return true;
+      }
+      return false;
+    };
 
 		// Create new Activity
 		$scope.create = function() {
@@ -11,7 +61,7 @@ angular.module('activities').controller('ActivitiesController', ['$scope', '$sta
 			var activity = new Activities ({
 				name: this.name,
         ID: this.ID,
-        teachers: this.teachers,
+        teachers: new ObjsToIDs(this.selectedTeachers),
         weight: this.weight
 			});
 

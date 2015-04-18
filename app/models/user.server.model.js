@@ -25,6 +25,10 @@ var validateLocalStrategyPassword = function(password) {
  * User Schema
  */
 var UserSchema = new Schema({
+  serial : {
+    type : String,
+    trim:true,
+  },
 	firstName: {
 		type: String,
 		trim: true,

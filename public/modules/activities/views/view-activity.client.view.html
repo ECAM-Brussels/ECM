@@ -2,9 +2,9 @@
 	<div class="page-header">
 		<h1 data-ng-bind="activity.ID"></h1>
     <h2 data-ng-bind="activity.name"></h2>
-    <ul data-ng-repeat="teacher in teachers">
+    <ul data-ng-repeat="teacher in activity.teachers">
       <li>
-        <span data-ng-bind="teacher.name"></span>
+        <span data-ng-bind="teacher.displayName"></span>
       </li>
     </ul>
 	</div>
