@@ -8,8 +8,8 @@ var _ = require('lodash'),
   mongoose = require('mongoose'),
   User = mongoose.model('User');
 
-exports.listTeachers = function(req, res) { 
-  User.find({roles: 'teacher'}).sort('-created').exec(function(err, users) {
+exports.find = function(req, res) { 
+  User.find().exec(function(err, users) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)

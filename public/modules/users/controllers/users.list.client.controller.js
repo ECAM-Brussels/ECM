@@ -4,7 +4,7 @@ angular.module('users').controller('UsersController', ['$scope', '$stateParams',
   function($scope, $stateParams, $location, Authentication, Users) {
     $scope.authentication = Authentication;
 
-    $scope.findTeachers = function() {
+    $scope.find = function(){
       $scope.users = Users.query();
     };
   }

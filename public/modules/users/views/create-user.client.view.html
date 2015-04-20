@@ -1,0 +1,50 @@
+<section class="row" data-ng-controller="AuthenticationController">
+  <h3 class="col-md-12 text-center">Create an account</h3>
+  <div class="col-xs-offset-2 col-xs-8 col-md-offset-5 col-md-2">
+    <form name="userForm" data-ng-submit="signup()" class="signin form-horizontal" novalidate autocomplete="off">
+      <fieldset> 
+      <div class="form-group">
+          <label for="serial">Serial</label>
+          <input type="text" required id="serial" name="serial" class="form-control" data-ng-model="credentials.serial" placeholder="CBF">
+        </div>
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input type="text" required id="firstName" name="firstName" class="form-control" data-ng-model="credentials.firstName" placeholder="First Name">
+        </div>
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input type="text" id="lastName" name="lastName" class="form-control" data-ng-model="credentials.lastName" placeholder="Last Name">
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" class="form-control" data-ng-model="credentials.email" placeholder="Email">
+        </div>
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" class="form-control" data-ng-model="credentials.username" placeholder="It will be the serial">
+        </div>
+        <div class="form-group">
+        Rights
+          <label for="rightsTeacher">Teacher :</label>
+          <input type="checkbox" name="rightsTeacher" data-ng-model="credentials.rightsTeacher" value="Cat" /> <br />
+          <label for="rightsManager">Manager :</label>
+          <input type="checkbox" name="rightsManager" data-ng-model="credentials.rightsManager" value="Cat" /> <br />
+          <label for="rightsPrinter">Printer :</label>
+          <input type="checkbox" name="rightsPrinter" data-ng-model="credentials.rightsPrinter" value="Cat" /> <br />
+          <label for="rightsAdmin">Admin :</label>
+          <input type="checkbox" name="rightsAdmin" data-ng-model="credentials.rightsAdmin" value="Cat" /> <br />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" class="form-control" data-ng-model="credentials.password" placeholder="Password">
+        </div>
+        <div class="text-center form-group">
+          <button type="submit" class="btn btn-large btn-primary">Create</button>
+        </div>
+        <div data-ng-show="error" class="text-center text-danger">
+          <strong data-ng-bind="error"></strong>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</section>

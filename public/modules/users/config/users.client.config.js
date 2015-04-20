@@ -28,3 +28,13 @@ angular.module('users').config(['$httpProvider',
 		]);
 	}
 ]);
+
+// Users edit module
+angular.module('students').run(['Menus',
+  function(Menus) {
+    // Set top bar menu items
+    Menus.addMenuItem('topbar', 'Users', 'users', 'dropdown', '/users(/create)?', false, ['admin', 'manager']);
+    Menus.addSubMenuItem('topbar', 'users', 'List users', 'users');
+    Menus.addSubMenuItem('topbar', 'users', 'New user', 'users/create');
+  }
+]);

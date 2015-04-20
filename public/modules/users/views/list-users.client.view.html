@@ -1,0 +1,14 @@
+<section data-ng-controller="UsersController" data-ng-init="find()">
+    <div class="page-header">
+        <h1>Users</h1>
+    </div>
+    <div class="list-group">
+        <a data-ng-repeat="user in users" data-ng-href="#!/users/{{user.serial}}" class="list-group-item">
+          <h3><span data-ng-hide="user.serial === undefined">{{user.serial}} : </span>{{user.displayName}}</h3><br>
+          <h3>{{user.roles}}</h3>
+        </a>
+    </div>
+    <div class="alert alert-warning text-center" data-ng-hide="!users.$resolved || users.length">
+      No Rooms yet, why don't you <a href="/#!/users/create">create one</a>?
+    </div>
+</section>
