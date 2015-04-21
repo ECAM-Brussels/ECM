@@ -48,6 +48,39 @@ exports.update = function(req, res) {
 	}
 };
 
+exports.updateUser = function(req, res) {
+  // Init Variables
+  var user = req.body;
+  var message = null;
+  //console.log(userId);
+  if (user) {
+    // Merge existing user
+    user = _.extend(user, req.userID);
+    user.updated = Date.now();
+    user.displayName = user.firstName + ' ' + user.lastName;
+
+    user.save(function(err) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        req.login(user, function(err) {
+          if (err) {
+            res.status(400).send(err);
+          } else {
+            res.json(user);
+          }
+        });
+      }
+    });
+  } else {
+    res.status(400).send({
+      message: 'User is not signed in'
+    });
+  }
+};
+
 /**
  * Send User
  */

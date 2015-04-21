@@ -183,27 +183,28 @@ exports.removeOAuthProvider = function(req, res, next) {
 
 exports.createUser = function(req, res) {
   // Init Variables
+  console.log(req.body);
   var user = new User(req.body);
   var message = null;
   // Add missing user fields
+  var roles = ['user'];
+  if(req.body.rightsTeacher) roles.push('teacher');
+  if(req.body.rigthsManager) roles.push('manager');
+  if(req.body.rightsAdmin) roles.push('admin');
+  if(req.body.rightsPrinter) roles.push('printer');
+  user.roles = roles;
   user.provider = 'local';
   user.displayName = user.firstName + ' ' + user.lastName;
   // Then save the user 
+  console.log(user);
   user.save(function(err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      // Remove sensitive data before login
-      user.password = undefined;
-      user.salt = undefined;
-      req.login(user, function(err) {
-        if (err) {
-          res.status(400).send(err);
-        } else {
-          res.json(user);
-        }
+      return res.status(200).send({
+        message: 'User created'
       });
     }
   });

@@ -1,7 +1,9 @@
-<section class="row" data-ng-controller="AuthenticationController">
-  <h3 class="col-md-12 text-center">Create an account</h3>
-  <div class="col-xs-offset-2 col-xs-8 col-md-offset-5 col-md-2">
-    <form name="userForm" data-ng-submit="signup()" class="signin form-horizontal" novalidate autocomplete="off">
+<section class="row" data-ng-controller="UsersController">
+  <div class="page-header">
+        <h1>Create an account</h1>
+    </div>
+  <div class="col-md-12">
+    <form name="userForm" data-ng-submit="createUser()" class="form-horizontal" novalidate autocomplete="off">
       <fieldset> 
       <div class="form-group">
           <label for="serial">Serial</label>
@@ -24,15 +26,21 @@
           <input type="text" id="username" name="username" class="form-control" data-ng-model="credentials.username" placeholder="It will be the serial">
         </div>
         <div class="form-group">
-        Rights
-          <label for="rightsTeacher">Teacher :</label>
-          <input type="checkbox" name="rightsTeacher" data-ng-model="credentials.rightsTeacher" value="Cat" /> <br />
-          <label for="rightsManager">Manager :</label>
-          <input type="checkbox" name="rightsManager" data-ng-model="credentials.rightsManager" value="Cat" /> <br />
-          <label for="rightsPrinter">Printer :</label>
-          <input type="checkbox" name="rightsPrinter" data-ng-model="credentials.rightsPrinter" value="Cat" /> <br />
-          <label for="rightsAdmin">Admin :</label>
-          <input type="checkbox" name="rightsAdmin" data-ng-model="credentials.rightsAdmin" value="Cat" /> <br />
+        <label for="rightsDiv">Rights</label>
+          <div name="rightsDiv">
+            <label for="rightsTeacher" data-ng-show="credentials.rightsTeacher" class="bg-success">Teacher :</label>
+            <label for="rightsTeacher" data-ng-hide="credentials.rightsTeacher" class="bg-danger">Teacher :</label>
+            <input type="checkbox" name="rightsTeacher" data-ng-model="credentials.rightsTeacher" value="Cat" /> 
+            <label for="rightsManager" data-ng-show="credentials.rightsManager" class="bg-success">Manager :</label>
+            <label for="rightsManager" data-ng-hide="credentials.rightsManager" class="bg-danger">Manager :</label>
+            <input type="checkbox" name="rightsManager" data-ng-model="credentials.rightsManager" value="Cat" /> 
+            <label for="rightsPrinter" data-ng-show="credentials.rightsPrinter" class="bg-success">Printer :</label>
+            <label for="rightsPrinter" data-ng-hide="credentials.rightsPrinter" class="bg-danger">Printer :</label>
+            <input type="checkbox" name="rightsPrinter" data-ng-model="credentials.rightsPrinter" value="Cat" />  
+            <label for="rightsAdmin" data-ng-show="credentials.rightsAdmin" class="bg-success">Admin :</label>
+            <label for="rightsAdmin" data-ng-hide="credentials.rightsAdmin" class="bg-danger">Admin :</label>
+            <input type="checkbox" name="rightsAdmin" data-ng-model="credentials.rightsAdmin" value="Cat" />  
+          </div>
         </div>
         <div class="form-group">
           <label for="password">Password</label>

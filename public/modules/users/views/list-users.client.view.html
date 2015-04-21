@@ -3,7 +3,7 @@
         <h1>Users</h1>
     </div>
     <div class="list-group">
-        <a data-ng-repeat="user in users" data-ng-href="#!/users/{{user.serial}}" class="list-group-item">
+        <a data-ng-repeat="user in users" data-ng-href="#!/users/{{user._id}}" class="list-group-item">
           <h3><span data-ng-hide="user.serial === undefined">{{user.serial}} : </span>{{user.displayName}}</h3><br>
           <h3>{{user.roles}}</h3>
         </a>
