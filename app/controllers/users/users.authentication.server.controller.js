@@ -183,7 +183,6 @@ exports.removeOAuthProvider = function(req, res, next) {
 
 exports.createUser = function(req, res) {
   // Init Variables
-  console.log(req.body);
   var user = new User(req.body);
   var message = null;
   // Add missing user fields
@@ -192,11 +191,11 @@ exports.createUser = function(req, res) {
   if(req.body.rigthsManager) roles.push('manager');
   if(req.body.rightsAdmin) roles.push('admin');
   if(req.body.rightsPrinter) roles.push('printer');
+  user.username = user.serial;
   user.roles = roles;
   user.provider = 'local';
   user.displayName = user.firstName + ' ' + user.lastName;
   // Then save the user 
-  console.log(user);
   user.save(function(err) {
     if (err) {
       return res.status(400).send({
