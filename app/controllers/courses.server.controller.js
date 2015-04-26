@@ -106,3 +106,16 @@ exports.hasAuthorization = function(req, res, next) {
 	}
 	next();
 };
+
+exports.listMyCourses = function(req, res) { 
+  Course.find({coordinators : req.user.id}).sort('-created').exec(function(err, courses) {
+    console.log(courses);
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.jsonp(courses);
+    }
+  });
+};

@@ -11,3 +11,13 @@ angular.module('courses').factory('Courses', ['$resource',
 		});
 	}
 ]);
+
+angular.module('courses').factory('MyCourses', ['$resource',
+  function($resource) {
+    return $resource('list/MyCourses', {}, {
+      update: {
+        method: 'PUT'
+      }
+    });
+  }
+]);

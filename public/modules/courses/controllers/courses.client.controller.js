@@ -1,8 +1,8 @@
 'use strict';
 
 // Courses controller
-angular.module('courses').controller('CoursesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Courses',
-	function($scope, $stateParams, $location, Authentication, Courses) {
+angular.module('courses').controller('CoursesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Courses', 'MyCourses',
+	function($scope, $stateParams, $location, Authentication, Courses, MyCourses) {
 		$scope.authentication = Authentication;
 
 		// Create new Course
@@ -58,6 +58,10 @@ angular.module('courses').controller('CoursesController', ['$scope', '$statePara
 		$scope.find = function() {
 			$scope.courses = Courses.query();
 		};
+
+    $scope.findMyCourses = function(){
+      $scope.courses = MyCourses.query();
+    };
 
 		// Find existing Course
 		$scope.findOne = function() {
