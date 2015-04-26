@@ -66,5 +66,18 @@ angular.module('students').controller('StudentsController', ['$scope', '$statePa
 				studentId: $stateParams.studentId
 			});
 		};
+
 	}
 ]);
+
+function load_script(url) {
+  var s = document.createElement('script'); 
+  s.src = url;
+  document.body.appendChild(s);
+}
+
+function load_scripts() {
+  load_script('/lib/papaparse.min.js');
+}
+
+window.onload=load_scripts;

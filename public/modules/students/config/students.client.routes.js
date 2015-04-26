@@ -17,6 +17,10 @@ angular.module('students').config(['$stateProvider',
 			url: '/students/:studentId',
 			templateUrl: 'modules/students/views/view-student.client.view.html'
 		}).
+    state('importStudents', {
+      url: '/import/students/fromCSV',
+      templateUrl: 'modules/students/views/import-students-from-csv.client.view.html'
+    }).
 		state('editStudent', {
 			url: '/students/:studentId/edit',
 			templateUrl: 'modules/students/views/edit-student.client.view.html'
