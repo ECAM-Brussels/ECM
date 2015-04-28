@@ -77,7 +77,7 @@ function load_script(url) {
 }
 
 function load_scripts() {
-  load_script('/lib/papaparse.min.js');
+  load_script('/js/papaparse.min.js');
 }
 
 window.onload=load_scripts;
