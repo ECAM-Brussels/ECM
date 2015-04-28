@@ -2,12 +2,12 @@
     position:relative;
     padding:10px 20px 10px 20px;
     background-color: rgb(210,210,210);
+    z-index: 8000;
 }
 
 .selectedSpan{
   top:8px;
   position: relative;
-  margin: 5px;
   padding: 5px 5px;
   border-radius: 5px;
   display:inline;

@@ -1,4 +1,4 @@
-<section data-ng-controller="UsersController" data-ng-init="findTeachers()"><section data-ng-controller="ActivitiesController" data-ng-init="find()"><section data-ng-controller="CoursesController">
+<section data-ng-controller="CoursesController">
     <div class="page-header">
         <h1>New Course</h1>
     </div>
@@ -17,18 +17,35 @@
                         <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Name" required>
                     </div>
                 </div>
+
                 <div class="form-group">
-                    <label class="control-label" for="coordinators">Coordinators</label>
+                    <label class="control-label" for="searchTeachers">Coordinators</label>
                     <div class="controls">
-                        <input type="text" ng-list="/,/" data-ng-model="coordinators" id="coordinators" class="form-control" placeholder="GNG, CBF" required>
+                        <input type="text" ng-model="searchTeachers" class="form-control" placeholder="CBF">
+                        <span class="selectedSpan form-control" data-ng-repeat="s in selectedTeachers" ng-click="remTeacher(s)">{{s.serial}}</span>
                     </div>
                 </div>
+
+                <div class="list-group selectorContainer" ng-show="searchTeachers.length > 0">
+                  <div class="selectorDiv col-md-12" data-ng-repeat="teacher in allTeachers | filter:searchTeachers | limitTo:5 " ng-click="addTeacher(teacher)">
+                    <span>{{teacher.serial}} : {{teacher.displayName}}</span>
+                  </div>
+                </div>
+
                 <div class="form-group">
-                    <label class="control-label" for="activities">Activities</label>
+                    <label class="control-label" for="searchActivities">Activities</label>
                     <div class="controls">
-                        <input type="text" ng-list="/,/" data-ng-model="activities" id="activities" class="form-control" placeholder="TI4L, TI4T" required>
+                        <input type="text" ng-model="searchActivities" class="form-control" placeholder="CBF">
+                        <span class="selectedSpan form-control" data-ng-repeat="a in selectedActivities" ng-click="remActivity(a)">{{a.ID}}</span>
                     </div>
                 </div>
+
+                <div class="list-group selectorContainer" ng-show="searchActivities.length > 0">
+                  <div class="selectorDiv col-md-12" data-ng-repeat="activity in allActivities | filter:searchActivities | limitTo:5 " ng-click="addActivity(activity)">
+                    <span>{{activity.ID}} : {{activity.name}}</span>
+                  </div>
+                </div>
+
                 <div class="form-group">
                     <input type="submit" class="btn btn-default">
                 </div>
@@ -38,4 +55,4 @@
             </fieldset>
         </form>
     </div>
-</section></section></section>
+</section>

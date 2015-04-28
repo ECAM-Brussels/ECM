@@ -12,6 +12,14 @@ angular.module('activities').controller('ActivitiesController', ['$scope', '$sta
 
     $scope.selectedTeachers = [];
 
+    $scope.addTeacher = function(obj){
+      if(add(obj, $scope.allTeachers, $scope.selectedTeachers)) $scope.searchText = '';
+    };
+
+    $scope.removeTeacher = function(obj){
+      rem(obj, $scope.selectedTeachers);
+    };
+
     var ObjsToIDs = function(obj){
       var result = [];
       for (var i = obj.length - 1; i >= 0; i--) {
@@ -20,34 +28,29 @@ angular.module('activities').controller('ActivitiesController', ['$scope', '$sta
       return result;
     };
 
-    $scope.teacherExist = function(obj) {
-      return $scope.allTeachers.indexOf(obj) > -1;
-    };
-    
-    $scope.filterFunction = function(obj) {
-      console.log('coucou');
-        return (obj.displayName.match(/^Ma/));
+    var exists = function(obj, arr) {
+      return arr.indexOf(obj) > -1;
     };
 
-    $scope.addTeacher = function(obj){
-      if($scope.teacherExist(obj)){
-        if($scope.selectedTeachers.indexOf(obj) < 0){
-          $scope.selectedTeachers.push(obj);
-          $scope.searchText = '';
+    var add = function(obj, arrFrom, arrTo){
+      if(exists(obj, arrFrom)){
+        if(!exists(obj, arrTo)){
+          arrTo.push(obj);
         }
         return true;
       }
       return false;
     };
 
-    $scope.removeTeacher = function(obj){
-      var indexOfObj = $scope.selectedTeachers.indexOf(obj);
-      if(indexOfObj > -1){
-        $scope.selectedTeachers.splice(indexOfObj, 1);
+    var rem = function(obj, arr){
+      var i = arr.indexOf(obj);
+      if(i > -1){
+        arr.splice(i, 1);
         return true;
       }
       return false;
     };
+
 
 		// Create new Activity
 		$scope.create = function() {
