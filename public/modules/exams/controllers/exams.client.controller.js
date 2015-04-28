@@ -1,18 +1,82 @@
 'use strict';
 
 // Exams controller
-angular.module('exams').controller('ExamsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Exams',
-	function($scope, $stateParams, $location, Authentication, Exams) {
+angular.module('exams').controller('ExamsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Exams', '$http',
+	function($scope, $stateParams, $location, Authentication, Exams, $http) {
 		$scope.authentication = Authentication;
+
+    // Get ACTIVITIES
+    $http.get('/activities').success(function(data) {
+       $scope.allActivities = data;
+    });
+
+    // Get ROOMS
+    $http.get('/rooms').success(function(data) {
+       $scope.allRooms = data;
+    });
+
+    $scope.activity = null;
+    $scope.selectedRooms = [];
+
+    $scope.addActivity = function(obj){
+      if(exists(obj, $scope.allActivities)){
+        $scope.activity = obj;
+      }
+      $scope.searchActivities = '';
+    };
+
+    $scope.remActivity = function(obj){
+      $scope.activity = null;
+    };
+
+    $scope.addRoom = function(obj){
+      if(add(obj, $scope.allRooms, $scope.selectedRooms)) $scope.searchRooms = '';
+    };
+
+    $scope.remRoom = function(obj){
+      rem(obj, $scope.selectedRooms);
+    };
+
+    // Private methods for selector
+    var ObjsToIDs = function(obj){
+      var result = [];
+      for (var i = obj.length - 1; i >= 0; i--) {
+        result[i] = obj[i]._id;
+      }
+      return result;
+    };
+
+    var exists = function(obj, arr) {
+      return arr.indexOf(obj) > -1;
+    };
+
+    var add = function(obj, arrFrom, arrTo){
+      if(exists(obj, arrFrom)){
+        if(!exists(obj, arrTo)){
+          arrTo.push(obj);
+        }
+        return true;
+      }
+      return false;
+    };
+
+    var rem = function(obj, arr){
+      var i = arr.indexOf(obj);
+      if(i > -1){
+        arr.splice(i, 1);
+        return true;
+      }
+      return false;
+    };
 
 		// Create new Exam
 		$scope.create = function() {
 			// Create new Exam object
 			var exam = new Exams ({
 				name: this.name,
-        activity: this.activity,
+        activity: this.activity._id,
         date: this.date,
-        rooms: this.rooms,
+        rooms: new ObjsToIDs(this.selectedRooms),
         groups: this.groups
 			});
 

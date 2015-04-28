@@ -12,23 +12,45 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label" for="activity">Activity</label>
+                    <label class="control-label" for="searchActivities">Activities</label>
                     <div class="controls">
-                        <input type="text" data-ng-model="activity" id="activity" class="form-control" placeholder="LI4T" required>
+                        <input type="text" ng-model="searchActivities" class="form-control" placeholder="TI4L">
+                        <div>
+                          <span data-ng-show='activity' class="selectedSpan form-control ng-hide" ng-click="remActivity()">{{activity.ID}}</span>
+                        </div>
                     </div>
                 </div>
+
+                <div class="list-group selectorContainer" ng-show="searchActivities.length > 0">
+                  <div class="selectorDiv col-md-12" data-ng-repeat="activity in allActivities | filter:searchActivities | limitTo:5 " ng-click="addActivity(activity)">
+                    <span>{{activity.ID}} : {{activity.name}}</span>
+                  </div>
+                </div>
+
                 <div class="form-group">
                     <label class="control-label" for="date">Date</label>
                     <div class="controls">
                         <input type="date" data-ng-model="date" id="date" class="form-control" placeholder="2015-06-15" required>
                     </div>
                 </div>
+
+
                 <div class="form-group">
-                    <label class="control-label" for="rooms">Rooms</label>
+                    <label class="control-label" for="searchRooms">Rooms</label>
                     <div class="controls">
-                        <input type="text" ng-list="/,/" data-ng-model="rooms" id="rooms" class="form-control" placeholder="1E10" required>
+                        <input type="text" ng-model="searchRooms" class="form-control" placeholder="CBF">
+                        <span class="selectedSpan form-control" data-ng-repeat="r in selectedRooms" ng-click="remRoom(r)">{{r.ID}}</span>
                     </div>
                 </div>
+
+                <div class="list-group selectorContainer" ng-show="searchRooms.length > 0">
+                  <div class="selectorDiv col-md-12" data-ng-repeat="room in allRooms | filter:searchRooms | limitTo:5 " ng-click="addRoom(room)">
+                    <span>{{room.ID}} : {{room.name}}</span>
+                  </div>
+                </div>
+
+
+
                 <div class="form-group">
                     <label class="control-label" for="groups">Groups</label>
                     <div class="controls">
