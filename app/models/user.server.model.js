@@ -28,6 +28,7 @@ var UserSchema = new Schema({
   serial : {
     type : String,
     trim:true,
+    unique:true
   },
 	firstName: {
 		type: String,

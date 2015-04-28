@@ -1,4 +1,10 @@
 'use strict';
+/*global Papa:false */
+function load_script(url) {
+  var s = document.createElement('script'); 
+  s.src = url;
+  document.body.appendChild(s);
+}
 
 // Students controller
 angular.module('students').controller('StudentsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Students',
@@ -67,17 +73,26 @@ angular.module('students').controller('StudentsController', ['$scope', '$statePa
 			});
 		};
 
+    $scope.importCSV = function(){
+      var file = document.getElementById('fileinput').files[0];
+      if(file !== undefined) return readCSV(file);
+      $scope.error = 'Please choose a CSV file';
+    };
+
+    var readCSV = function(CSVFile){
+      Papa.parse(CSVFile, {
+        complete: function(results) {
+          workOnCSV(results);
+        }
+      });
+    };
+
+    var workOnCSV = function(data){
+      console.log(data);
+    };
+
+    load_script('/serve/papaparse.min.js');
 	}
 ]);
 
-function load_script(url) {
-  var s = document.createElement('script'); 
-  s.src = url;
-  document.body.appendChild(s);
-}
 
-function load_scripts() {
-  load_script('/js/papaparse.min.js');
-}
-
-window.onload=load_scripts;
