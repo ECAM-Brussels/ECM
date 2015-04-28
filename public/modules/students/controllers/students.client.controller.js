@@ -25,8 +25,6 @@ angular.module('students').controller('StudentsController', ['$scope', '$statePa
 			// Redirect after save
 			student.$save(function(response) {
 				$location.path('students/' + response.matricule);
-
-				// Clear form fields
 				$scope.name = '';
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;

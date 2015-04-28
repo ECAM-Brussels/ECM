@@ -23,13 +23,6 @@ angular.module('activities').controller('ActivitiesController', ['$scope', '$sta
     $scope.teacherExist = function(obj) {
       return $scope.allTeachers.indexOf(obj) > -1;
     };
-
-    $scope.delete = function(obj){
-      var indexOfObj = $scope.selected.indexOf(obj);
-      if(indexOfObj > -1){
-        $scope.selected.splice(indexOfObj, 1);
-      }
-    };
     
     $scope.filterFunction = function(obj) {
       console.log('coucou');
@@ -40,16 +33,17 @@ angular.module('activities').controller('ActivitiesController', ['$scope', '$sta
       if($scope.teacherExist(obj)){
         if($scope.selectedTeachers.indexOf(obj) < 0){
           $scope.selectedTeachers.push(obj);
+          $scope.searchText = '';
         }
         return true;
       }
       return false;
     };
 
-    $scope.removeTeachers = function(obj){
+    $scope.removeTeacher = function(obj){
       var indexOfObj = $scope.selectedTeachers.indexOf(obj);
       if(indexOfObj > -1){
-        $scope.selected.splice(indexOfObj, 1);
+        $scope.selectedTeachers.splice(indexOfObj, 1);
         return true;
       }
       return false;
