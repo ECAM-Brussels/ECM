@@ -22,7 +22,7 @@
                     <label class="control-label" for="searchText">Teachers</label>
                     <div class="controls">
                         <input type="text" ng-model="searchText" class="form-control" placeholder="CBF">
-                        <span class="selectedSpan form-control" data-ng-repeat="selected in selectedTeachers" ng-click="removeTeacher(selected)">{{selected.serial}}</span>
+                        <span class="selectedSpan form-control" data-ng-repeat="selected in selectedTeachers" ng-click="removeTeacher(selected)">{{selected.serial}} <span class="glyphicon glyphicon-trash"></span></span>
                     </div>
                 </div>
 

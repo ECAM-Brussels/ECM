@@ -22,7 +22,7 @@
                     <label class="control-label" for="searchTeachers">Coordinators</label>
                     <div class="controls">
                         <input type="text" ng-model="searchTeachers" class="form-control" placeholder="CBF">
-                        <span class="selectedSpan form-control" data-ng-repeat="s in selectedTeachers" ng-click="remTeacher(s)">{{s.serial}}</span>
+                        <span class="selectedSpan form-control" data-ng-repeat="s in selectedTeachers" ng-click="remTeacher(s)">{{s.serial}} <span class="glyphicon glyphicon-trash"></span></span>
                     </div>
                 </div>
 
@@ -36,7 +36,7 @@
                     <label class="control-label" for="searchActivities">Activities</label>
                     <div class="controls">
                         <input type="text" ng-model="searchActivities" class="form-control" placeholder="TI4L">
-                        <span class="selectedSpan form-control" data-ng-repeat="a in selectedActivities" ng-click="remActivity(a)">{{a.ID}}</span>
+                        <span class="selectedSpan form-control" data-ng-repeat="a in selectedActivities" ng-click="remActivity(a)">{{a.ID}} <span class="glyphicon glyphicon-trash"></span></span>
                     </div>
                 </div>
 

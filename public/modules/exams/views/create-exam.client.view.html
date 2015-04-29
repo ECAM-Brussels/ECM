@@ -16,7 +16,7 @@
                     <div class="controls">
                         <input type="text" ng-model="searchActivities" class="form-control" placeholder="TI4L">
                         <div>
-                          <span data-ng-show='activity' class="selectedSpan form-control ng-hide" ng-click="remActivity()">{{activity.ID}}</span>
+                          <span data-ng-show='activity' class="selectedSpan form-control ng-hide" ng-click="remActivity()">{{activity.ID}} <span class="glyphicon glyphicon-trash"></span></span>
                         </div>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                     <label class="control-label" for="searchRooms">Rooms</label>
                     <div class="controls">
                         <input type="text" ng-model="searchRooms" class="form-control" placeholder="CBF">
-                        <span class="selectedSpan form-control" data-ng-repeat="r in selectedRooms" ng-click="remRoom(r)">{{r.ID}}</span>
+                        <span class="selectedSpan form-control" data-ng-repeat="r in selectedRooms" ng-click="remRoom(r)">{{r.ID}} <span class="glyphicon glyphicon-trash"></span></span>
                     </div>
                 </div>
 
