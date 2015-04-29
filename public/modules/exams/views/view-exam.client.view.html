@@ -7,7 +7,7 @@
 
         <h3> For groups <span ng-repeat="group in exam.groups">{{group}} </span></h3>
 	</div>
-	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == exam.user._id))">
+	<div class="pull-right" data-ng-show="((authentication.user)">
 		<a class="btn btn-primary" href="/#!/exams/{{exam._id}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
 		</a>

@@ -5,7 +5,7 @@
   <h2 data-ng-bind="course.name"></h2>
   <h3 data-ng-bind="course.coordinators"></h3>
   <h3 data-ng-bind="course.activities"></h3>
-	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == course.user._id))">
+	<div class="pull-right" data-ng-show="((authentication.user)">
 		<a class="btn btn-primary" href="/#!/courses/{{course.ID}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
 		</a>

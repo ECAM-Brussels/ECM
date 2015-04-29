@@ -4,7 +4,7 @@
     <h2><span data-ng-bind="student.first_name"></span> <span data-ng-bind="student.last_name"> (<span data-ng-bind="student.middle_names"></span>) </span></h2>
     <h2><span data-ng-bind="student.groups"></h2>
 	</div>
-	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == student.user._id))">
+	<div class="pull-right" data-ng-show="((authentication.user)">
 		<a class="btn btn-primary" href="/#!/students/{{student.matricule}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
 		</a>
