@@ -1,11 +1,11 @@
 'use strict';
 
 // Configuring the Articles module
-angular.module('exams').run(['Menus',
-	function(Menus) {
-		// Set top bar menu items
-		Menus.addMenuItem('topbar', 'Exams', 'exams', 'dropdown', '/exams(/create)?', false, ['admin', 'manager', 'teacher', 'printer']);
-		Menus.addSubMenuItem('topbar', 'exams', 'List Exams', 'exams');
-		Menus.addSubMenuItem('topbar', 'exams', 'New Exam', 'exams/create');
-	}
-]);
+angular.module( 'exams' ).run( [ 'Menus',
+ function ( Menus ) {
+    // Set top bar menu items
+    Menus.addMenuItem( 'topbar', 'Exams', 'exams', 'dropdown', '/exams(/create)?', false, [ 'admin', 'manager', 'teacher', 'printer' ] );
+    Menus.addSubMenuItem( 'topbar', 'exams', 'List Exams', 'exams', 'exams', false, [ 'admin', 'manager', 'teacher', 'printer' ] );
+    Menus.addSubMenuItem( 'topbar', 'exams', 'New Exam', 'exams/create', 'exams/create', false, [ 'admin', 'manager', 'teacher', 'printer' ] );
+ }
+ ] );

@@ -3,7 +3,7 @@
 module.exports = function(app) {
   var users = require('../../app/controllers/users.server.controller');
   var courses = require('../../app/controllers/courses.server.controller');
-  var authorized = ['teacher', 'manager', 'admin'];
+  var authorized = ['manager', 'admin'];
 
   // Courses Routes
   app.route('/courses')

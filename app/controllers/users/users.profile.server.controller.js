@@ -49,28 +49,23 @@ exports.update = function ( req, res ) {
 };
 
 
-
-
-
-
-
 /**
  * Update a Course
  */
-exports.updatqsdfqsdf = function(req, res) {
-  var course = req.course ;
+exports.updatqsdfqsdf = function ( req, res ) {
+  var course = req.course;
 
-  course = _.extend(course , req.body);
+  course = _.extend( course, req.body );
 
-  course.save(function(err) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
+  course.save( function ( err ) {
+    if ( err ) {
+      return res.status( 400 ).send( {
+        message: errorHandler.getErrorMessage( err )
+      } );
     } else {
-      res.jsonp(course);
+      res.jsonp( course );
     }
-  });
+  } );
 };
 /**
  *
@@ -81,14 +76,14 @@ exports.update = function ( req, res ) {
   var message = null;
   if ( user ) {
     // Merge existing user
-    user = _.extend(user , req.body);
+    user = _.extend( user, req.body );
     user.updated = Date.now();
     user.displayName = user.firstName + ' ' + user.lastName;
-    var roles = ['user'];
-    if (req.body.rights.teacher) roles.push('teacher');
-    if (req.body.rights.manager) roles.push('manager');
-    if (req.body.rights.admin) roles.push('admin');
-    if (req.body.rights.printer) roles.push('printer');
+    var roles = [ 'user' ];
+    if ( req.body.rights.teacher ) roles.push( 'teacher' );
+    if ( req.body.rights.manager ) roles.push( 'manager' );
+    if ( req.body.rights.admin ) roles.push( 'admin' );
+    if ( req.body.rights.printer ) roles.push( 'printer' );
     user.roles = roles;
     user.save( function ( err ) {
       if ( err ) {
