@@ -189,7 +189,7 @@ exports.createUser = function(req, res) {
   // Add missing user fields
   var roles = ['user'];
   if(req.body.rightsTeacher) roles.push('teacher');
-  if(req.body.rigthsManager) roles.push('manager');
+  if(req.body.rightsManager) roles.push('manager');
   if(req.body.rightsAdmin) roles.push('admin');
   if(req.body.rightsPrinter) roles.push('printer');
   user.username = user.serial;
