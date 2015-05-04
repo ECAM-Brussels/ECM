@@ -17,9 +17,9 @@ angular.module('users').controller('UsersController', ['$scope', '$stateParams',
       });
     };
 
-    // Find existing Room
+    // Find existing user
     $scope.findOne = function() {
-      $scope.user = Users.get({ 
+      $scope.profile = Users.get({ 
         serial: $stateParams.serial
       });
     };

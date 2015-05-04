@@ -9,14 +9,17 @@ module.exports = function(app) {
 	// User Routes
 	var users = require('../../app/controllers/users.server.controller');
 
-
 	// Setting up the users profile api
 	app.route('/users/me').get(users.me);
-	app.route('/users').put(users.update)
-                     .get(users.requiresLogin, users.hasAuthorization(['admin', 'manager']), users.find)
+	app.route('/users').get(users.requiresLogin, users.hasAuthorization(['admin', 'manager']), users.find)
                      .post(users.requiresLogin, users.hasAuthorization(['admin', 'manager']), users.createUser);
   
-  app.route('/users/:userId').post(users.requiresLogin, users.hasAuthorization(['admin', 'manager']), users.updateUser);
+  app.route('/users/:userId')
+    .post(users.requiresLogin, users.hasAuthorization(['admin', 'manager']), users.createUser)
+    .get(users.requiresLogin, users.hasAuthorization(['admin', 'manager']), users.read);
+   // .put(users.requiresLogin, users.hasAuthorization(['admin', 'manager']), users.update)
+   // .delete(users.requiresLogin, users.hasAuthorization(['admin', 'manager']), users.delete);
+
 	app.route('/users/accounts').delete(users.removeOAuthProvider);
 
 	// Setting up the users password api
@@ -58,5 +61,5 @@ module.exports = function(app) {
 	app.route('/auth/github/callback').get(users.oauthCallback('github'));
 
 	// Finish by binding the user middleware
-	app.param('userId', users.userByID);
+	app.param('userId', users.userBySerial);
 };

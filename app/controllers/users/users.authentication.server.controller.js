@@ -181,17 +181,16 @@ exports.removeOAuthProvider = function(req, res, next) {
   }
 };
 
-
 exports.createUser = function(req, res) {
   // Init Variables
   var user = new User(req.body);
   var message = null;
   // Add missing user fields
   var roles = ['user'];
-  if(req.body.rightsTeacher) roles.push('teacher');
-  if(req.body.rightsManager) roles.push('manager');
-  if(req.body.rightsAdmin) roles.push('admin');
-  if(req.body.rightsPrinter) roles.push('printer');
+  if (req.body.rightsTeacher) roles.push('teacher');
+  if (req.body.rightsManager) roles.push('manager');
+  if (req.body.rightsAdmin) roles.push('admin');
+  if (req.body.rightsPrinter) roles.push('printer');
   user.username = user.serial;
   user.roles = roles;
   user.provider = 'local';
@@ -208,4 +207,10 @@ exports.createUser = function(req, res) {
       });
     }
   });
+
+};
+
+exports.read = function(req, res) {
+  console.log('read');
+  res.jsonp(req.profile);
 };
