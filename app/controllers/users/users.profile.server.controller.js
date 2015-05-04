@@ -48,20 +48,48 @@ exports.update = function ( req, res ) {
   }
 };
 
+
+
+
+
+
+
+/**
+ * Update a Course
+ */
+exports.updatqsdfqsdf = function(req, res) {
+  var course = req.course ;
+
+  course = _.extend(course , req.body);
+
+  course.save(function(err) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.jsonp(course);
+    }
+  });
+};
 /**
  *
  */
-exports.updateUser = function ( req, res ) {
+exports.update = function ( req, res ) {
   // Init Variables
-  var user = req.body;
+  var user = req.profile;
   var message = null;
-  //console.log(userId);
   if ( user ) {
     // Merge existing user
-    user = _.extend( user, req.userID );
+    user = _.extend(user , req.body);
     user.updated = Date.now();
     user.displayName = user.firstName + ' ' + user.lastName;
-
+    var roles = ['user'];
+    if (req.body.rights.teacher) roles.push('teacher');
+    if (req.body.rights.manager) roles.push('manager');
+    if (req.body.rights.admin) roles.push('admin');
+    if (req.body.rights.printer) roles.push('printer');
+    user.roles = roles;
     user.save( function ( err ) {
       if ( err ) {
         return res.status( 400 ).send( {
@@ -96,7 +124,6 @@ exports.me = function ( req, res ) {
  */
 exports.delete = function ( req, res ) {
   var user = req.profile;
-  console.log( req.profile );
   user.remove( function ( err ) {
     if ( err ) {
       return res.status( 400 ).send( {

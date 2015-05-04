@@ -7,39 +7,35 @@
       <fieldset> 
         <div class="form-group">
           <label for="firstName">First Name</label>
-          <input type="text" required id="firstName" name="firstName" class="form-control" data-ng-model="credentials.firstName" placeholder="First Name">
+          <input type="text" required id="firstName" name="firstName" class="form-control" data-ng-model="profile.firstName" placeholder="{{profile.firstName}}">
         </div>
         <div class="form-group">
           <label for="lastName">Last Name</label>
-          <input type="text" id="lastName" name="lastName" class="form-control" data-ng-model="credentials.lastName" placeholder="Last Name">
+          <input type="text" id="lastName" name="lastName" class="form-control" data-ng-model="profile.lastName" placeholder="Last Name">
         </div>
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email" name="email" class="form-control" data-ng-model="credentials.email" placeholder="Email">
+          <input type="email" id="email" name="email" class="form-control" data-ng-model="profile.email" placeholder="Email">
         </div>
         <div class="form-group">
         <label for="rightsDiv">Rights</label>
           <div name="rightsDiv">
-            <label for="rightsTeacher" data-ng-show="credentials.rightsTeacher" class="bg-success">Teacher :</label>
-            <label for="rightsTeacher" data-ng-hide="credentials.rightsTeacher" class="bg-danger">Teacher :</label>
-            <input type="checkbox" name="rightsTeacher" data-ng-model="credentials.rightsTeacher" value="Cat" /> 
-            <label for="rightsManager" data-ng-show="credentials.rightsManager" class="bg-success">Manager :</label>
-            <label for="rightsManager" data-ng-hide="credentials.rightsManager" class="bg-danger">Manager :</label>
-            <input type="checkbox" name="rightsManager" data-ng-model="credentials.rightsManager" value="Cat" /> 
-            <label for="rightsPrinter" data-ng-show="credentials.rightsPrinter" class="bg-success">Printer :</label>
-            <label for="rightsPrinter" data-ng-hide="credentials.rightsPrinter" class="bg-danger">Printer :</label>
-            <input type="checkbox" name="rightsPrinter" data-ng-model="credentials.rightsPrinter" value="Cat" />  
-            <label for="rightsAdmin" data-ng-show="credentials.rightsAdmin" class="bg-success">Admin :</label>
-            <label for="rightsAdmin" data-ng-hide="credentials.rightsAdmin" class="bg-danger">Admin :</label>
-            <input type="checkbox" name="rightsAdmin" data-ng-model="credentials.rightsAdmin" value="Cat" />  
+            <label for="rightsTeacher" data-ng-show="profile.rights.teacher" class="bg-success">Teacher :</label>
+            <label for="rightsTeacher" data-ng-hide="profile.rights.teacher" class="bg-danger">Teacher :</label>
+            <input type="checkbox" name="rightsTeacher" data-ng-model="profile.rights.teacher" value="Cat" /> 
+            <label for="rightsManager" data-ng-show="profile.rights.manager" class="bg-success">Manager :</label>
+            <label for="rightsManager" data-ng-hide="profile.rights.manager" class="bg-danger">Manager :</label>
+            <input type="checkbox" name="rightsManager" data-ng-model="profile.rights.manager" value="Cat" /> 
+            <label for="rightsPrinter" data-ng-show="profile.rights.printer" class="bg-success">Printer :</label>
+            <label for="rightsPrinter" data-ng-hide="profile.rights.printer" class="bg-danger">Printer :</label>
+            <input type="checkbox" name="rightsPrinter" data-ng-model="profile.rights.printer" value="Cat" />  
+            <label for="rightsAdmin" data-ng-show="profile.rights.admin" class="bg-success">Admin :</label>
+            <label for="rightsAdmin" data-ng-hide="profile.rights.admin" class="bg-danger">Admin :</label>
+            <input type="checkbox" name="rightsAdmin" data-ng-model="profile.rights.admin" value="Cat" />  
           </div>
         </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" class="form-control" data-ng-model="credentials.password" placeholder="Password">
-        </div>
         <div class="text-center form-group">
-          <button type="submit" class="btn btn-large btn-primary">Create</button>
+          <button type="submit" class="btn btn-large btn-primary">Update</button>
         </div>
         <div data-ng-show="error" class="text-center text-danger">
           <strong data-ng-bind="error"></strong>

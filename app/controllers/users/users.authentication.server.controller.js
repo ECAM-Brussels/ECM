@@ -187,10 +187,10 @@ exports.createUser = function(req, res) {
   var message = null;
   // Add missing user fields
   var roles = ['user'];
-  if (req.body.rightsTeacher) roles.push('teacher');
-  if (req.body.rightsManager) roles.push('manager');
-  if (req.body.rightsAdmin) roles.push('admin');
-  if (req.body.rightsPrinter) roles.push('printer');
+  if (req.body.rights.teacher) roles.push('teacher');
+  if (req.body.rights.manager) roles.push('manager');
+  if (req.body.rights.admin) roles.push('admin');
+  if (req.body.rights.printer) roles.push('printer');
   user.username = user.serial;
   user.roles = roles;
   user.provider = 'local';
@@ -211,6 +211,5 @@ exports.createUser = function(req, res) {
 };
 
 exports.read = function(req, res) {
-  console.log('read');
   res.jsonp(req.profile);
 };

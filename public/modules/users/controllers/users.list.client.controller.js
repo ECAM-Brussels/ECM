@@ -2,9 +2,11 @@
 angular.module( 'users' ).controller( 'UsersController', [ '$scope', '$stateParams', '$http', '$location', 'Authentication', 'Users',
   function ( $scope, $stateParams, $http, $location, Authentication, Users ) {
     $scope.authentication = Authentication;
+
     $scope.find = function () {
       $scope.users = Users.query();
     };
+
     $scope.createUser = function () {
       $http.post( '/users', $scope.credentials ).success( function ( response ) {
         $location.path( '/users' );
@@ -13,6 +15,16 @@ angular.module( 'users' ).controller( 'UsersController', [ '$scope', '$statePara
       } );
     };
 
+
+    $scope.updateUser = function() {
+      var user = $scope.profile;
+
+      user.$update(function() {
+        $location.path('users/' + user.serial);
+      }, function(errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
     // Find existing user
     $scope.findOne = function () {
       var u = Users.get( {
@@ -35,19 +47,19 @@ angular.module( 'users' ).controller( 'UsersController', [ '$scope', '$statePara
     };
 
     // Find existing user
-    $scope.remove = function(profile) {
+    $scope.remove = function ( profile ) {
       if ( profile ) {
         profile.$remove();
 
-        for (var i in $scope.users) {
-          if ($scope.users [i] === profile) {
-            $scope.users.splice(i, 1);
+        for ( var i in $scope.users ) {
+          if ( $scope.users[ i ] === profile ) {
+            $scope.users.splice( i, 1 );
           }
         }
       } else {
-        $scope.profile.$remove(function() {
-          $location.path('users');
-        });
+        $scope.profile.$remove( function () {
+          $location.path( 'users' );
+        } );
       }
     };
 
