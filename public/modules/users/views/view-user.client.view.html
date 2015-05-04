@@ -1,25 +1,26 @@
 <section data-ng-controller="UsersController" data-ng-init="findOne()">
 	<div class="page-header">
-    {{profile}}
-		<h1><span data-ng-bind="room.ID"></span> : <span data-ng-bind="room.name"></span></h1>
-    
+		<h1><span data-ng-bind="profile.serial"></span> : <span data-ng-bind="profile.displayName"></span></h1>
 	</div>
-  <br> Number of seats : <span data-ng-bind="room.seats"></span>
+  <h3><br> Roles : <br> <ul>
+    <h4>
+      <li data-ng-show="profile.rights.user"> User </li>
+      <li data-ng-show="profile.rights.printer"> Printer </li>
+      <li data-ng-show="profile.rights.teacher"> Teacher </li>
+      <li data-ng-show="profile.rights.manager"> Manager </li>
+      <li data-ng-show="profile.rights.admin"> Admin </li>
+    </h4>
+  </ul>
+  <br>
+  Email : {{profile.email}}
+  </h3>
 
-	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == room.user._id))">
-		<a class="btn btn-primary" href="/#!/rooms/{{room.ID}}/edit">
+	<div class="pull-right" data-ng-show="authentication.user">
+		<a class="btn btn-primary" href="/#!/users/{{profile.serial}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
 		</a>
 		<a class="btn btn-primary" data-ng-click="remove();">
 			<i class="glyphicon glyphicon-trash"></i>
 		</a>
 	</div>
-	<small>
-		<em class="text-muted">
-			Posted on
-			<span data-ng-bind="room.created | date:'mediumDate'"></span>
-			by
-			<span data-ng-bind="room.user.displayName"></span>
-		</em>
-	</small>
 </section>

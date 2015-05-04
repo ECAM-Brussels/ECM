@@ -9,7 +9,7 @@ var _ = require('lodash'),
 /**
  * User middleware
  */
-exports.userByID = function(req, res, next, id) {
+var userByID = function(req, res, next, id) {
   User.findOne({
     _id: id
   }).exec(function(err, user) {
@@ -23,6 +23,7 @@ exports.userByID = function(req, res, next, id) {
  * User middleware by Serial
  */
 exports.userBySerial = function(req, res, next, id) {
+  if(id.length > 15) return userByID(req, res, next, id);
   User.findOne({
     serial: id
   }).exec(function(err, user) {

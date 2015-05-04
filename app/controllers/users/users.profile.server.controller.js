@@ -3,87 +3,107 @@
 /**
  * Module dependencies.
  */
-var _ = require('lodash'),
-	errorHandler = require('../errors.server.controller.js'),
-	mongoose = require('mongoose'),
-	passport = require('passport'),
-	User = mongoose.model('User');
+var _ = require( 'lodash' ),
+  errorHandler = require( '../errors.server.controller.js' ),
+  mongoose = require( 'mongoose' ),
+  passport = require( 'passport' ),
+  User = mongoose.model( 'User' );
 
 /**
  * Update user details
  */
-exports.update = function(req, res) {
-	// Init Variables
-	var user = req.user;
-	var message = null;
+exports.update = function ( req, res ) {
+  // Init Variables
+  var user = req.user;
+  var message = null;
 
-	// For security measurement we remove the roles from the req.body object
-	delete req.body.roles;
+  // For security measurement we remove the roles from the req.body object
+  delete req.body.roles;
 
-	if (user) {
-		// Merge existing user
-		user = _.extend(user, req.body);
-		user.updated = Date.now();
-		user.displayName = user.firstName + ' ' + user.lastName;
+  if ( user ) {
+    // Merge existing user
+    user = _.extend( user, req.body );
+    user.updated = Date.now();
+    user.displayName = user.firstName + ' ' + user.lastName;
 
-		user.save(function(err) {
-			if (err) {
-				return res.status(400).send({
-					message: errorHandler.getErrorMessage(err)
-				});
-			} else {
-				req.login(user, function(err) {
-					if (err) {
-						res.status(400).send(err);
-					} else {
-						res.json(user);
-					}
-				});
-			}
-		});
-	} else {
-		res.status(400).send({
-			message: 'User is not signed in'
-		});
-	}
+    user.save( function ( err ) {
+      if ( err ) {
+        return res.status( 400 ).send( {
+          message: errorHandler.getErrorMessage( err )
+        } );
+      } else {
+        req.login( user, function ( err ) {
+          if ( err ) {
+            res.status( 400 ).send( err );
+          } else {
+            res.json( user );
+          }
+        } );
+      }
+    } );
+  } else {
+    res.status( 400 ).send( {
+      message: 'User is not signed in'
+    } );
+  }
 };
 
-exports.updateUser = function(req, res) {
+/**
+ *
+ */
+exports.updateUser = function ( req, res ) {
   // Init Variables
   var user = req.body;
   var message = null;
   //console.log(userId);
-  if (user) {
+  if ( user ) {
     // Merge existing user
-    user = _.extend(user, req.userID);
+    user = _.extend( user, req.userID );
     user.updated = Date.now();
     user.displayName = user.firstName + ' ' + user.lastName;
 
-    user.save(function(err) {
-      if (err) {
-        return res.status(400).send({
-          message: errorHandler.getErrorMessage(err)
-        });
+    user.save( function ( err ) {
+      if ( err ) {
+        return res.status( 400 ).send( {
+          message: errorHandler.getErrorMessage( err )
+        } );
       } else {
-        req.login(user, function(err) {
-          if (err) {
-            res.status(400).send(err);
+        req.login( user, function ( err ) {
+          if ( err ) {
+            res.status( 400 ).send( err );
           } else {
-            res.json(user);
+            res.json( user );
           }
-        });
+        } );
       }
-    });
+    } );
   } else {
-    res.status(400).send({
+    res.status( 400 ).send( {
       message: 'User is not signed in'
-    });
+    } );
   }
 };
 
 /**
  * Send User
  */
-exports.me = function(req, res) {
-	res.json(req.user || null);
+exports.me = function ( req, res ) {
+  res.json( req.user || null );
+};
+
+/**
+ * Delete user
+ */
+exports.delete = function ( req, res ) {
+  var user = req.profile;
+  console.log( req.profile );
+  user.remove( function ( err ) {
+    if ( err ) {
+      return res.status( 400 ).send( {
+        message: errorHandler.getErrorMessage( err )
+      } );
+    } else {
+      res.jsonp( user );
+    }
+  } );
 };

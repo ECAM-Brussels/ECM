@@ -11,14 +11,14 @@ module.exports = function(app) {
 
 	// Setting up the users profile api
 	app.route('/users/me').get(users.me);
-	app.route('/users').get(users.requiresLogin, users.hasAuthorization(['admin', 'manager']), users.find)
-                     .post(users.requiresLogin, users.hasAuthorization(['admin', 'manager']), users.createUser);
+	app.route('/users').get(users.hasAuthorization(['admin', 'manager']), users.find)
+                     .post(users.hasAuthorization(['admin', 'manager']), users.createUser);
   
   app.route('/users/:userId')
-    .post(users.requiresLogin, users.hasAuthorization(['admin', 'manager']), users.createUser)
-    .get(users.requiresLogin, users.hasAuthorization(['admin', 'manager']), users.read);
-   // .put(users.requiresLogin, users.hasAuthorization(['admin', 'manager']), users.update)
-   // .delete(users.requiresLogin, users.hasAuthorization(['admin', 'manager']), users.delete);
+    .post(users.hasAuthorization(['admin', 'manager']), users.createUser)
+    .get(users.hasAuthorization(['admin', 'manager']), users.read)
+    .put(users.hasAuthorization(['admin', 'manager']), users.update)
+    .delete(users.hasAuthorization(['admin', 'manager']), users.delete);
 
 	app.route('/users/accounts').delete(users.removeOAuthProvider);
 
