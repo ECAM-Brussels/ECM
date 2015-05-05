@@ -1,7 +1,7 @@
 <section data-ng-controller="CoursesController" data-ng-init="findOne()">
 	<h1>{{course.ID}} &mdash; {{course.name}}</h1>
 
-	<h2>Informations</h2>
+	<h2>Information</h2>
 
 	<dl class="dl-horizontal">
 		<dt>Coordinator</dt>
@@ -13,6 +13,6 @@
 	<h2>Activities</h2>
 
 	<ul class="list-group">
-		<li class="list-group-item" ng-repeat="activity in course.activities"><b>{{activity.ID}}</b><span ng-repeat="teacher in activity.teachers"> {{teacher.username}}</span></li>
+		<li class="list-group-item" ng-repeat="activity in course.activities"><b>{{activity.ID}} &mdash; {{activity.name}}</b><br /><span ng-repeat="teacher in activity.teachers"> {{teacher.username}}</span></li>
 	</ul>
 </section>
