@@ -51,7 +51,7 @@ exports.update = function ( req, res ) {
 /**
  *
  */
-exports.update = function ( req, res ) {
+exports.updateUser = function ( req, res ) {
   // Init Variables
   var user = req.profile;
   var message = null;
