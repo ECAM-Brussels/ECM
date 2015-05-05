@@ -108,7 +108,7 @@ exports.hasAuthorization = function(req, res, next) {
 };
 
 exports.listMyCourses = function(req, res) { 
-  Course.find({coordinators : req.user.id}).sort('+ID').exec(function(err, courses) {
+  Course.find({coordinators : req.user.id}).sort('+ID').populate('coordinators', 'username').exec(function(err, courses) {
     console.log(courses);
     if (err) {
       return res.status(400).send({
