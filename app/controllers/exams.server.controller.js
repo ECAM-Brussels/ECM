@@ -73,7 +73,7 @@ exports.delete = function(req, res) {
  * List of Exams
  */
 exports.list = function(req, res) { 
-	Exam.find().sort('-created').populate('user', 'displayName').populate('rooms activity').exec(function(err, exams) {
+	Exam.find().populate('course', 'ID').sort('+course.ID').populate('user', 'displayName').populate('rooms activity').exec(function(err, exams) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)

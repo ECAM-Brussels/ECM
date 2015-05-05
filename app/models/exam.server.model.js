@@ -10,11 +10,11 @@ var mongoose = require('mongoose'),
  * Exam Schema
  */
 var ExamSchema = new Schema({
-  activity: {
+  course: {
     type: Schema.ObjectId,
-    ref: 'Activity',
-    required : 'Please fill the Exam activity'
+    ref: 'Course'
   },
+  activities: [{ type: Schema.ObjectId, ref: 'Activity' }],
   date: {
     type: Date,
     default: Date.now
