@@ -17,7 +17,7 @@ module.exports = function(app) {
   app.route('/users/:userId')
     .post(users.hasAuthorization(['admin', 'manager']), users.createUser)
     .get(users.hasAuthorization(['admin', 'manager']), users.read)
-    .put(users.hasAuthorization(['admin', 'manager']), users.update)
+    .put(users.hasAuthorization(['admin', 'manager']), users.updateUser)
     .delete(users.hasAuthorization(['admin', 'manager']), users.delete);
 
 	app.route('/users/accounts').delete(users.removeOAuthProvider);
