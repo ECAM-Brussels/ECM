@@ -48,25 +48,6 @@ exports.update = function ( req, res ) {
   }
 };
 
-
-/**
- * Update a Course
- */
-exports.updatqsdfqsdf = function ( req, res ) {
-  var course = req.course;
-
-  course = _.extend( course, req.body );
-
-  course.save( function ( err ) {
-    if ( err ) {
-      return res.status( 400 ).send( {
-        message: errorHandler.getErrorMessage( err )
-      } );
-    } else {
-      res.jsonp( course );
-    }
-  } );
-};
 /**
  *
  */
