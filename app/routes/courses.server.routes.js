@@ -15,7 +15,7 @@ module.exports = function(app) {
 
   app.route('/courses/:courseId')
     .post(users.requiresLogin, users.hasAuthorization(authorized), courses.create)
-    .get(users.requiresLogin, users.hasAuthorization(authorized), courses.read)
+    .get(users.requiresLogin, users.hasAuthorization(['manager', 'admin', 'teacher']), courses.read)
     .put(users.requiresLogin, users.hasAuthorization(authorized), courses.update)
     .delete(users.requiresLogin, users.hasAuthorization(authorized), courses.delete);
 
