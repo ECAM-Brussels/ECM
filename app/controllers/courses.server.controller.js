@@ -89,11 +89,20 @@ exports.list = function(req, res) {
  */
 exports.courseByID = function(req, res, next, id) { 
   if(req.method === 'POST') return next();
-	Course.findOne({ID : id}).populate('user', 'displayName').exec(function(err, course) {
+	Course.findOne({ID : id}, 'ID name coordinator activities')
+		  .populate('coordinator', 'username')
+		  .populate('activities', 'ID teachers')
+		  .exec(function(err, course) {
 		if (err) return next(err);
 		if (! course) return next(new Error('Failed to load Course ' + id));
-		req.course = course ;
-		next();
+
+		Course.populate(course, {path: 'activities.teachers', select: 'username', model: 'User'}, function(err, course){
+			if (err) return next(err);
+			if (! course) return next(new Error('Failed to load Course ' + id));
+
+			req.course = course ;
+			next();
+		});
 	});
 };
 
@@ -108,8 +117,9 @@ exports.hasAuthorization = function(req, res, next) {
 };
 
 exports.listMyCourses = function(req, res) { 
-  Course.find({coordinators : req.user.id}).sort({'ID': 1}).populate('coordinators', 'username').populate('activities', 'ID').exec(function(err, courses) {
-    console.log(courses);
+  Course.find({coordinator : req.user.id}, 'ID name')
+  		.sort({'ID': 1})
+  		.exec(function(err, courses) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)

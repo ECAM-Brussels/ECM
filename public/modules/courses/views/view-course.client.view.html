@@ -1,24 +1,18 @@
 <section data-ng-controller="CoursesController" data-ng-init="findOne()">
-	<div class="page-header">
-		<h1 data-ng-bind="course.name"></h1>
-	</div>
-  <h2 data-ng-bind="course.name"></h2>
-  <h3 data-ng-bind="course.coordinators"></h3>
-  <h3 data-ng-bind="course.activities"></h3>
-	<div class="pull-right" data-ng-show="(authentication.user)">
-		<a class="btn btn-primary" href="/#!/courses/{{course.ID}}/edit">
-			<i class="glyphicon glyphicon-edit"></i>
-		</a>
-		<a class="btn btn-primary" data-ng-click="remove();">
-			<i class="glyphicon glyphicon-trash"></i>
-		</a>
-	</div>
-	<small>
-		<em class="text-muted">
-			Posted on
-			<span data-ng-bind="course.created | date:'mediumDate'"></span>
-			by
-			<span data-ng-bind="course.user.displayName"></span>
-		</em>
-	</small>
+	<h1>{{course.ID}} &mdash; {{course.name}}</h1>
+
+	<h2>Informations</h2>
+
+	<dl class="dl-horizontal">
+		<dt>Coordinator</dt>
+		<dd>{{course.coordinator.username}}</dd>
+		<dt>Activities</dt>
+		<dd><span ng-repeat="activity in course.activities">{{activity.ID}} </span></dd>
+	</dl>
+
+	<h2>Activities</h2>
+
+	<ul class="list-group">
+		<li class="list-group-item" ng-repeat="activity in course.activities"><b>{{activity.ID}}</b><span ng-repeat="teacher in activity.teachers"> {{teacher.username}}</span></li>
+	</ul>
 </section>
