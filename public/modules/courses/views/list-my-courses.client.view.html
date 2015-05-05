@@ -5,10 +5,12 @@
     <div class="list-group">
         <a data-ng-repeat="course in courses" data-ng-href="#!/courses/{{course.ID}}" class="list-group-item">
             <h2>{{course.ID}} &mdash; {{course.name}}</h2>
-            <div>
-                <p class="pull-left"><b>Coordinators:</b></p>
-                <ul class="list-inline"><li data-ng-repeat="coordinator in course.coordinators">{{coordinator.username}}</li></ul>
-            </div>
+            <dl class="dl-horizontal">
+                <dt>Coordinators</dt>
+                <dd><ul class="list-inline"><li data-ng-repeat="coordinator in course.coordinators">{{coordinator.username}}</li></ul></dd>
+                <dt>Activities</dt>
+                <dd><ul class="list-inline"><li data-ng-repeat="activity in course.activities">{{activity.ID}}</li></ul></dd>
+            </dl>
         </a>
     </div>
     <div class="alert alert-warning text-center" data-ng-hide="! courses.$resolved || courses.length">
