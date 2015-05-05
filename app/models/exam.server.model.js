@@ -14,6 +14,10 @@ var ExamSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'Course'
   },
+  split: {
+    type: Boolean,
+    default: false
+  },
   activities: [{ type: Schema.ObjectId, ref: 'Activity' }],
   date: {
     type: Date,

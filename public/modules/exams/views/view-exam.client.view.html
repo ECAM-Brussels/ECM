@@ -1,26 +1,31 @@
 <section data-ng-controller="ExamsController" data-ng-init="findOne()">
-	<div class="page-header">
-		<h1> {{exam.activity.ID}} </h1>
-    <h2> {{exam.name}}  </h2>
+	<h1>{{exam.course.ID}}</h1>
 
-        <h3> The {{exam.date | date:'dd/MM/yyyy'}} in <span ng-repeat="room in exam.rooms">{{room.ID}} </span></h3>
+	<h2>Information</h2>
 
-        <h3> For groups <span ng-repeat="group in exam.groups">{{group}} </span></h3>
+	<dl class="dl-horizontal">
+		<dt>Course</dt>
+		<dd>{{exam.course.ID}} &mdash; {{exam.course.name}}</dd>
+		<dt>Activities</dt>
+		<dd><span ng-repeat="activity in exam.activities">{{activity.ID}} </span></dd>
+		<dt>Date</dt>
+		<dd>{{exam.date | date: "dd MMM yyyy"}}</dd>
+		<dt>Rooms</dt>
+		<dd><span ng-repeat="room in exam.rooms">{{room.ID}} </span></dd>
+		<dt>Groups</dt>
+		<dd><span ng-repeat="group in exam.groups">{{group}} </span></dd>
+	</dl>
+
+	<h2>Copies</h2>
+
+	<div ng-if="exam.split">
+		<p>One PDF file has to be uploaded for each activity of the course.</p>
+		<ul class="list-group">
+			<li class="list-group-item" ng-repeat="activity in exam.activities"><b>{{activity.ID}}</b> (<span ng-repeat="teacher in activity.teachers">{{teacher.username}}</span>)</li>
+		</ul>
 	</div>
-	<div class="pull-right" data-ng-show="(authentication.user)">
-		<a class="btn btn-primary" href="/#!/exams/{{exam._id}}/edit">
-			<i class="glyphicon glyphicon-edit"></i>
-		</a>
-		<a class="btn btn-primary" data-ng-click="remove();">
-			<i class="glyphicon glyphicon-trash"></i>
-		</a>
+
+	<div ng-if="!exam.split">
+		<p>Only one PDF has to be uploaded for all the activities of the course.</p>
 	</div>
-	<small>
-		<em class="text-muted">
-			Posted on
-			<span data-ng-bind="exam.created | date:'mediumDate'"></span>
-			by
-			<span data-ng-bind="exam.user.displayName"></span>
-		</em>
-	</small>
 </section>

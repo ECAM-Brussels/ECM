@@ -73,7 +73,7 @@ exports.delete = function(req, res) {
  * List of Exams
  */
 exports.list = function(req, res) { 
-	Exam.find().populate('course', 'ID').sort('+course.ID').populate('user', 'displayName').populate('rooms activity').exec(function(err, exams) {
+	Exam.find().populate('course', 'ID').sort({'course.ID': 1}).populate('user', 'displayName').populate('rooms activity').exec(function(err, exams) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
@@ -88,11 +88,16 @@ exports.list = function(req, res) {
  * Exam middleware
  */
 exports.examByID = function(req, res, next, id) { 
-	Exam.findById(id).populate('user', 'displayName').populate('rooms activity').exec(function(err, exam) {
+	Exam.findById(id).populate('course', 'ID name')
+					 .populate('rooms', 'ID')
+					 .populate('activities', 'ID teachers')
+					 .exec(function(err, exam) {
 		if (err) return next(err);
 		if (! exam) return next(new Error('Failed to load Exam ' + id));
-		req.exam = exam ;
-		next();
+		Exam.populate(exam, {path: 'activities.teachers', select: 'username', model: 'User'}, function(err, exam) {
+			req.exam = exam;
+			next();
+		});
 	});
 };
 
