@@ -17,7 +17,10 @@ var CourseSchema = new Schema({
     trim: true,
     unique:true
   },
-  coordinators: [{ type: Schema.ObjectId, ref: 'User'}],
+  coordinator: {
+  	type: Schema.ObjectId,
+  	ref: 'User'
+  },
   activities: [{ type: Schema.ObjectId, ref: 'Activity'}],
 	name: {
 		type: String,

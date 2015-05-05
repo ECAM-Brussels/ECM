@@ -70,17 +70,21 @@ exports.delete = function(req, res) {
 };
 
 /**
- * List of Exams
+ * List of all exams
  */
 exports.list = function(req, res) { 
-	Exam.find().populate('course', 'ID').sort({'course.ID': 1}).populate('user', 'displayName').populate('rooms activity').exec(function(err, exams) {
+	Exam.find().populate('course', 'ID')
+			   .populate('user', 'displayName')
+			   .populate('rooms', 'ID')
+			   .populate('activities', 'ID')
+			   .sort({'course.ID': 1})
+			   .exec(function(err, exams) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
-		} else {
-			res.jsonp(exams);
 		}
+		res.jsonp(exams);
 	});
 };
 
@@ -88,15 +92,24 @@ exports.list = function(req, res) {
  * Exam middleware
  */
 exports.examByID = function(req, res, next, id) { 
-	Exam.findById(id).populate('course', 'ID name')
+	Exam.findById(id).populate('course', 'ID name coordinator')
 					 .populate('rooms', 'ID')
 					 .populate('activities', 'ID teachers')
 					 .exec(function(err, exam) {
 		if (err) return next(err);
 		if (! exam) return next(new Error('Failed to load Exam ' + id));
+
 		Exam.populate(exam, {path: 'activities.teachers', select: 'username', model: 'User'}, function(err, exam) {
-			req.exam = exam;
-			next();
+			if (err) return next(err);
+			if (! exam) return next(new Error('Failed to load Exam ' + id));
+
+			Exam.populate(exam, {path: 'course.coordinator', select: 'username', model: 'User'}, function (err, exam) {
+				if (err) return next(err);
+				if (! exam) return next(new Error('Failed to load Exam ' + id));
+
+				req.exam = exam;
+				next();
+			});
 		});
 	});
 };
