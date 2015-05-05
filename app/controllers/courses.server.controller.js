@@ -73,7 +73,7 @@ exports.delete = function(req, res) {
  * List of Courses
  */
 exports.list = function(req, res) { 
-	Course.find().sort('-created').populate('user', 'displayName').populate('coordinators activities').exec(function(err, courses) {
+	Course.find().sort({'ID': 1}).populate('user', 'displayName').populate('coordinators activities').exec(function(err, courses) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
@@ -108,7 +108,7 @@ exports.hasAuthorization = function(req, res, next) {
 };
 
 exports.listMyCourses = function(req, res) { 
-  Course.find({coordinators : req.user.id}).sort('+ID').populate('coordinators', 'username').populate('activities', 'ID').exec(function(err, courses) {
+  Course.find({coordinators : req.user.id}).sort({'ID': 1}).populate('coordinators', 'username').populate('activities', 'ID').exec(function(err, courses) {
     console.log(courses);
     if (err) {
       return res.status(400).send({
