@@ -4,8 +4,8 @@
 angular.module( 'activities' ).run( [ 'Menus',
  function ( Menus ) {
     // Set top bar menu items
-    Menus.addMenuItem( 'topbar', 'Activities', 'activities', 'dropdown', '/activities(/create)?', false, [ 'admin', 'manager', 'teacher' ] );
-    Menus.addSubMenuItem( 'topbar', 'activities', 'List Activities', 'activities', 'activities', false, [ 'admin', 'manager', 'teacher' ] );
-    Menus.addSubMenuItem( 'topbar', 'activities', 'New Activity', 'activities/create', 'activities/create', false, [ 'admin', 'manager', 'teacher' ] );
+    Menus.addMenuItem( 'topbar', 'Activities', 'activities', 'dropdown', '/activities(/create)?', false, [ 'admin', 'manager' ] );
+    Menus.addSubMenuItem( 'topbar', 'activities', 'List Activities', 'activities', 'activities', false, [ 'admin', 'manager' ] );
+    Menus.addSubMenuItem( 'topbar', 'activities', 'New Activity', 'activities/create', 'activities/create', false, [ 'admin', 'manager' ] );
  }
  ] );
