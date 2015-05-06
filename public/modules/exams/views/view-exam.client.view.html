@@ -23,7 +23,24 @@
 	<div ng-if="exam.split">
 		<p>One PDF file has to be uploaded for each activity of the course.</p>
 		<ul class="list-group">
-			<li class="list-group-item" ng-repeat="activity in exam.activities"><b>{{activity.ID}}</b> (<span ng-repeat="teacher in activity.teachers">{{teacher.username}}</span>)</li>
+			<li class="list-group-item" ng-repeat="activity in exam.activities">
+				<p><b>{{activity.ID}}</b> (<span ng-repeat="teacher in activity.teachers">{{teacher.username}}</span>)</p>
+
+				<div ng-if="findCopy(activity, exam.copies)">
+					<p>PDF file has been uploaded by {{copy.user.username}} on {{copy.uploaded | date: "dd MMM yyyy H:mm"}}</p>
+				</div>
+
+				<div ng-if="! findCopy(activity, exam.copies)">
+					<div ng-if="findTeacher(authentication.user, activity.teachers)">
+						<form class="form-inline">
+							<div class="form-group">
+								<label for="file_{{exam.copies._id}}">Upload file <input type="file" class="form-control" id="file_{{exam.copies._id}}" />
+							</div>
+							<button type="submit" class="btn btn-default">Upload</button>
+						</form>
+					</div>
+				</div>
+			</li>
 		</ul>
 	</div>
 
