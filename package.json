@@ -2,7 +2,14 @@
   "name": "ecm",
   "description": "Exam Copies Manager",
   "version": "0.0.1",
-  "author": "Alexis Paques",
+  "author": "École Centrale des Arts et Métiers",
+  "contributors": [{
+    "name": "Sébastien Combéfis",
+    "email": "s.combefis@ecam.be"
+  }, {
+    "name": "Alexis Paques",
+    "email": "alexis.paques@gmail.com"
+  }],
   "engines": {
     "node": "0.10.x",
     "npm": "1.4.x"
