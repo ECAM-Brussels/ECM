@@ -90,7 +90,7 @@ exports.list = function(req, res) {
  */
 exports.roomByID = function(req, res, next, id) {
 	if (req.method === 'POST') return next();
-	Room.findOne({ID : id }, 'ID name seats')
+	Room.findOne({ID : id }, 'ID name seats picture')
 		.exec(function(err, room) {
 		if (err) return next(err);
 		if (! room) return next(new Error('Failed to load room ' + id));

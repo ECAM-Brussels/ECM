@@ -12,7 +12,7 @@ var mongoose = require('mongoose'),
 var RoomSchema = new Schema({
 	ID: {
 		type:String,
-		default:'A000',
+		default: 'A000',
 		required: 'Please choose an ID for the room',
 		trim: true,
 		unique: true
@@ -24,10 +24,14 @@ var RoomSchema = new Schema({
 		trim: true
 	},
 	seats: {
-		type:Number,
-		default:0,
+		type: Number,
+		default: 0,
 		required: 'Please fill the number of seats of the room',
 		trim: true
+	},
+	picture: {
+		type: Boolean,
+		default: false
 	},
 	created: {
 		type: Date,

@@ -2,10 +2,10 @@
 
 	<h1>{{room.ID}} &mdash; {{room.name}}</h1>
 
-	<h2>Information</h2>
+	<h2>Information</h2>	
 
-	<div class="pull-right">
-		<img src="/images/rooms/{{room.ID}}.jpg" width="200" height="150" alt="Picture of {{room.name}}" />
+	<div ng-if="room.picture" class="pull-right">
+		<img src="/images/rooms/{{room._id}}.jpg" width="300" height="200" alt="Picture of {{room.ID}}" />
 	</div>
 
 	<dl class="dl-horizontal">
