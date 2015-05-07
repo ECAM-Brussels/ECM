@@ -55,7 +55,7 @@ exports.update = function(req, res) {
  * Delete an Room
  */
 exports.delete = function(req, res) {
-	var room = req.room ;
+	var room = req.room;
 
 	room.remove(function(err) {
 		if (err) {
@@ -72,7 +72,9 @@ exports.delete = function(req, res) {
  * List of Rooms
  */
 exports.list = function(req, res) { 
-	Room.find().sort('-created').populate('user', 'displayName').exec(function(err, rooms) {
+	Room.find({}, 'ID name')
+		.sort({'ID': 1})
+		.exec(function(err, rooms) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
@@ -87,10 +89,12 @@ exports.list = function(req, res) {
  * Room middleware
  */
 exports.roomByID = function(req, res, next, id) {
-  if(req.method === 'POST') return next();
-	Room.findOne({ ID : id }).populate('user', 'displayName').exec(function(err, room) {
+	if (req.method === 'POST') return next();
+	Room.findOne({ID : id }, 'ID name seats')
+		.exec(function(err, room) {
 		if (err) return next(err);
-		if (! room) return next(new Error('Failed to load Room ' + id));
+		if (! room) return next(new Error('Failed to load room ' + id));
+		
 		req.room = room ;
 		return next();
 	});
