@@ -1,7 +1,7 @@
 'use strict';
 
 // Rooms controller
-angular.module('rooms', ['ngFileUpload']).controller( 'RoomsController', [ '$scope', '$stateParams', '$location', 'Authentication', 'Rooms', function ($scope, $stateParams, $location, Authentication, Rooms) {
+angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Rooms', 'Upload', function ($scope, $stateParams, $location, Authentication, Rooms, Upload) {
 	$scope.authentication = Authentication;
 
 	// Create new Room
@@ -63,15 +63,23 @@ angular.module('rooms', ['ngFileUpload']).controller( 'RoomsController', [ '$sco
 		});
 	};
 
-/*
 	// For the file upload
 	$scope.$watch('files', function(){
 		$scope.upload($scope.files);
 	});
 
-	$scope.upload = function(files) {
-		console.log('kikou');
+	$scope.upload = function(file) {
+		if (file && file.length === 1) {
+			Upload.upload({
+				url: 'upload/room',
+				fields: {'username': $scope.authentication.user._id},
+				file: file
+			}).progress(function(evt) {
+				var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+				console.log('progress: ' + progressPercentage + '% ');
+			}).success(function(data, status, headers, config) {
+				console.log('Upload finished ' + config.file.name + ', response ' + data);
+			});
+		}
 	};
-*/
-
 }]);
