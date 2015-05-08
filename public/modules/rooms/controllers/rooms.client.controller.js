@@ -1,7 +1,7 @@
 'use strict';
 
 // Rooms controller
-angular.module( 'rooms' ).controller( 'RoomsController', [ '$scope', '$stateParams', '$location', 'Authentication', 'Rooms', function ($scope, $stateParams, $location, Authentication, Rooms) {
+angular.module('rooms', ['ngFileUpload']).controller( 'RoomsController', [ '$scope', '$stateParams', '$location', 'Authentication', 'Rooms', function ($scope, $stateParams, $location, Authentication, Rooms) {
 	$scope.authentication = Authentication;
 
 	// Create new Room
@@ -62,4 +62,16 @@ angular.module( 'rooms' ).controller( 'RoomsController', [ '$scope', '$statePara
 			roomId: $stateParams.roomId
 		});
 	};
+
+/*
+	// For the file upload
+	$scope.$watch('files', function(){
+		$scope.upload($scope.files);
+	});
+
+	$scope.upload = function(files) {
+		console.log('kikou');
+	};
+*/
+
 }]);
