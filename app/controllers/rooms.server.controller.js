@@ -6,6 +6,8 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Room = mongoose.model('Room'),
+	fs = require('fs-extra'),
+	path = require('path'),
 	_ = require('lodash');
 
 /**
@@ -19,9 +21,22 @@ exports.create = function(req, res) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
-		} else {
-			res.jsonp(room);
 		}
+		res.jsonp(room);
+	});
+};
+
+// Upload a picture for the room
+exports.upload = function(req, res) {
+	var file = req.files.file;
+	var dest = path.dirname(require.main.filename) + '/public/images/uploads/' + path.basename(file.path);
+	fs.copy(file.path, dest, function(err) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		}
+		res.send(path.basename(file.path));
 	});
 };
 
@@ -95,7 +110,7 @@ exports.roomByID = function(req, res, next, id) {
 		if (err) return next(err);
 		if (! room) return next(new Error('Failed to load room ' + id));
 		
-		req.room = room ;
+		req.room = room;
 		return next();
 	});
 };
