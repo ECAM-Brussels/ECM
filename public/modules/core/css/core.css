@@ -2,6 +2,10 @@ h1 {
 	margin-bottom: 20px;
 }
 
+h2 {
+	font-size: 20px;
+}
+
 p {
 	text-align: justify;
 }
@@ -11,7 +15,7 @@ footer {
 }
 footer > div {
 	border-top: 1px solid #eee;
-	padding: 20px 0px;
+	padding: 20px 0;
 }
 
 .content {
