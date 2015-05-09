@@ -6,13 +6,13 @@
 	<dl class="dl-horizontal">
 		<dt>Coordinator</dt>
 		<dd>{{course.coordinator.username}}</dd>
-		<dt>Activities</dt>
-		<dd><span ng-repeat="activity in course.activities">{{activity.ID}} </span></dd>
+		<dt>Weight</dt>
+		<dd>{{course.totalWeight}} ECTS</dd>
 	</dl>
 
 	<h2>Activities</h2>
 
 	<ul class="list-group">
-		<li class="list-group-item" ng-repeat="activity in course.activities"><b>{{activity.ID}} &mdash; {{activity.name}}</b><br /><span ng-repeat="teacher in activity.teachers"> {{teacher.username}}</span></li>
+		<li class="list-group-item" ng-repeat="activity in course.activities"><b>{{activity.ID}}</b> &mdash; {{activity.name}} ({{activity.weight}} ECTS) by<span ng-repeat="teacher in activity.teachers"> {{teacher.username}}</span></li>
 	</ul>
 </section>

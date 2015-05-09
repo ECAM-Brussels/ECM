@@ -1,58 +1,40 @@
 <section data-ng-controller="CoursesController">
-    <div class="page-header">
-        <h1>New Course</h1>
-    </div>
-    <div class="col-md-12">
-        <form class="form-horizontal" data-ng-submit="create()" novalidate>
-            <fieldset>
-                <div class="form-group">
-                    <label class="control-label" for="ID">ID</label>
-                    <div class="controls">
-                        <input type="text" data-ng-model="ID" id="ID" class="form-control" placeholder="LI4C" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="name">Name</label>
-                    <div class="controls">
-                        <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Name" required>
-                    </div>
-                </div>
+	<h1>Create Course</h1>
 
-                <div class="form-group">
-                    <label class="control-label" for="searchTeachers">Coordinators</label>
-                    <div class="controls">
-                        <input type="text" ng-model="searchTeachers" class="form-control" placeholder="CBF">
-                        <span class="selectedSpan form-control" data-ng-repeat="s in selectedTeachers" ng-click="remTeacher(s)">{{s.serial}} <span class="glyphicon glyphicon-trash"></span></span>
-                    </div>
-                </div>
-
-                <div class="list-group selectorContainer" ng-show="searchTeachers.length > 0">
-                  <div class="selectorDiv col-md-12" data-ng-repeat="teacher in allTeachers | filter:searchTeachers | limitTo:5 " ng-click="addTeacher(teacher)">
-                    <span>{{teacher.serial}} : {{teacher.displayName}}</span>
-                  </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label" for="searchActivities">Activities</label>
-                    <div class="controls">
-                        <input type="text" ng-model="searchActivities" class="form-control" placeholder="TI4L">
-                        <span class="selectedSpan form-control" data-ng-repeat="a in selectedActivities" ng-click="remActivity(a)">{{a.ID}} <span class="glyphicon glyphicon-trash"></span></span>
-                    </div>
-                </div>
-
-                <div class="list-group selectorContainer" ng-show="searchActivities.length > 0">
-                  <div class="selectorDiv col-md-12" data-ng-repeat="activity in allActivities | filter:searchActivities | limitTo:5 " ng-click="addActivity(activity)">
-                    <span>{{activity.ID}} : {{activity.name}}</span>
-                  </div>
-                </div>
-
-                <div class="form-group">
-                    <input type="submit" class="btn btn-default">
-                </div>
-                <div data-ng-show="error" class="text-danger">
-                    <strong data-ng-bind="error"></strong>
-                </div>
-            </fieldset>
-        </form>
-    </div>
+	<div class="col-md-12">
+		<form class="form-horizontal" data-ng-submit="create()" novalidate>
+			<fieldset>
+				<div class="form-group">
+					<label class="control-label" for="ID">ID</label>
+					<div class="controls">
+						<input type="text" data-ng-model="ID" id="ID" class="form-control" placeholder="LI4C" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label" for="name">Name</label>
+					<div class="controls">
+						<input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Name" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">Coordinator</label>
+					<tags-input data-ng-model="coordinator" display-property="name" max-tags="1" placeholder="Add a teacher">
+						<auto-complete source="loadTeachers($query)"></auto-complete>
+					</tags-input>
+				</div>
+				<div class="form-group">
+					<label class="control-label">Activities</label>
+					<tags-input data-ng-model="activities" display-property="name" placeholder="Add an activity">
+						<auto-complete source="loadActivities($query)"></auto-complete>
+					</tags-input>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-default">Create</button>
+				</div>
+				<div data-ng-show="error" class="text-danger">
+					<strong data-ng-bind="error"></strong>
+				</div>
+			</fieldset>
+		</form>
+	</div>
 </section>

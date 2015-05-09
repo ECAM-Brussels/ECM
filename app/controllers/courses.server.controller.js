@@ -20,9 +20,8 @@ exports.create = function(req, res) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
-		} else {
-			res.jsonp(course);
 		}
+		res.jsonp(course);
 	});
 };
 
@@ -46,9 +45,8 @@ exports.update = function(req, res) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
-		} else {
-			res.jsonp(course);
 		}
+		res.jsonp(course);
 	});
 };
 
@@ -63,9 +61,8 @@ exports.delete = function(req, res) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
-		} else {
-			res.jsonp(course);
 		}
+		res.jsonp(course);
 	});
 };
 
@@ -73,34 +70,50 @@ exports.delete = function(req, res) {
  * List of Courses
  */
 exports.list = function(req, res) { 
-	Course.find().sort({'ID': 1}).populate('user', 'displayName').populate('coordinators activities').exec(function(err, courses) {
+	Course.find({}, 'ID name coordinator activities')
+		  .populate('coordinator', 'serial')
+		  .populate('activities', 'ID')
+		  .sort({'ID': 1})
+		  .exec(function(err, courses) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
-		} else {
-			res.jsonp(courses);
 		}
+		res.jsonp(courses);
 	});
 };
 
 /**
  * Course middleware
  */
-exports.courseByID = function(req, res, next, id) { 
-  if(req.method === 'POST') return next();
+exports.courseByID = function(req, res, next, id) {
+	if(req.method === 'POST') {
+		return next();
+	}
 	Course.findOne({ID : id}, 'ID name coordinator activities')
 		  .populate('coordinator', 'username')
-		  .populate('activities', 'ID name teachers')
+		  .populate('activities', 'ID name weight teachers')
 		  .exec(function(err, course) {
 		if (err) return next(err);
 		if (! course) return next(new Error('Failed to load Course ' + id));
 
-		Course.populate(course, {path: 'activities.teachers', select: 'username', model: 'User'}, function(err, course){
+		Course.populate(course, {path: 'activities.teachers', select: 'username', model: 'User'}, function(err, course) {
 			if (err) return next(err);
 			if (! course) return next(new Error('Failed to load Course ' + id));
 
-			req.course = course ;
+			var totalWeight = 0;
+			for (var i = 0; i < course.activities.length; i++) {
+				totalWeight += course.activities[i].weight;
+			}
+			req.course = {
+				'_id': course._id,
+				'ID': course.ID,
+				'name': course.name,
+				'coordinator': course.coordinator,
+				'activities': course.activities,
+				'totalWeight': totalWeight
+			};
 			next();
 		});
 	});
@@ -117,15 +130,14 @@ exports.hasAuthorization = function(req, res, next) {
 };
 
 exports.listMyCourses = function(req, res) { 
-  Course.find({coordinator : req.user.id}, 'ID name')
-  		.sort({'ID': 1})
-  		.exec(function(err, courses) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.jsonp(courses);
-    }
-  });
+	Course.find({coordinator: req.user.id}, 'ID name')
+		  .sort({'ID': 1})
+		  .exec(function(err, courses) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		}
+		res.jsonp(courses);
+	});
 };
