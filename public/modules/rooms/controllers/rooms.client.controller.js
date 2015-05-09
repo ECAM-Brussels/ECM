@@ -3,14 +3,16 @@
 // Rooms controller
 angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Rooms', 'Upload', function ($scope, $stateParams, $location, Authentication, Rooms, Upload) {
 	$scope.authentication = Authentication;
+	$scope.path = '';
 
 	// Create new Room
 	$scope.create = function() {
 		// Create new Room object
-		var room = new Rooms( {
+		var room = new Rooms({
 			ID: this.ID,
 			name: this.name,
-			seats: this.seats
+			seats: this.seats,
+			path: $scope.path
 		});
 
 		// Redirect after save

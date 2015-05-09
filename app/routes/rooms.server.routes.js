@@ -10,11 +10,11 @@ module.exports = function(app) {
 
 	// Rooms Routes
 	app.route('/rooms')
-	   .get(users.requiresLogin, users.hasAuthorization(canview), rooms.list)
-	   .post(users.requiresLogin, users.hasAuthorization(canedit), rooms.create);
+	   .get(users.requiresLogin, users.hasAuthorization(canview), rooms.list);
 
 	app.route('/rooms/:roomId')
 	   .get(users.requiresLogin, users.hasAuthorization(canview), rooms.read)
+	   .post(users.requiresLogin, users.hasAuthorization(canedit), rooms.create)
 	   .put(users.requiresLogin, users.hasAuthorization(canedit), rooms.update)
 	   .delete(users.requiresLogin, users.hasAuthorization(canedit), rooms.delete);
 

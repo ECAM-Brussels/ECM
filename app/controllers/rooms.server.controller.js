@@ -14,12 +14,31 @@ var mongoose = require('mongoose'),
  * Create a Room
  */
 exports.create = function(req, res) {
-	var room = new Room(req.body);
-	room.user = req.user;
+	var room = new Room({
+		ID: req.body.ID,
+		name: req.body.name,
+		seats: req.body.seats,
+		picture: req.body.path !== '',
+		user: req.user
+	});
 	room.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
+			});
+		}
+		// Save picture
+		if (req.body.path !== '') {
+			var src = '/tmp/' + path.basename(req.body.path);
+			var dest = path.dirname(require.main.filename) + '/public/images/rooms/' + room._id + '.jpg';
+			fs.copy(src, dest, function(err) {
+				if (err) {
+					return res.status(400).send({
+						message: errorHandler.getErrorMessage(err)
+					});
+				}
+				fs.unlink(src, function(err){});
+				fs.unlink(path.dirname(require.main.filename) + '/public/images/uploads/' + path.basename(req.body.path), function(err){});
 			});
 		}
 		res.jsonp(room);
