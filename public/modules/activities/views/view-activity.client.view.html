@@ -1,27 +1,12 @@
 <section data-ng-controller="ActivitiesController" data-ng-init="findOne()">
-	<div class="page-header">
-		<h1 data-ng-bind="activity.ID"></h1>
-    <h2 data-ng-bind="activity.name"></h2>
-    <ul data-ng-repeat="teacher in activity.teachers">
-      <li>
-        <span data-ng-bind="teacher.displayName"></span>
-      </li>
-    </ul>
-	</div>
-	<div class="pull-right" data-ng-show="(authentication.user)">
-		<a class="btn btn-primary" href="/#!/activities/{{activity.ID}}/edit">
-			<i class="glyphicon glyphicon-edit"></i>
-		</a>
-		<a class="btn btn-primary" data-ng-click="remove();">
-			<i class="glyphicon glyphicon-trash"></i>
-		</a>
-	</div>
-	<small>
-		<em class="text-muted">
-			Posted on
-			<span data-ng-bind="activity.created | date:'mediumDate'"></span>
-			by
-			<span data-ng-bind="activity.user.displayName"></span>
-		</em>
-	</small>
+	<h1>{{activity.ID}} &mdash; {{activity.name}}</h1>
+
+	<h2>Information</h2>
+
+	<dl class="dl-horizontal">
+		<dt>Teachers</dt>
+		<dd><span data-ng-repeat="teacher in activity.teachers">{{teacher.username}} </span></dd>
+		<dt>Weight</dt>
+		<dd>{{activity.weight}} ECTS</dd>
+	</dl>
 </section>
