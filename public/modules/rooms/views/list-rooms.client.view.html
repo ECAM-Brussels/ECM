@@ -3,9 +3,7 @@
 	<h1>Rooms</h1>
 
 	<div class="list-group">
-		<a data-ng-repeat="room in rooms" data-ng-href="#!/rooms/{{room.ID}}" class="list-group-item">
-			<h2>{{room.ID}} &mdash; {{room.name}}</h2>
-        </a>
+		<a data-ng-repeat="room in rooms" data-ng-href="#!/rooms/{{room.ID}}" class="list-group-item"><b>{{room.ID}}</b> &mdash; {{room.name}}</a>
     </div>
     <div class="alert alert-warning text-center" data-ng-hide="!rooms.$resolved || rooms.length">
     	No rooms yet, why don't you <a href="/#!/rooms/create">create one</a>?
