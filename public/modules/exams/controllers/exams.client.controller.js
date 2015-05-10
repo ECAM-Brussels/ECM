@@ -4,70 +4,52 @@
 angular.module('exams').controller('ExamsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Exams', '$http', function($scope, $stateParams, $location, Authentication, Exams, $http) {
 	$scope.authentication = Authentication;
 
-	// Get ACTIVITIES
-	$http.get('/activities').success(function(data) {
-		$scope.allActivities = data;
+	$scope.course = [];
+	$scope.allCourses = [];
+	$http.get('/courses').success(function(data, status, headers, config) {
+		for (var i = 0; i < data.length; i++) {
+			$scope.allCourses.push({
+				name: data[i].ID,
+				id: data[i]._id
+			});
+		}
 	});
+	$scope.loadCourses = function(query) {
+		return $scope.allCourses;
+	};
 
-	// Get ROOMS
-	$http.get('/rooms').success(function(data) {
-		$scope.allRooms = data;
+	$scope.activities = [];
+	$scope.allActivities = [];
+	$http.get('/activities').success(function(data, status, headers, config) {
+		for (var i = 0; i < data.length; i++) {
+			$scope.allActivities.push({
+				name: data[i].ID,
+				id: data[i]._id
+			});
+		}
 	});
+	$scope.loadActivities = function(query) {
+		return $scope.allActivities;
+	};
 
-	$scope.activity = null;
-	$scope.selectedRooms = [];
-
-	$scope.addActivity = function(obj) {
-		if (exists(obj, $scope.allActivities)) {
-			$scope.activity = obj;
+	$scope.rooms = [];
+	$scope.allRooms = [];
+	$http.get('/rooms').success(function(data, status, headers, config) {
+		for (var i = 0; i < data.length; i++) {
+			$scope.allRooms.push({
+				name: data[i].ID,
+				id: data[i]._id
+			});
 		}
-		$scope.searchActivities = '';
+	});
+	$scope.loadRooms = function(query) {
+		return $scope.allRooms;
 	};
 
-	$scope.remActivity = function(obj) {
-		$scope.activity = null;
-	};
-
-	$scope.addRoom = function(obj) {
-		if (add(obj, $scope.allRooms, $scope.selectedRooms)) {
-			$scope.searchRooms = '';
-		}
-	};
-
-	$scope.remRoom = function(obj) {
-		rem(obj, $scope.selectedRooms);
-	};
-
-	// Private methods for selector
-	var ObjsToIDs = function(obj) {
-		var result = [];
-		for (var i = obj.length - 1; i >= 0; i--) {
-			result[i] = obj[i]._id;
-		}
-		return result;
-	};
-
-	var exists = function(obj, arr) {
-		return arr.indexOf(obj) > -1;
-	};
-
-	var add = function(obj, arrFrom, arrTo) {
-		if (exists(obj, arrFrom)) {
-			if (! exists(obj, arrTo)) {
-				arrTo.push(obj);
-			}
-			return true;
-		}
-		return false;
-	};
-
-	var rem = function(obj, arr) {
-		var i = arr.indexOf(obj);
-		if (i > -1) {
-			arr.splice(i, 1);
-			return true;
-		}
-		return false;
+	$scope.groups = [];
+	$scope.allGroups = [];
+	$scope.loadGroups = function(query) {
+		return $scope.allGroups;
 	};
 
 	// Create new Exam
@@ -132,7 +114,7 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		});
 	};
 
-	$scope.findCopy = function (activity, copies) {
+	$scope.findCopy = function(activity, copies) {
 		for (var i = 0; i < copies.length; i++) {
 			if (copies[i].activity === activity._id) {
 				$scope.copy = copies[i];
@@ -142,7 +124,7 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		return false;
     };
 
-    $scope.findTeacher = function (user, teachers) {
+    $scope.findTeacher = function(user, teachers) {
     	for (var i = 0; i < teachers.length; i++) {
     		if (teachers[i]._id === user._id) {
     			return true;

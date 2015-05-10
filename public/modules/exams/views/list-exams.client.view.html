@@ -2,15 +2,9 @@
     <h1>Exams</h1>
 
     <div class="list-group">
-        <a data-ng-repeat="exam in exams" data-ng-href="#!/exams/{{exam._id}}" class="list-group-item">
-            <h2>{{exam.course.ID}} &mdash; {{exam.course.name}}</h2>
-
-            <p ng-if="exam.split">Exam for the following activities:<span ng-repeat="activity in exam.activities"> {{activity.ID}}</span></p>
-            <p ng-if="!exam.split">Exam for the whole course.</p>
-            <p>On {{exam.date | date:'dd MMM yyyy H:mm'}} in<span ng-repeat="room in exam.rooms"> {{room.ID}}</span> with<span ng-repeat="group in exam.groups"> {{group}}</span>.</p>
-        </a>
+        <a data-ng-repeat="exam in exams" data-ng-href="#!/exams/{{exam._id}}" class="list-group-item"><b>{{exam.course.ID}}</b> &mdash; {{exam.course.name}} on {{exam.date | date:'dd MMM yyyy H:mm'}} with<span ng-repeat="group in exam.groups"> {{group}}</span></a>
     </div>
     <div class="alert alert-warning text-center" data-ng-hide="!exams.$resolved || exams.length">
-    	No Exams yet, why don't you <a href="/#!/exams/create">create one</a>?
+    	No exams yet, why don't you <a href="/#!/exams/create">create one</a>?
     </div>
 </section>
