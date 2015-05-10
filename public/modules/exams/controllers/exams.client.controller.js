@@ -68,11 +68,11 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 			activityIDs.push($scope.activities[i].activity._id);
 		}
 		var roomIDs = [];
-		for (var i = 0; i < $scope.rooms.length; i++) {
+		for (i = 0; i < $scope.rooms.length; i++) {
 			roomIDs.push($scope.rooms[i].room._id);
 		}
 		var groupIDs = [];
-		for (var i = 0; i < $scope.groups.length; i++) {
+		for (i = 0; i < $scope.groups.length; i++) {
 			groupIDs.push($scope.groups[i].group._id);
 		}
 		// Create new exam object
@@ -154,10 +154,10 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 	};
 
 	$scope.changeUnique = function() {
-		if (! $scope.split || $scope.courses.length != 1) {
+		if (! $scope.split || $scope.courses.length !== 1) {
 			$scope.activities = [];
 		}
-	}
+	};
 
 	function findActivity(course, activity) {
 		for (var i = 0; i < course.activities.length; i++) {
@@ -178,5 +178,5 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 				});
 			}
 		}
-	}
+	};
 }]);
