@@ -1,23 +1,12 @@
 <section data-ng-controller="StudentsController" data-ng-init="findOne()">
-	<div class="page-header">
-		<h1><span data-ng-bind="student.matricule"></h1>
-    <h2><span data-ng-bind="student.first_name"></span> <span data-ng-bind="student.last_name"> (<span data-ng-bind="student.middle_names"></span>) </span></h2>
-    <h2><span data-ng-bind="student.groups"></h2>
-	</div>
-	<div class="pull-right" data-ng-show="(authentication.user)">
-		<a class="btn btn-primary" href="/#!/students/{{student.matricule}}/edit">
-			<i class="glyphicon glyphicon-edit"></i>
-		</a>
-		<a class="btn btn-primary" data-ng-click="remove();">
-			<i class="glyphicon glyphicon-trash"></i>
-		</a>
-	</div>
-	<small>
-		<em class="text-muted">
-			Posted on
-			<span data-ng-bind="student.created | date:'mediumDate'"></span>
-			by
-			<span data-ng-bind="student.user.displayName"></span>
-		</em>
-	</small>
+	<h1>{{student.firstname}} {{student.lastname}}</h1>
+
+	<h2>Information</h2>
+
+	<dl class="dl-horizontal">
+		<dt>Matricule</dt>
+		<dd>{{student.matricule}}</dd>
+		<dt>Groups</dt>
+		<dd><span data-ng-repeat="group in student.groups">{{group.name}} </span></dd>
+	</dl>
 </section>

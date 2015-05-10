@@ -14,7 +14,7 @@ var mongoose = require('mongoose'),
 
 
 /**
- * Create a Student
+ * Create a student
  */
 exports.create = function(req, res) {
 	var student = new Student(req.body);
@@ -24,79 +24,83 @@ exports.create = function(req, res) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
-		} else {
-			res.jsonp(student);
 		}
+		res.jsonp(student);
 	});
 };
 
 /**
- * Show the current Student
+ * Show the current student
  */
 exports.read = function(req, res) {
 	res.jsonp(req.student);
 };
 
 /**
- * Update a Student
+ * Update a student
  */
 exports.update = function(req, res) {
-	var student = req.student ;
-
-	student = _.extend(student , req.body);
-
+	var student = req.student;
+	student = _.extend(student, req.body);
 	student.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
-		} else {
-			res.jsonp(student);
 		}
+		res.jsonp(student);
 	});
 };
 
 /**
- * Delete an Student
+ * Delete a student
  */
 exports.delete = function(req, res) {
-	var student = req.student ;
-
+	var student = req.student;
 	student.remove(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
-		} else {
-			res.jsonp(student);
 		}
+		res.jsonp(student);
 	});
 };
 
 /**
- * List of Students
+ * List of students
  */
 exports.list = function(req, res) { 
-	Student.find().sort('-created').populate('user', 'displayName').exec(function(err, students) {
+	Student.find({}, 'firstname lastname matricule')
+		   .sort({'lastname': -1})
+		   .exec(function(err, students) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
-		} else {
-			res.jsonp(students);
 		}
+		res.jsonp(students);
 	});
 };
 
 /**
  * Student middleware
  */
-exports.studentByID = function(req, res, next, id) { 
-	if(req.method === 'POST') return next();
-  Student.findOne({ matricule : id }).populate('user', 'displayName').exec(function(err, student) {
-		if (err) return next(err);
-		if (! student) return next(new Error('Failed to load Student ' + id));
-		req.student = student ;
+exports.studentByID = function(req, res, next, id) {
+	if (req.method === 'POST') {
+		return next();	
+	}
+	Student.findOne({matricule: id}, 'firstname lastname matricule groups')
+	.populate('groups', 'name')
+	.exec(function(err, student) {
+		if (err) {
+			return next(err);
+		} 
+		if (! student) {
+			return next(new Error('Failed to load Student ' + id));
+		}
+
+		req.student = student;
 		next();
 	});
 };
@@ -110,4 +114,3 @@ exports.hasAuthorization = function(req, res, next) {
 	}
 	next();
 };
-

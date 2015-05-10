@@ -1,96 +1,111 @@
 'use strict';
+
 /*global Papa:false */
 function load_script(url) {
-  var s = document.createElement('script'); 
-  s.src = url;
-  document.body.appendChild(s);
+	var s = document.createElement('script'); 
+	s.src = url;
+	document.body.appendChild(s);
 }
 
 // Students controller
-angular.module('students').controller('StudentsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Students',
-	function($scope, $stateParams, $location, Authentication, Students) {
-		$scope.authentication = Authentication;
+angular.module('students').controller('StudentsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Students', '$http', function($scope, $stateParams, $location, Authentication, Students, $http) {
+	$scope.authentication = Authentication;
 
-		// Create new Student
-		$scope.create = function() {
-			// Create new Student object
-			var student = new Students ({
-				first_name: this.first_name,
-        last_name: this.last_name,
-        middle_names : this.middle_names,
-        groups : this.groups,
-        matricule: this.matricule
+	// Load groups
+	$scope.groups = [];
+	$scope.allGroups = [];
+	$http.get('/groups').success(function(data, status, headers, config) {
+		for (var i = 0; i < data.length; i++) {
+			$scope.allGroups.push({
+				name: data[i].name,
+				id: data[i]._id
 			});
+		}
+	});
+	$scope.loadGroups = function(query) {
+		return $scope.allGroups;
+	};
 
-			// Redirect after save
-			student.$save(function(response) {
-				$location.path('students/' + response.matricule);
-				$scope.name = '';
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
-		};
+	// Create new student
+	$scope.create = function() {
+		var groupIDs = [];
+		for (var i = 0; i < $scope.groups.length; i++) {
+			groupIDs.push($scope.groups[i].id);
+		}
+		// Create new student object
+		var student = new Students({
+			matricule: this.matricule,
+			firstname: this.firstname,
+			lastname: this.lastname,
+			middlenames: this.middlenames,
+			groups: groupIDs
+		});
+		// Redirect after save
+		student.$save(function(response) {
+			$location.path('students/' + response.matricule);
+			$scope.name = '';
+		}, function(errorResponse) {
+			$scope.error = errorResponse.data.message;
+		});
+	};
 
-		// Remove existing Student
-		$scope.remove = function(student) {
-			if ( student ) { 
-				student.$remove();
-
-				for (var i in $scope.students) {
-					if ($scope.students [i] === student) {
-						$scope.students.splice(i, 1);
-					}
+	// Remove existing student
+	$scope.remove = function(student) {
+		if (student) { 
+			student.$remove();
+			for (var i in $scope.students) {
+				if ($scope.students [i] === student) {
+					$scope.students.splice(i, 1);
 				}
-			} else {
-				$scope.student.$remove(function() {
-					$location.path('students');
-				});
 			}
-		};
-
-		// Update existing Student
-		$scope.update = function() {
-			var student = $scope.student;
-
-			student.$update(function() {
-				$location.path('students/' + student.matricule);
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
+		} else {
+			$scope.student.$remove(function() {
+				$location.path('students');
 			});
-		};
+		}
+	};
 
-		// Find a list of Students
-		$scope.find = function() {
-			$scope.students = Students.query();
-		};
+	// Update existing student
+	$scope.update = function() {
+		var student = $scope.student;
+		student.$update(function() {
+			$location.path('students/' + student.matricule);
+		}, function(errorResponse) {
+			$scope.error = errorResponse.data.message;
+		});
+	};
 
-		// Find existing Student
-		$scope.findOne = function() {
-			$scope.student = Students.get({ 
-				studentId: $stateParams.studentId
-			});
-		};
+	// Find a list of students
+	$scope.find = function() {
+		$scope.students = Students.query();
+	};
 
-    $scope.importCSV = function(){
-      var file = document.getElementById('fileinput').files[0];
-      if(file !== undefined) return readCSV(file);
-      $scope.error = 'Please choose a CSV file';
-    };
+	// Find existing student
+	$scope.findOne = function() {
+		$scope.student = Students.get({ 
+			studentId: $stateParams.studentId
+		});
+	};
 
-    var readCSV = function(CSVFile){
-      Papa.parse(CSVFile, {
-        complete: function(results) {
-          workOnCSV(results);
-        }
-      });
-    };
+	$scope.importCSV = function(){
+		var file = document.getElementById('fileinput').files[0];
+		if(file !== undefined) {
+			return readCSV(file);
+		}
+		$scope.error = 'Please choose a CSV file';
+	};
 
-    var workOnCSV = function(data){
-      console.log(data);
-    };
+	var readCSV = function(CSVFile) {
+		Papa.parse(CSVFile, {
+			complete: function(results) {
+				workOnCSV(results);
+			}
+		});
+	};
 
-    load_script('/serve/papaparse.min.js');
-	}
-]);
+	var workOnCSV = function(data) {
+		console.log(data);
+	};
 
-
+	load_script('/serve/papaparse.min.js');
+}]);
