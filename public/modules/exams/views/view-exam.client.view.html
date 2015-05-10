@@ -13,7 +13,7 @@
 		<dt>Rooms</dt>
 		<dd><span ng-repeat="room in exam.rooms">{{room.ID}} </span></dd>
 		<dt>Groups</dt>
-		<dd><span ng-repeat="group in exam.groups">{{group}} </span></dd>
+		<dd><span ng-repeat="group in exam.groups">{{group.name}} </span></dd>
 	</dl>
 
 	<h2>Copies</h2>
@@ -22,7 +22,7 @@
 		<p>One PDF file has to be uploaded for each activity of the course.</p>
 		<ul class="list-group">
 			<li class="list-group-item" ng-repeat="activity in exam.activities">
-				<p><b>{{activity.ID}}</b> (<span ng-repeat="teacher in activity.teachers">{{teacher.username}}</span>)</p>
+				<p><b>{{activity.ID}}</b> (<span ng-repeat="teacher in activity.teachers">{{teacher.username}} </span>)</p>
 
 				<div ng-if="findCopy(activity, exam.copies)">
 					<p>PDF file has been uploaded by {{copy.user.username}} on {{copy.uploaded | date: "dd MMM yyyy H:mm"}}</p>

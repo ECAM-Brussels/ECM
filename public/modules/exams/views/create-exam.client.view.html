@@ -7,17 +7,17 @@
 			<fieldset>
 				<div class="form-group">
 					<label class="control-label">Course</label>
-					<tags-input data-ng-model="course" display-property="name" max-tags="1" placeholder="Add a course">
+					<tags-input data-ng-model="courses" display-property="name" max-tags="1" add-from-autocomplete-only on-tag-added="changeCourse()" on-tag-removed="changeUnique()" placeholder="Add a course">
 						<auto-complete source="loadCourses($query)"></auto-complete>
 					</tags-input>
 				</div>
 				<div class="form-group">
 					<label class="control-label">Activities</label>
-					<tags-input data-ng-model="activities" display-property="name" placeholder="Add an activity" data-ng-disabled="split">
+					<tags-input data-ng-model="activities" display-property="name" add-from-autocomplete-only placeholder="Add an activity" data-ng-disabled="split || courses.length != 1">
 						<auto-complete source="loadActivities($query)"></auto-complete>
 					</tags-input>
 					<div class="checkbox">
-						<label><input type="checkbox" data-ng-model="split"> Unique exam for all activities</label>
+						<label><input type="checkbox" data-ng-model="split" data-ng-click="changeUnique()"> Unique exam for all activities</label>
 					</div>
 				</div>
 				<div class="form-group">
@@ -28,13 +28,13 @@
 				</div>
 				<div class="form-group">
 					<label class="control-label">Rooms</label>
-					<tags-input data-ng-model="rooms" display-property="name" placeholder="Add a room">
+					<tags-input data-ng-model="rooms" display-property="name" add-from-autocomplete-only placeholder="Add a room">
 						<auto-complete source="loadRooms($query)"></auto-complete>
 					</tags-input>
 				</div>
 				<div class="form-group">
 					<label class="control-label">Groups</label>
-					<tags-input data-ng-model="groups" display-property="name" placeholder="Add a group">
+					<tags-input data-ng-model="groups" display-property="name" add-from-autocomplete-only placeholder="Add a group">
 						<auto-complete source="loadGroups($query)"></auto-complete>
 					</tags-input>
 				</div>

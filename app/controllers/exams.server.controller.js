@@ -94,6 +94,7 @@ exports.examByID = function(req, res, next, id) {
 		.populate('course', 'ID name coordinator')
 		.populate('rooms', 'ID')
 		.populate('activities', 'ID teachers')
+		.populate('groups', 'name')
 		.populate('copies', 'activity uploaded user')
 		.exec(function(err, exam) {
 		if (err) return next(err);

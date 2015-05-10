@@ -25,8 +25,8 @@ var ExamSchema = new Schema({
     },
     rooms: [{ type: Schema.ObjectId, ref: 'Room'}],
     groups: [{
-        type: String,
-        trim: true
+        type: Schema.ObjectId,
+        ref: 'Group'
     }],
     created: {
         type: Date,

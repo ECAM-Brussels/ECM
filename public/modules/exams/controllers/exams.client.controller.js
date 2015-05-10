@@ -3,70 +3,90 @@
 // Exams controller
 angular.module('exams').controller('ExamsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Exams', '$http', function($scope, $stateParams, $location, Authentication, Exams, $http) {
 	$scope.authentication = Authentication;
+	$scope.split = false;
 
-	$scope.course = [];
-	$scope.allCourses = [];
+	// Load courses
+	$scope.courses = [];
+	var coursesList = [];
 	$http.get('/courses').success(function(data, status, headers, config) {
 		for (var i = 0; i < data.length; i++) {
-			$scope.allCourses.push({
+			coursesList.push({
 				name: data[i].ID,
-				id: data[i]._id
+				course: data[i]
 			});
 		}
 	});
 	$scope.loadCourses = function(query) {
-		return $scope.allCourses;
+		return coursesList;
 	};
 
+	// Load activities
 	$scope.activities = [];
-	$scope.allActivities = [];
+	var allActivities = [];
+	$scope.activitiesList = [];
 	$http.get('/activities').success(function(data, status, headers, config) {
-		for (var i = 0; i < data.length; i++) {
-			$scope.allActivities.push({
-				name: data[i].ID,
-				id: data[i]._id
-			});
-		}
+		allActivities = data;
 	});
 	$scope.loadActivities = function(query) {
-		return $scope.allActivities;
+		return $scope.activitiesList;
 	};
 
+	// Load rooms
 	$scope.rooms = [];
-	$scope.allRooms = [];
+	var roomsList = [];
 	$http.get('/rooms').success(function(data, status, headers, config) {
 		for (var i = 0; i < data.length; i++) {
-			$scope.allRooms.push({
+			roomsList.push({
 				name: data[i].ID,
-				id: data[i]._id
+				room: data[i]
 			});
 		}
 	});
 	$scope.loadRooms = function(query) {
-		return $scope.allRooms;
+		return roomsList;
 	};
 
+	// Load groups
 	$scope.groups = [];
-	$scope.allGroups = [];
+	var groupsList = [];
+	$http.get('/groups').success(function(data, status, headers, config) {
+		for (var i = 0; i < data.length; i++) {
+			groupsList.push({
+				name: data[i].name,
+				group: data[i]
+			});
+		}
+	});
 	$scope.loadGroups = function(query) {
-		return $scope.allGroups;
+		return groupsList;
 	};
 
-	// Create new Exam
+	// Create new exam
 	$scope.create = function() {
-		// Create new Exam object
-		var exam = new Exams ({
-			name: this.name,
-			activity: this.activity._id,
+		var activityIDs = [];
+		for (var i = 0; i < $scope.activities.length; i++) {
+			activityIDs.push($scope.activities[i].activity._id);
+		}
+		var roomIDs = [];
+		for (var i = 0; i < $scope.rooms.length; i++) {
+			roomIDs.push($scope.rooms[i].room._id);
+		}
+		var groupIDs = [];
+		for (var i = 0; i < $scope.groups.length; i++) {
+			groupIDs.push($scope.groups[i].group._id);
+		}
+		// Create new exam object
+		var exam = new Exams({
+			course: $scope.courses[0].course._id,
+			activities: this.split ? [] : activityIDs,
+			split: ! this.split,
 			date: this.date,
-			rooms: new ObjsToIDs(this.selectedRooms),
-			groups: this.groups
+			rooms: roomIDs,
+			groups: groupIDs
 		});
-
 		// Redirect after save
 		exam.$save(function(response) {
 			$location.path('exams/' + response._id);
-
 			// Clear form fields
 			$scope.name = '';
 		}, function(errorResponse) {
@@ -74,7 +94,7 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		});
 	};
 
-	// Remove existing Exam
+	// Remove existing exam
 	$scope.remove = function(exam) {
 		if (exam) { 
 			exam.$remove();
@@ -91,7 +111,7 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		}
 	};
 
-	// Update existing Exam
+	// Update existing exam
 	$scope.update = function() {
 		var exam = $scope.exam;
 
@@ -102,12 +122,12 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		});
 	};
 
-	// Find a list of Exams
+	// Find a list of exams
 	$scope.find = function() {
 		$scope.exams = Exams.query();
 	};
 
-	// Find existing Exam
+	// Find existing exam
 	$scope.findOne = function() {
 		$scope.exam = Exams.get({ 
 			examId: $stateParams.examId
@@ -122,14 +142,41 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 			}
 		}
 		return false;
-    };
+	};
 
-    $scope.findTeacher = function(user, teachers) {
-    	for (var i = 0; i < teachers.length; i++) {
-    		if (teachers[i]._id === user._id) {
-    			return true;
-    		}
-    	}
-    	return false;
-    };
+	$scope.findTeacher = function(user, teachers) {
+		for (var i = 0; i < teachers.length; i++) {
+			if (teachers[i]._id === user._id) {
+				return true;
+			}
+		}
+		return false;
+	};
+
+	$scope.changeUnique = function() {
+		if (! $scope.split || $scope.courses.length != 1) {
+			$scope.activities = [];
+		}
+	}
+
+	function findActivity(course, activity) {
+		for (var i = 0; i < course.activities.length; i++) {
+			if (course.activities[i]._id === activity._id) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	$scope.changeCourse = function() {
+		$scope.activitiesList = [];
+		for (var i = 0; i < allActivities.length; i++) {
+			if (findActivity($scope.courses[0].course, allActivities[i])) {
+				$scope.activitiesList.push({
+					name: allActivities[i].ID,
+					activity: allActivities[i]
+				});
+			}
+		}
+	}
 }]);
