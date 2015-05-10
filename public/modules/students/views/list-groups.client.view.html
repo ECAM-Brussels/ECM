@@ -1,0 +1,10 @@
+<section data-ng-controller="GroupsController" data-ng-init="find()">
+	<h1>Groups</h1>
+
+	<ul class="list-group">
+		<li class="list-group-item" ng-repeat="group in groups"><b>{{group.name}}</b> &mdash; {{group.description}}</li>
+	</ul>
+	<div class="alert alert-warning text-center" data-ng-hide="! groups.$resolved || groups.length">
+		No groups yet, why don't you <a href="/#!/groups/create">create one</a>?
+	</div>
+</section>
