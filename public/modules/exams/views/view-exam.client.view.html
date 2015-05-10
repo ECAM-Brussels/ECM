@@ -25,16 +25,21 @@
 				<p><b>{{activity.ID}}</b> (<span ng-repeat="teacher in activity.teachers">{{teacher.username}} </span>)</p>
 
 				<div ng-if="findCopy(activity, exam.copies)">
-					<p>PDF file has been uploaded by {{copy.user.username}} on {{copy.uploaded | date: "dd MMM yyyy H:mm"}}</p>
+					<p>PDF file has been uploaded by {{copy.user.username}} on {{copy.created | date: "dd MMM yyyy H:mm"}}</p>
+					<form class="form-inline">
+						<div class="form-group">
+							<label for="file_{{exam.copies._id}}">Upload file</label> <input type="file" class="form-control" id="file_{{exam.copies._id}}" />
+						</div>
+						<button type="submit" class="btn btn-default">Upload</button>
+					</form>
 				</div>
 
 				<div ng-if="! findCopy(activity, exam.copies)">
 					<div ng-if="findTeacher(authentication.user, activity.teachers)">
-						<form class="form-inline">
+						<form class="form-inline" data-ng-submit="setSeries(activity._id)" novalidate>
 							<div class="form-group">
-								<label for="file_{{exam.copies._id}}">Upload file</label> <input type="file" class="form-control" id="file_{{exam.copies._id}}" />
+								<label>Number of series <input type="text" class="form-control" data-ng-model="series" placeholder="1" required></label> <button type="submit" class="btn btn-default">Create</button>
 							</div>
-							<button type="submit" class="btn btn-default">Upload</button>
 						</form>
 					</div>
 				</div>
@@ -42,7 +47,7 @@
 		</ul>
 	</div>
 
-	<div ng-if="!exam.split">
+	<div ng-if="! exam.split">
 		<p>Only one PDF has to be uploaded for all the activities of the course.</p>
 	</div>
 </section>

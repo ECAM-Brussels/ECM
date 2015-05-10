@@ -3,9 +3,10 @@
 module.exports = function(app) {
 	var users = require('../../app/controllers/users.server.controller');
 	var exams = require('../../app/controllers/exams.server.controller');
-  var authorized = ['teacher', 'admin', 'manager', 'printer'];
 
-	// Exams Routes
+	var authorized = ['teacher', 'admin', 'manager', 'printer'];
+
+	// Exams routes
 	app.route('/exams')
 		.get(users.requiresLogin, users.hasAuthorization(authorized), exams.list)
 		.post(users.requiresLogin, users.hasAuthorization(authorized), exams.create);
@@ -15,6 +16,10 @@ module.exports = function(app) {
 		.put(users.requiresLogin, users.hasAuthorization(authorized), exams.update)
 		.delete(users.requiresLogin, users.hasAuthorization(authorized), exams.delete);
 
-	// Finish by binding the Exam middleware
+	// Copies routes
+	app.route('/copies')
+		.post(users.requiresLogin, users.hasAuthorization(authorized), exams.createCopy);
+
+	// Finish by binding the exam middleware
 	app.param('examId', exams.examByID);
 };

@@ -1,7 +1,7 @@
 'use strict';
 
 // Exams controller
-angular.module('exams').controller('ExamsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Exams', '$http', function($scope, $stateParams, $location, Authentication, Exams, $http) {
+angular.module('exams').controller('ExamsController', ['$scope', '$stateParams', '$location', '$window', 'Authentication', 'Exams', 'Copies', '$http', function($scope, $stateParams, $location, $window, Authentication, Exams, Copies, $http) {
 	$scope.authentication = Authentication;
 	$scope.split = false;
 
@@ -98,7 +98,6 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 	$scope.remove = function(exam) {
 		if (exam) { 
 			exam.$remove();
-
 			for (var i in $scope.exams) {
 				if ($scope.exams[i] === exam) {
 					$scope.exams.splice(i, 1);
@@ -114,7 +113,6 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 	// Update existing exam
 	$scope.update = function() {
 		var exam = $scope.exam;
-
 		exam.$update(function() {
 			$location.path('exams/' + exam._id);
 		}, function(errorResponse) {
@@ -178,5 +176,28 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 				});
 			}
 		}
+	};
+
+	// Set the number of series
+	$scope.setSeries = function (activityID) {
+		// Create new copy object
+		var copy = new Copies({
+			exam: $scope.exam._id,
+			activity: activityID,
+			series: this.series
+		});
+		// Redirect after save
+		copy.$save(function(response) {
+			// Attach copy to exam
+			$scope.exam.copies.push(copy._id);
+			$scope.exam.$update(function() {
+				console.log('OK');
+				$window.location.reload();
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		}, function(errorResponse) {
+			$scope.error = errorResponse.data.message;
+		});
 	};
 }]);
