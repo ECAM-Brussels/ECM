@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
 /**
- * Group Schema
+ * Group schema
  */
 var GroupSchema = new Schema({
 	name: {

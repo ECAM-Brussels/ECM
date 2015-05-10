@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
 /**
- * Activity Schema
+ * Activity schema
  */
 var ActivitySchema = new Schema({
 	ID: {

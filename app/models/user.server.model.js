@@ -11,7 +11,7 @@ var mongoose = require('mongoose'),
  * A Validation function for local strategy properties
  */
 var validateLocalStrategyProperty = function(property) {
-	return ((this.provider !== 'local' && !this.updated) || property.length);
+	return ((this.provider !== 'local' && ! this.updated) || property.length);
 };
 
 /**
@@ -25,22 +25,22 @@ var validateLocalStrategyPassword = function(password) {
  * User Schema
  */
 var UserSchema = new Schema({
-  serial : {
-    type : String,
-    trim:true,
-    unique:true
-  },
+	serial: {
+		type: String,
+		trim: true,
+		unique: true
+	},
 	firstName: {
 		type: String,
 		trim: true,
 		default: '',
-		validate: [validateLocalStrategyProperty, 'Please fill in your first name']
+		validate: [validateLocalStrategyProperty, 'Please fill your firstname']
 	},
 	lastName: {
 		type: String,
 		trim: true,
 		default: '',
-		validate: [validateLocalStrategyProperty, 'Please fill in your last name']
+		validate: [validateLocalStrategyProperty, 'Please fill your lastname']
 	},
 	displayName: {
 		type: String,
@@ -50,33 +50,33 @@ var UserSchema = new Schema({
 		type: String,
 		trim: true,
 		default: '',
-		validate: [validateLocalStrategyProperty, 'Please fill in your email'],
+		validate: [validateLocalStrategyProperty, 'Please fill your email address'],
 		match: [/.+\@.+\..+/, 'Please fill a valid email address']
 	},
 	username: {
 		type: String,
-		unique: 'testing error message',
-		required: 'Please fill in a username',
+		required: 'Please fill a username',
+		unique: true,
 		trim: true
 	},
 	password: {
 		type: String,
 		default: '',
-		validate: [validateLocalStrategyPassword, 'Password should be longer']
+		validate: [validateLocalStrategyPassword, 'Your password should be longer']
 	},
 	salt: {
 		type: String
 	},
 	provider: {
 		type: String,
-		required: 'Provider is required'
+		required: true
 	},
 	providerData: {},
 	additionalProvidersData: {},
 	roles: {
 		type: [{
 			type: String,
-			enum: ['user', 'teacher', 'manager', 'printer','admin']
+			enum: ['user', 'teacher', 'manager', 'printer', 'admin']
 		}],
 		default: ['user']
 	},
@@ -104,7 +104,6 @@ UserSchema.pre('save', function(next) {
 		this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
 		this.password = this.hashPassword(this.password);
 	}
-
 	next();
 });
 
@@ -114,9 +113,8 @@ UserSchema.pre('save', function(next) {
 UserSchema.methods.hashPassword = function(password) {
 	if (this.salt && password) {
 		return crypto.pbkdf2Sync(password, this.salt, 10000, 64).toString('base64');
-	} else {
-		return password;
 	}
+	return password;
 };
 
 /**
@@ -136,8 +134,8 @@ UserSchema.statics.findUniqueUsername = function(username, suffix, callback) {
 	_this.findOne({
 		username: possibleUsername
 	}, function(err, user) {
-		if (!err) {
-			if (!user) {
+		if (! err) {
+			if (! user) {
 				callback(possibleUsername);
 			} else {
 				return _this.findUniqueUsername(username, (suffix || 0) + 1, callback);

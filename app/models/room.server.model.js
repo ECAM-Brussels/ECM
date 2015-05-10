@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
 /**
- * Room Schema
+ * Room schema
  */
 var RoomSchema = new Schema({
 	ID: {

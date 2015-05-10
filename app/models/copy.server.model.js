@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
 /**
- * Copy Schema
+ * Copy schema
  */
 var CopySchema = new Schema({
 	exam: {
@@ -19,7 +19,11 @@ var CopySchema = new Schema({
 		type: Schema.ObjectId,
 		ref: 'Activity'
 	},
-	uploaded: {
+	series: {
+		type: Number,
+		default: 1
+	},
+	created: {
 		type: Date,
 		default: Date.now
 	},
