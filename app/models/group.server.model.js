@@ -7,12 +7,13 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
 /**
- * Group schema
+ * Group Schema
  */
 var GroupSchema = new Schema({
 	name: {
 		type: String,
-		required: 'Please fill the name of the group'
+		required: 'Please fill Group name',
+		trim: true
 	},
 	description: {
 		type: String,
