@@ -24,7 +24,16 @@ var CopySchema = new Schema({
 		default: 1
 	},
 	files: {
-		type: [Boolean]
+		type: [new Schema({
+			created: {
+				type: Date,
+				default: null
+			},
+			user: {
+				type: Schema.ObjectId,
+				ref: 'User'
+			}
+		})]
 	},
 	created: {
 		type: Date,

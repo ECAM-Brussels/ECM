@@ -135,11 +135,14 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 	$scope.findCopy = function(activity, copies) {
 		for (var i = 0; i < copies.length; i++) {
 			if (copies[i].activity === activity._id) {
-				$scope.copy = copies[i];
 				return true;
 			}
 		}
 		return false;
+	};
+
+	$scope.testCopy = function(activity, copy) {
+		return activity._id === copy.activity;
 	};
 
 	$scope.findTeacher = function(user, teachers) {
@@ -180,16 +183,11 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 
 	// Set the number of series
 	$scope.setSeries = function (activityID) {
-		var files = new Array(this.series);
-		for (var i = 0; i < files.length; i++) {
-			files[i] = false;
-		}
 		// Create new copy object
 		var copy = new Copies({
 			exam: $scope.exam._id,
 			activity: activityID,
-			series: this.series,
-			files: files
+			series: this.series
 		});
 		// Redirect after save
 		copy.$save(function(response) {
@@ -215,7 +213,7 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 				url: 'upload/copy',
 				fields: {
 					'username': $scope.authentication.user._id,
-					'copy': copy,
+					'copy': copy._id,
 					'index': index
 				},
 				file: files[0]
@@ -224,6 +222,7 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 				console.log('progress: ' + progressPercentage + '% ');
 			}).success(function(data, status, headers, config) {
 				console.log('Upload finished ' + config.file.name + ', response ' + data);
+				copy.files[index] = data;
 			});
 		}
 	};

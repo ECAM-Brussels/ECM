@@ -91,7 +91,7 @@ exports.examByID = function(req, res, next, id) {
 		.populate('rooms', 'ID')
 		.populate('activities', 'ID teachers')
 		.populate('groups', 'name')
-		.populate('copies', 'activity created user')
+		.populate('copies', 'activity created user series files')
 		.exec(function(err, exam) {
 		if (err) {
 			return next(err);
@@ -148,6 +148,10 @@ exports.hasAuthorization = function(req, res, next) {
 exports.createCopy = function(req, res) {
 	var copy = new Copy(req.body);
 	copy.user = req.user;
+	copy.files = new Array(copy.series);
+	for (var i = 0; i < copy.series; i++) {
+		copy.files[i] = null;
+	}
 	copy.save(function(err) {
 		if (err) {
 			return res.status(400).send({
@@ -160,24 +164,37 @@ exports.createCopy = function(req, res) {
 
 // Upload a PDF copy for the exam
 exports.uploadCopy = function(req, res) {
-//	var copy = new Copy(req.body.copy);
-	console.log('BODY : ' + req.body);
-	console.log('COPY : ' + req.body.copy.user);
-//	console.log('COPY ID : ' + copy._id);
-	var dest = path.dirname(require.main.filename) + '/copies/' + req.body.copy._id;
-	console.log(dest);
-	console.log(fs.existsSync(dest));
-
-	res.send('OK');
-/*	var file = req.files.file;
-	var dest = path.dirname(require.main.filename) + '/copies/' + path.basename(file.path);
+	// Create directory if not existing
+	var dest = path.dirname(require.main.filename) + '/copies/' + req.body.copy;
+	if (! fs.existsSync(dest)) {
+		fs.mkdirSync (dest);
+	}
+	// Copy PDF file
+	var file = req.files.file;
+	dest = dest + '/copy_' + req.body.index + '.pdf';
 	fs.copy(file.path, dest, function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		}
-		res.send(path.basename(file.path));
+		// Delete PDF file from /tmp
+		fs.unlink(file.path, function(err){});
+		// Update database
+		Copy.findById(req.body.copy)
+			.exec(function(err, copy) {
+			copy.files[req.body.index] = {
+				created: new Date(),
+				user: req.user
+			};
+			Copy.update({_id: copy._id}, {$set: {files: copy.files}}, function(err) {
+				if (err) {
+					return res.status(400).send({
+						message: errorHandler.getErrorMessage(err)
+					});
+				}
+				res.jsonp(copy.files[req.body.index]);
+			});
+		});
 	});
-*/
 };

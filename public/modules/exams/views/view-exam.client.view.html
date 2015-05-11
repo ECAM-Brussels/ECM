@@ -11,31 +11,35 @@
 		<dt>Date</dt>
 		<dd>{{exam.date | date: "dd MMM yyyy H:mm"}}</dd>
 		<dt>Rooms</dt>
-		<dd><span ng-repeat="room in exam.rooms">{{room.ID}} </span></dd>
+		<dd><span data-ng-repeat="room in exam.rooms">{{room.ID}} </span></dd>
 		<dt>Groups</dt>
-		<dd><span ng-repeat="group in exam.groups">{{group.name}} </span></dd>
+		<dd><span data-ng-repeat="group in exam.groups">{{group.name}} </span></dd>
 	</dl>
 
 	<h2>Copies</h2>
 
-	<div ng-if="exam.split">
+	<div data-ng-if="exam.split">
 		<p>One PDF file has to be uploaded for each activity of the course.</p>
 		<ul class="list-group">
-			<li class="list-group-item" ng-repeat="activity in exam.activities">
-				<p><b>{{activity.ID}}</b> (<span ng-repeat="teacher in activity.teachers">{{teacher.username}} </span>)</p>
+			<li class="list-group-item" data-ng-repeat="activity in exam.activities">
+				<p><b>{{activity.ID}}</b> (<span data-ng-repeat="teacher in activity.teachers">{{teacher.username}} </span>)</p>
 
-				<div ng-if="findCopy(activity, exam.copies)">
+				<div data-ng-if="findCopy(activity, exam.copies)" data-ng-repeat="copy in exam.copies | filter: {activity: activity._id}">
 					<form class="form-inline">
 						<ul class="list-group">
-							<li class="list-group-item" data-ng-repeat="i in getNumber(5) track by $index">
-								<b>Serie {{$index + 1}}</b> <div class="btn btn-default" ngf-select accept="application/pdf" ngf-allow-dir="false" ng-model="files" ngf-change="fileSelected($files, $event, $index, copy)">Upload file</div>
+							<li class="list-group-item" data-ng-repeat="i in getNumber(copy.series) track by $index">
+								<b>Serie {{$index + 1}}</b>
+								<div data-ng-if="! copy.files[$index]" class="btn btn-default" ngf-select accept="application/pdf" ngf-allow-dir="false" data-ng-model="files" ngf-change="fileSelected($files, $event, $index, copy)">Upload file</div>
+								<div data-ng-if="copy.files[$index]">
+									File uploaded on {{copy.files[$index].created | date: "dd MMM yyyy H:mm"}}
+								</div>
 							</li>
 						</ul>
 					</form>
 				</div>
 
-				<div ng-if="! findCopy(activity, exam.copies)">
-					<div ng-if="findTeacher(authentication.user, activity.teachers)">
+				<div data-ng-if="! findCopy(activity, exam.copies)">
+					<div data-ng-if="findTeacher(authentication.user, activity.teachers)">
 						<form class="form-inline" data-ng-submit="setSeries(activity._id)" novalidate>
 							<div class="form-group">
 								<label>Number of series <input type="text" class="form-control" data-ng-model="series" placeholder="1" required></label> <button type="submit" class="btn btn-default">Create</button>
@@ -47,7 +51,7 @@
 		</ul>
 	</div>
 
-	<div ng-if="! exam.split">
+	<div data-ng-if="! exam.split">
 		<p>Only one PDF has to be uploaded for all the activities of the course.</p>
 	</div>
 </section>
