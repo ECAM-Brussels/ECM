@@ -25,12 +25,12 @@
 				<p><b>{{activity.ID}}</b> (<span ng-repeat="teacher in activity.teachers">{{teacher.username}} </span>)</p>
 
 				<div ng-if="findCopy(activity, exam.copies)">
-					<p>PDF file has been uploaded by {{copy.user.username}} on {{copy.created | date: "dd MMM yyyy H:mm"}}</p>
 					<form class="form-inline">
-						<div class="form-group">
-							<label for="file_{{exam.copies._id}}">Upload file</label> <input type="file" class="form-control" id="file_{{exam.copies._id}}" />
-						</div>
-						<button type="submit" class="btn btn-default">Upload</button>
+						<ul class="list-group">
+							<li class="list-group-item" data-ng-repeat="i in getNumber(5) track by $index">
+								<b>Serie {{$index + 1}}</b> <div class="btn btn-default" ngf-select accept="application/pdf" ngf-allow-dir="false" ng-model="files" ngf-change="fileSelected($files, $event, $index, copy)">Upload file</div>
+							</li>
+						</ul>
 					</form>
 				</div>
 

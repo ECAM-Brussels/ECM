@@ -1,7 +1,7 @@
 'use strict';
 
 // Exams controller
-angular.module('exams').controller('ExamsController', ['$scope', '$stateParams', '$location', '$window', 'Authentication', 'Exams', 'Copies', '$http', function($scope, $stateParams, $location, $window, Authentication, Exams, Copies, $http) {
+angular.module('exams').controller('ExamsController', ['$scope', '$stateParams', '$location', '$window', 'Authentication', 'Exams', 'Copies', '$http', 'Upload', function($scope, $stateParams, $location, $window, Authentication, Exams, Copies, $http, Upload) {
 	$scope.authentication = Authentication;
 	$scope.split = false;
 
@@ -180,18 +180,22 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 
 	// Set the number of series
 	$scope.setSeries = function (activityID) {
+		var files = new Array(this.series);
+		for (var i = 0; i < files.length; i++) {
+			files[i] = false;
+		}
 		// Create new copy object
 		var copy = new Copies({
 			exam: $scope.exam._id,
 			activity: activityID,
-			series: this.series
+			series: this.series,
+			files: files
 		});
 		// Redirect after save
 		copy.$save(function(response) {
 			// Attach copy to exam
 			$scope.exam.copies.push(copy._id);
 			$scope.exam.$update(function() {
-				console.log('OK');
 				$window.location.reload();
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
@@ -199,5 +203,28 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		}, function(errorResponse) {
 			$scope.error = errorResponse.data.message;
 		});
+	};
+
+	$scope.getNumber = function(n) {
+		return new Array(n);
+	};
+
+	$scope.fileSelected = function(files, event, index, copy) {
+		if (files && files.length === 1) {
+			Upload.upload({
+				url: 'upload/copy',
+				fields: {
+					'username': $scope.authentication.user._id,
+					'copy': copy,
+					'index': index
+				},
+				file: files[0]
+			}).progress(function(evt) {
+				var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+				console.log('progress: ' + progressPercentage + '% ');
+			}).success(function(data, status, headers, config) {
+				console.log('Upload finished ' + config.file.name + ', response ' + data);
+			});
+		}
 	};
 }]);

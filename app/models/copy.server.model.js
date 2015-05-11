@@ -23,6 +23,9 @@ var CopySchema = new Schema({
 		type: Number,
 		default: 1
 	},
+	files: {
+		type: [Boolean]
+	},
 	created: {
 		type: Date,
 		default: Date.now

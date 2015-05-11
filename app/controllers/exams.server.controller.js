@@ -7,6 +7,8 @@ var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Exam = mongoose.model('Exam'),
 	Copy = mongoose.model('Copy'),
+	fs = require('fs-extra'),
+	path = require('path'),
 	_ = require('lodash');
 
 /**
@@ -154,4 +156,28 @@ exports.createCopy = function(req, res) {
 		}
 		res.jsonp(copy);
 	});
+};
+
+// Upload a PDF copy for the exam
+exports.uploadCopy = function(req, res) {
+//	var copy = new Copy(req.body.copy);
+	console.log('BODY : ' + req.body);
+	console.log('COPY : ' + req.body.copy.user);
+//	console.log('COPY ID : ' + copy._id);
+	var dest = path.dirname(require.main.filename) + '/copies/' + req.body.copy._id;
+	console.log(dest);
+	console.log(fs.existsSync(dest));
+
+	res.send('OK');
+/*	var file = req.files.file;
+	var dest = path.dirname(require.main.filename) + '/copies/' + path.basename(file.path);
+	fs.copy(file.path, dest, function(err) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		}
+		res.send(path.basename(file.path));
+	});
+*/
 };
