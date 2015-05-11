@@ -7,17 +7,17 @@ module.exports = function(app) {
 
   // Courses Routes
   app.route('/courses')
-    .get(users.requiresLogin, users.hasAuthorization(authorized), courses.list)
-    .post(users.requiresLogin, users.hasAuthorization(authorized), courses.create);
+    .get(users.hasAuthorization(authorized), courses.list)
+    .post(users.hasAuthorization(authorized), courses.create);
 
   app.route('/list/myCourses')
-    .get(users.requiresLogin, users.hasAuthorization(['teacher']), courses.listMyCourses);
+    .get(users.hasAuthorization(['teacher']), courses.listMyCourses);
 
   app.route('/courses/:courseId')
-    .post(users.requiresLogin, users.hasAuthorization(authorized), courses.create)
-    .get(users.requiresLogin, users.hasAuthorization(['manager', 'admin', 'teacher']), courses.read)
-    .put(users.requiresLogin, users.hasAuthorization(authorized), courses.update)
-    .delete(users.requiresLogin, users.hasAuthorization(authorized), courses.delete);
+    .post(users.hasAuthorization(authorized), courses.create)
+    .get(users.hasAuthorization(['manager', 'admin', 'teacher']), courses.read)
+    .put(users.hasAuthorization(authorized), courses.update)
+    .delete(users.hasAuthorization(authorized), courses.delete);
 
   // Finish by binding the Course middleware
   app.param('courseId', courses.courseByID);

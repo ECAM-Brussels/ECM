@@ -13,7 +13,8 @@ module.exports = function ( grunt, done ) {
         'Organization': 'ECAM, CSited'
       }
     },
-    'thanks': [ 'Lurkin Quentin <lur@ecam.be>' ],
+    'thanks': [ 'Lurkin Quentin <lur@ecam.be>',
+            'COUCOU' ],
     'site': {
       'Standards': 'HTML5, CSS3',
       'Components': 'AngularJS, MongoDB, Papaparse, Express, NodeJS, Bootstrap, jQuery',

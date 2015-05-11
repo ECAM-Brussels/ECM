@@ -3,8 +3,18 @@
 module.exports = function(app) {
 	var users = require('../../app/controllers/users.server.controller');
 	var groups = require('../../app/controllers/groups.server.controller');
-
-	// Groups routes
+  var authorized = ['admin'];
+	// Groups Routes
 	app.route('/groups')
-	   .get(users.requiresLogin, users.hasAuthorization(['admin', 'manager']), groups.list);
+		.get(users.hasAuthorization(authorized), groups.list)
+		.post(users.hasAuthorization(authorized), groups.create);
+
+	app.route('/groups/:groupId')
+    .post(users.hasAuthorization(authorized), groups.create)
+		.get(users.hasAuthorization(authorized), groups.read)
+		.put(users.hasAuthorization(authorized), groups.update)
+		.delete(users.hasAuthorization(authorized), groups.delete);
+
+	// Finish by binding the Group middleware
+	app.param('groupId', groups.groupByName);
 };
