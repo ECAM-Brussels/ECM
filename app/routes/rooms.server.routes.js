@@ -10,16 +10,16 @@ module.exports = function(app) {
 
 	// Rooms Routes
 	app.route('/rooms')
-	   .get(users.requiresLogin, users.hasAuthorization(canview), rooms.list);
+	   .get(users.hasAuthorization(canview), rooms.list);
 
 	app.route('/rooms/:roomId')
-	   .get(users.requiresLogin, users.hasAuthorization(canview), rooms.read)
-	   .post(users.requiresLogin, users.hasAuthorization(canedit), rooms.create)
-	   .put(users.requiresLogin, users.hasAuthorization(canedit), rooms.update)
-	   .delete(users.requiresLogin, users.hasAuthorization(canedit), rooms.delete);
+	   .get(users.hasAuthorization(canview), rooms.read)
+	   .post(users.hasAuthorization(canedit), rooms.create)
+	   .put(users.hasAuthorization(canedit), rooms.update)
+	   .delete(users.hasAuthorization(canedit), rooms.delete);
 
 	app.route('/upload/room')
-	   .post(users.requiresLogin, users.hasAuthorization(canedit), multiparty(), rooms.upload);
+	   .post(users.hasAuthorization(canedit), multiparty(), rooms.upload);
 
 	// Binding the room middleware
 	app.param('roomId', rooms.roomByID);

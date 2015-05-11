@@ -7,14 +7,14 @@ module.exports = function(app) {
 
 	// Students Routes
 	app.route('/students')
-		.get(users.requiresLogin, users.hasAuthorization(authorized), students.list)
-		.post(users.requiresLogin, users.hasAuthorization(authorized), students.create);
+		.get(users.hasAuthorization(authorized), students.list)
+		.post(users.hasAuthorization(authorized), students.create);
 
 	app.route('/students/:studentId')
-    .post(users.requiresLogin, users.hasAuthorization(authorized), students.create)
-		.get(users.requiresLogin, users.hasAuthorization(authorized), students.read)
-		.put(users.requiresLogin, users.hasAuthorization(authorized), students.update)
-		.delete(users.requiresLogin, users.hasAuthorization(authorized), students.delete);
+    .post(users.hasAuthorization(authorized), students.create)
+		.get(users.hasAuthorization(authorized), students.read)
+		.put(users.hasAuthorization(authorized), students.update)
+		.delete(users.hasAuthorization(authorized), students.delete);
 
 	// Finish by binding the Student middleware
 	app.param('studentId', students.studentByID);

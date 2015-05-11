@@ -10,20 +10,20 @@ module.exports = function(app) {
 
 	// Exams routes
 	app.route('/exams')
-		.get(users.requiresLogin, users.hasAuthorization(canview), exams.list)
-		.post(users.requiresLogin, users.hasAuthorization(canedit), exams.create);
+		.get(users.hasAuthorization(canview), exams.list)
+		.post(users.hasAuthorization(canedit), exams.create);
 
 	app.route('/exams/:examId')
-		.get(users.requiresLogin, users.hasAuthorization(canview), exams.read)
-		.put(users.requiresLogin, users.hasAuthorization(canedit), exams.update)
-		.delete(users.requiresLogin, users.hasAuthorization(canedit), exams.delete);
+		.get(users.hasAuthorization(canview), exams.read)
+		.put(users.hasAuthorization(canedit), exams.update)
+		.delete(users.hasAuthorization(canedit), exams.delete);
 
 	// Copies routes
 	app.route('/copies')
-		.post(users.requiresLogin, users.hasAuthorization(canedit), exams.createCopy);
+		.post(users.hasAuthorization(canedit), exams.createCopy);
 
 	app.route('/upload/copy')
-		.post(users.requiresLogin, users.hasAuthorization(canedit), multiparty(), exams.uploadCopy);
+		.post(users.hasAuthorization(canedit), multiparty(), exams.uploadCopy);
 
 	// Finish by binding the exam middleware
 	app.param('examId', exams.examByID);
