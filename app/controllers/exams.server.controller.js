@@ -71,6 +71,7 @@ exports.delete = function(req, res) {
 exports.list = function(req, res) { 
 	Exam.find({}, 'course groups date')
 		.populate('course', 'ID name')
+		.populate('groups', 'name')
 		.sort({'ID': 1})
 		.exec(function(err, exams) {
 		if (err) {

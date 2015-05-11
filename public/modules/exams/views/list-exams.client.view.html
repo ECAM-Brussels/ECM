@@ -2,7 +2,7 @@
     <h1>Exams</h1>
 
     <div class="list-group">
-        <a data-ng-repeat="exam in exams" data-ng-href="#!/exams/{{exam._id}}" class="list-group-item"><b>{{exam.course.ID}}</b> &mdash; {{exam.course.name}} on {{exam.date | date:'dd MMM yyyy H:mm'}} with<span ng-repeat="group in exam.groups"> {{group}}</span></a>
+        <a data-ng-repeat="exam in exams" data-ng-href="#!/exams/{{exam._id}}" class="list-group-item"><b>{{exam.course.ID}}</b> &mdash; {{exam.course.name}} on {{exam.date | date:'dd MMM yyyy H:mm'}} with<span ng-repeat="group in exam.groups"> {{group.name}}</span></a>
     </div>
     <div class="alert alert-warning text-center" data-ng-hide="!exams.$resolved || exams.length">
     	No exams yet, why don't you <a href="/#!/exams/create">create one</a>?
