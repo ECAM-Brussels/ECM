@@ -3,11 +3,10 @@
 // Courses controller
 angular.module('courses').controller('CoursesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Courses', 'MyCourses', '$http', function($scope, $stateParams, $location, Authentication, Courses, MyCourses, $http) {
 	$scope.authentication = Authentication;
+
+	// Load teachers
 	$scope.coordinator = [];
 	$scope.allTeachers = [];
-	$scope.activities = [];
-	$scope.allActivities = [];
-
 	$http.get('/list/teachers').success(function(data, status, headers, config) {
 		for (var i = 0; i < data.length; i++) {
 			$scope.allTeachers.push({
@@ -16,11 +15,13 @@ angular.module('courses').controller('CoursesController', ['$scope', '$statePara
 			});
 		}
 	});
-
 	$scope.loadTeachers = function(query) {
 		return $scope.allTeachers;
 	};
 
+	// Load activities
+	$scope.activities = [];
+	$scope.allActivities = [];
 	$http.get('/activities').success(function(data, status, headers, config) {
 		for (var i = 0; i < data.length; i++) {
 			$scope.allActivities.push({
@@ -29,18 +30,17 @@ angular.module('courses').controller('CoursesController', ['$scope', '$statePara
 			});
 		}
 	});
-
 	$scope.loadActivities = function(query) {
 		return $scope.allActivities;
 	};
 
-	// Create new Course
+	// Create new course
 	$scope.create = function() {
 		var activityIDs = [];
 		for (var i = 0; i < $scope.activities.length; i++) {
 			activityIDs.push($scope.activities[i].id);
 		}
-		// Create new Course object
+		// Create new course object
 		var course = new Courses ({
 			ID: this.ID,
 			name: this.name,
@@ -58,7 +58,7 @@ angular.module('courses').controller('CoursesController', ['$scope', '$statePara
 		});
 	};
 
-	// Remove existing Course
+	// Remove existing course
 	$scope.remove = function(course) {
 		if (course) { 
 			course.$remove();
@@ -75,7 +75,7 @@ angular.module('courses').controller('CoursesController', ['$scope', '$statePara
 		}
 	};
 
-	// Update existing Course
+	// Update existing course
 	$scope.update = function() {
 		var course = $scope.course;
 
@@ -86,7 +86,7 @@ angular.module('courses').controller('CoursesController', ['$scope', '$statePara
 		});
 	};
 
-	// Find a list of Courses
+	// Find a list of courses
 	$scope.find = function() {
 		$scope.courses = Courses.query();
 	};
