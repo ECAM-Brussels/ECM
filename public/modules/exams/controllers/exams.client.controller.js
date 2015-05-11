@@ -186,7 +186,7 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		// Create new copy object
 		var copy = new Copies({
 			exam: $scope.exam._id,
-			activity: activityID,
+			activity: activityID === -1 ? null : activityID,
 			series: this.series
 		});
 		// Redirect after save

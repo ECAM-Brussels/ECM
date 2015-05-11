@@ -34,7 +34,6 @@ module.exports = {
 			]
 		},
 		css: [
-			'public/lib/ng-tags-input/ng-tags-input.bootstrap.min.css',
 			'public/modules/**/css/*.css'
 		],
 		js: [
