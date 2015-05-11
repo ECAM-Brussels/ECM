@@ -40,11 +40,13 @@ angular.module('courses').controller('CoursesController', ['$scope', '$statePara
 		for (var i = 0; i < $scope.activities.length; i++) {
 			activityIDs.push($scope.activities[i].id);
 		}
-		// Create new course object
+    var coord = [];
+    if($scope.coordinator[0] !== undefined)
+		  coord = $scope.coordinator[0].id;
 		var course = new Courses ({
 			ID: this.ID,
 			name: this.name,
-			coordinator: $scope.coordinator[0].id,
+			coordinator: coord,
 			activities: activityIDs
 		});
 		// Redirect after save

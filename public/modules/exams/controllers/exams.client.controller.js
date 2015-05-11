@@ -75,9 +75,12 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		for (i = 0; i < $scope.groups.length; i++) {
 			groupIDs.push($scope.groups[i].group._id);
 		}
+    var course = [];
+    if($scope.courses[0] !== undefined)
+      course = $scope.courses[0]._id;
 		// Create new exam object
 		var exam = new Exams({
-			course: $scope.courses[0].course._id,
+			course: course,
 			activities: this.split ? [] : activityIDs,
 			split: ! this.split,
 			date: this.date,
