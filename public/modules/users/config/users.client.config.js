@@ -34,7 +34,7 @@ angular.module( 'students' ).run( [ 'Menus',
   function ( Menus ) {
     // Set top bar menu items
     Menus.addMenuItem( 'topbar', 'Users', 'users', 'dropdown', '/users(/create)?', false, [ 'admin', 'manager' ] );
-    Menus.addSubMenuItem( 'topbar', 'users', 'List users', 'users', 'users', false, [ 'admin', 'manager' ] );
-    Menus.addSubMenuItem( 'topbar', 'users', 'New user', 'users/create', 'users/create', false, [ 'admin', 'manager' ] );
+    Menus.addSubMenuItem( 'topbar', 'users', 'List', 'users', 'users', false, [ 'admin', 'manager' ] );
+    Menus.addSubMenuItem( 'topbar', 'users', 'Create', 'users/create', 'users/create', false, [ 'admin', 'manager' ] );
   }
  ] );
