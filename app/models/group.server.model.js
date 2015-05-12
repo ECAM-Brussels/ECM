@@ -12,8 +12,9 @@ var mongoose = require('mongoose'),
 var GroupSchema = new Schema({
 	name: {
 		type: String,
-		required: 'Please fill Group name',
-		trim: true
+		required: 'Please fill the name of the group',
+		trim: true,
+		unique: true
 	},
 	description: {
 		type: String,

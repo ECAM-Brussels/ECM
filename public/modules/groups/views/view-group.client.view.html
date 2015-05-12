@@ -1,21 +1,10 @@
 <section data-ng-controller="GroupsController" data-ng-init="findOne()">
-	<div class="page-header">
-		<h1>{{group.name}} : {{group.description}}</h1>
-	</div>
-	<div class="pull-right" data-ng-show="authentication.user">
-		<a class="btn btn-primary" href="/#!/groups/{{group.name}}/edit">
-			<i class="glyphicon glyphicon-edit"></i>
-		</a>
-		<a class="btn btn-primary" data-ng-click="remove();">
-			<i class="glyphicon glyphicon-trash"></i>
-		</a>
-	</div>
-	<small>
-		<em class="text-muted">
-			Posted on
-			<span data-ng-bind="group.created | date:'mediumDate'"></span>
-			by
-			<span data-ng-bind="group.user.displayName"></span>
-		</em>
-	</small>
+	<h1>{{group.name}}</h1>
+
+	<h2>Information</h2>	
+
+	<dl class="dl-horizontal">
+		<dt>Description</dt>
+		<dd>{{group.description}}</dd>
+	</dl>
 </section>
