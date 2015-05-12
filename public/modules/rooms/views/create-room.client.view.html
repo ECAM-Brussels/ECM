@@ -31,6 +31,7 @@
 						<div ng-if="path">
 							<img ng-src="{{path}}" width="300" height="200" alt="Room picture" />
 						</div>
+						<progressbar data-ng-if="progressValue" class="progress-striped active" animate="true" max="100" value="progressValue" type="success"><i>{{progressValue}} %</i></progressbar>
 						<div class="btn btn-default" ngf-select accept="image/*" ngf-allow-dir="false" ng-model="files">Select file</div>
 					</div>
 				</div>
