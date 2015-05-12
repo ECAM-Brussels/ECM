@@ -1,18 +1,10 @@
 <section data-ng-controller="UsersController" data-ng-init="find()">
-    <div class="page-header">
-        <h1>Users</h1>
-    </div>
-    <div class="list-group" data-ng-show="!users.$resolved || users.length" >
-        <a data-ng-hide="user.serial === undefined" data-ng-repeat="user in users" data-ng-href="#!/users/{{user.serial}}" class="list-group-item">
-          <h3>{{user.serial}} : {{user.displayName}}</h3><br>
-          <h3>{{user.roles}}</h3>
-        </a>
-        <a data-ng-hide="user.serial !== undefined" data-ng-repeat="user in users" data-ng-href="#!/users/{{user._id}}" class="list-group-item">
-          <h3>{{user.displayName}}</h3><br>
-          <h3>{{user.roles}}</h3>
-        </a>
-    </div>
-    <div class="alert alert-warning text-center" data-ng-hide="!users.$resolved || users.length">
-      No users yet, why don't you <a href="/#!/users/create">create one</a>?
-    </div>
+	<h1>Users</h1>
+
+	<div class="list-group" data-ng-if="! users.$resolved || users.length">
+		<a data-ng-repeat="user in users" data-ng-href="#!/users/{{user.serial}}" class="list-group-item"><b>{{user.serial}}</b> &mdash; {{user.displayName}}</a>
+	</div>
+	<div class="alert alert-warning text-center" data-ng-if="users.$resolved && users.length == 0">
+		No users yet, why don't you <a href="/#!/users/create">create one</a>?
+	</div>
 </section>
