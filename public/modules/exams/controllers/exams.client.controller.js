@@ -1,7 +1,7 @@
 'use strict';
 
 // Exams controller
-angular.module('exams').controller('ExamsController', ['$scope', '$stateParams', '$location', '$window', 'Authentication', 'Exams', 'Copies', '$http', 'Upload', function($scope, $stateParams, $location, $window, Authentication, Exams, Copies, $http, Upload) {
+angular.module('exams').controller('ExamsController', ['$scope', '$stateParams', '$location', '$window', 'Authentication', 'Exams', 'MyExams', 'Copies', '$http', 'Upload', function($scope, $stateParams, $location, $window, Authentication, Exams, MyExams, Copies, $http, Upload) {
 	$scope.authentication = Authentication;
 	$scope.split = false;
 
@@ -126,6 +126,10 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 	// Find a list of exams
 	$scope.find = function() {
 		$scope.exams = Exams.query();
+	};
+
+	$scope.findMyExams = function(){
+		$scope.exams = MyExams.query();
 	};
 
 	// Find existing exam
