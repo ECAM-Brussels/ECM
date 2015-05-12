@@ -1,10 +1,10 @@
 <section data-ng-controller="ActivitiesController" data-ng-init="find()">
 	<h1>Activities</h1>
 
-	<div class="list-group">
+	<div class="list-group" data-ng-if="! activities.$resolved || activities.length">
 		<a data-ng-repeat="activity in activities" data-ng-href="#!/activities/{{activity.ID}}" class="list-group-item"><b>{{activity.ID}}</b> &mdash; {{activity.name}}</a>
     </div>
-    <div class="alert alert-warning text-center" data-ng-hide="! activities.$resolved || activities.length">
+    <div class="alert alert-warning text-center" data-ng-if="activities.$resolved && ! activities.length">
     	No activities yet, why don't you <a href="/#!/activities/create">create one</a>?
     </div>
 </section>
