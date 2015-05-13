@@ -14,7 +14,6 @@ var mongoose = require('mongoose'),
  */
 exports.create = function(req, res) {
 	var activity = new Activity(req.body);
-	console.log(activity);
 	if (activity.teachers.length === 0) {
 		return res.status(400).send({
 			message: 'Please specify at least one teacher for the activity'
