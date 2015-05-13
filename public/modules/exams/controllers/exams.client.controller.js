@@ -75,9 +75,10 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		for (i = 0; i < $scope.groups.length; i++) {
 			groupIDs.push($scope.groups[i].group._id);
 		}
-    var course = [];
-    if($scope.courses[0] !== undefined)
-      course = $scope.courses[0]._id;
+		var course = [];
+		if ($scope.courses.length > 0) {
+			course = $scope.courses[0].course._id;
+		}
 		// Create new exam object
 		var exam = new Exams({
 			course: course,
@@ -162,7 +163,7 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 	};
 
 	$scope.changeUnique = function() {
-		if (! $scope.split || $scope.courses.length !== 1) {
+		if ($scope.split || $scope.courses.length !== 1) {
 			$scope.activities = [];
 		}
 	};
