@@ -13,6 +13,9 @@ module.exports = function(app) {
 		.get(users.hasAuthorization(canview), exams.list)
 		.post(users.hasAuthorization(canedit), exams.create);
 
+	app.route('/list/myExams')
+		.get(users.hasAuthorization(['teacher']), exams.listMyExams);
+
 	app.route('/exams/:examId')
 		.get(users.hasAuthorization(canview), exams.read)
 		.put(users.hasAuthorization(canedit), exams.update)

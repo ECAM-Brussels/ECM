@@ -7,5 +7,9 @@ public/lib
 app/tests/coverage/
 .bower-*/
 .idea/
+copies/
+public/humans.txt
 public/dist/
+public/images/rooms/
+public/images/uploads/
 config/env/*.js

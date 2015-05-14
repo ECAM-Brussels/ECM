@@ -16,7 +16,7 @@ var user, student;
 /**
  * Unit tests
  */
-describe('Student Model Unit Tests:', function() {
+/*describe('Student Model Unit Tests:', function() {
 	beforeEach(function(done) {
 		user = new User({
 			firstName: 'Full',
@@ -61,4 +61,4 @@ describe('Student Model Unit Tests:', function() {
 
 		done();
 	});
-});
+});*/

@@ -143,6 +143,50 @@ exports.hasAuthorization = function(req, res, next) {
 	next();
 };
 
+exports.listMyExams = function(req, res) { 
+	Exam.find({}, 'course activities groups date')
+		.populate('course', 'ID name coordinator')
+		.populate('activities', 'teachers')
+		.populate('groups', 'name')
+		.sort({'ID': 1})
+		.exec(function(err, exams) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		}
+		Exam.populate(exams, {path: 'activities.teachers', select: 'username', model: 'User'}, function(err, exam) {
+			if (err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			}
+			var tokeep = [];
+			for (var i = 0; i < exams.length; i++) {
+				if (exams[i].course.coordinator == req.user.id) { // == works but === do not work...
+					tokeep.push(exams[i]);
+				} else {
+					if (isTeacher(req.user.id, exams[i].activities)) {
+						tokeep.push(exams[i]);
+					}
+				}
+			}
+			res.jsonp(tokeep);
+		});
+	});
+};
+
+function isTeacher(teacher, activities) {
+	for (var i = 0; i < activities.length; i++) {
+		for (var j = 0; j < activities[i].teachers.length; j++) {
+			if (activities[i].teachers[j]._id == teacher) { // == works but === do not work...
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 /**
  * Create a copy
  */

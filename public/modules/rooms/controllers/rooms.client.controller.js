@@ -72,15 +72,15 @@ angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams',
 
 	$scope.upload = function(files) {
 		if (files && files.length === 1) {
+			$scope.path = null;
 			Upload.upload({
 				url: 'upload/room',
 				fields: {'username': $scope.authentication.user._id},
 				file: files[0]
 			}).progress(function(evt) {
-				var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-				console.log('progress: ' + progressPercentage + '% ');
+				$scope.progressValue = parseInt(100.0 * evt.loaded / evt.total);
 			}).success(function(data, status, headers, config) {
-				console.log('Upload finished ' + config.file.name + ', response ' + data);
+				$scope.progressValue = null;
 				$scope.path = 'images/uploads/' + data;
 			});
 		}

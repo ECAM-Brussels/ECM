@@ -1,7 +1,7 @@
 'use strict';
 
 // Exams controller
-angular.module('exams').controller('ExamsController', ['$scope', '$stateParams', '$location', '$window', 'Authentication', 'Exams', 'Copies', '$http', 'Upload', function($scope, $stateParams, $location, $window, Authentication, Exams, Copies, $http, Upload) {
+angular.module('exams').controller('ExamsController', ['$scope', '$stateParams', '$location', '$window', 'Authentication', 'Exams', 'MyExams', 'Copies', '$http', 'Upload', function($scope, $stateParams, $location, $window, Authentication, Exams, MyExams, Copies, $http, Upload) {
 	$scope.authentication = Authentication;
 	$scope.split = false;
 
@@ -75,9 +75,10 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		for (i = 0; i < $scope.groups.length; i++) {
 			groupIDs.push($scope.groups[i].group._id);
 		}
-    var course = [];
-    if($scope.courses[0] !== undefined)
-      course = $scope.courses[0]._id;
+		var course = [];
+		if ($scope.courses.length > 0) {
+			course = $scope.courses[0].course._id;
+		}
 		// Create new exam object
 		var exam = new Exams({
 			course: course,
@@ -128,6 +129,10 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		$scope.exams = Exams.query();
 	};
 
+	$scope.findMyExams = function(){
+		$scope.exams = MyExams.query();
+	};
+
 	// Find existing exam
 	$scope.findOne = function() {
 		$scope.exam = Exams.get({ 
@@ -158,7 +163,7 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 	};
 
 	$scope.changeUnique = function() {
-		if (! $scope.split || $scope.courses.length !== 1) {
+		if ($scope.split || $scope.courses.length !== 1) {
 			$scope.activities = [];
 		}
 	};

@@ -16,7 +16,7 @@ var credentials, user, course;
 /**
  * Course routes tests
  */
-describe('Course CRUD tests', function() {
+/*describe('Course CRUD tests', function() {
 	beforeEach(function(done) {
 		// Create user credentials
 		credentials = {
@@ -265,4 +265,4 @@ describe('Course CRUD tests', function() {
 		Course.remove().exec();
 		done();
 	});
-});
+});*/

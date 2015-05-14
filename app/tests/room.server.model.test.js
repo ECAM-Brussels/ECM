@@ -16,7 +16,7 @@ var user, room;
 /**
  * Unit tests
  */
-describe('Room Model Unit Tests:', function() {
+/*describe('Room Model Unit Tests:', function() {
 	beforeEach(function(done) {
 		user = new User({
 			firstName: 'Full',
@@ -61,4 +61,4 @@ describe('Room Model Unit Tests:', function() {
 
 		done();
 	});
-});
+});*/

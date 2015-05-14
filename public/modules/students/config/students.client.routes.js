@@ -23,9 +23,5 @@ angular.module('students').config(['$stateProvider', function($stateProvider) {
 	.state('editStudent', {
 		url: '/students/:studentId/edit',
 		templateUrl: 'modules/students/views/edit-student.client.view.html'
-	})
-	.state('manageGroups', {
-		url: '/groups',
-		templateUrl: 'modules/students/views/list-groups.client.view.html'
 	});
 }]);
