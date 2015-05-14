@@ -4,6 +4,8 @@
 angular.module('exams').controller('ExamsController', ['$scope', '$stateParams', '$location', '$window', 'Authentication', 'Exams', 'MyExams', 'Copies', '$http', 'Upload', function($scope, $stateParams, $location, $window, Authentication, Exams, MyExams, Copies, $http, Upload) {
 	$scope.authentication = Authentication;
 	$scope.split = false;
+	$scope.uploading = null;
+	$scope.progressValue = null;
 
 	// Load courses
 	$scope.courses = [];
@@ -137,6 +139,18 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 	$scope.findOne = function() {
 		$scope.exam = Exams.get({ 
 			examId: $stateParams.examId
+		}, function(err) {
+			// Fill uploading and progressValue
+			if ($scope.exam.split) {
+				// 
+			} else {
+				$scope.progressValue = new Array($scope.exam.copies[0].series);
+				$scope.uploading = new Array($scope.exam.copies[0].series);
+				for (var i = 0; i < $scope.exam.copies[0].series; i++) {
+					$scope.progressValue[i] = null;
+					$scope.uploading[i] = false;
+				}
+			}
 		});
 	};
 
@@ -216,7 +230,12 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 	};
 
 	$scope.fileSelected = function(files, event, index, copy) {
-		if (files && files.length === 1) {
+		if ($scope.uploading && ! $scope.uploading[index] && files && files.length === 1) {
+			// Reset form
+			$scope.uploading[index] = true;
+			copy.files[index] = null;
+			$scope.progressValue[index] = 0;
+			// Launch the upload
 			Upload.upload({
 				url: 'upload/copy',
 				fields: {
@@ -226,10 +245,10 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 				},
 				file: files[0]
 			}).progress(function(evt) {
-				var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-				console.log('progress: ' + progressPercentage + '% ');
+				$scope.progressValue[index] = parseInt(100.0 * evt.loaded / evt.total);
 			}).success(function(data, status, headers, config) {
-				console.log('Upload finished ' + config.file.name + ', response ' + data);
+				$scope.progressValue[index] = null;
+				$scope.uploading[index] = false;
 				copy.files[index] = data;
 			});
 		}

@@ -32,6 +32,10 @@ var CopySchema = new Schema({
 			user: {
 				type: Schema.ObjectId,
 				ref: 'User'
+			},
+			validated: {
+				type: Boolean,
+				default: false
 			}
 		})]
 	},

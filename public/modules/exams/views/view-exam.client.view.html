@@ -58,10 +58,13 @@
 			<form class="form-inline">
 				<ul class="list-group">
 					<li class="list-group-item" data-ng-repeat="i in getNumber(exam.copies[0].series) track by $index">
-						<b>Serie {{$index + 1}}</b>
-						<div data-ng-if="! exam.copies[0].files[$index]" class="btn btn-default" ngf-select accept="application/pdf" ngf-allow-dir="false" data-ng-model="files" ngf-change="fileSelected($files, $event, $index, exam.copies[0])">Upload file</div>
+						<p><b>Serie {{$index + 1}}</b></p>
 						<div data-ng-if="exam.copies[0].files[$index]">
-							File uploaded on {{exam.copies[0].files[$index].created | date: "dd MMM yyyy H:mm"}}
+							<p>A file has been uploaded on {{exam.copies[0].files[$index].created | date: "dd MMM yyyy H:mm"}}<span>:<button data-ng-if="exam.copies[0].files[$index]" class="btn btn-link">Preview file</button></span></p>
+						</div>
+						<progressbar data-ng-if="progressValue[$index]" class="progress-striped active" animate="true" max="100" value="progressValue[$index]" type="success"><i>{{progressValue[$index]}} %</i></progressbar>
+						<div>
+							<button data-ng-if="! uploading[$index]" class="btn btn-primary" ngf-select accept="application/pdf" ngf-allow-dir="false" data-ng-model="files" ngf-change="fileSelected($files, $event, $index, exam.copies[0])">Upload file</button> <button data-ng-if="exam.copies[0].files[$index]" class="btn btn-success">Validate file</button>
 						</div>
 					</li>
 				</ul>
