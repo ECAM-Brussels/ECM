@@ -28,7 +28,8 @@ var UserSchema = new Schema({
 	serial: {
 		type: String,
 		trim: true,
-		unique: true
+		unique: true,
+		required: 'Please fill your serial'
 	},
 	firstName: {
 		type: String,
@@ -55,7 +56,7 @@ var UserSchema = new Schema({
 	},
 	username: {
 		type: String,
-		required: 'Please fill a username',
+		required: 'Please fill your username',
 		unique: true,
 		trim: true
 	},
