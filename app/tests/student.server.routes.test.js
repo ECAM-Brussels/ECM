@@ -16,7 +16,7 @@ var credentials, user, student;
 /**
  * Student routes tests
  */
-describe('Student CRUD tests', function() {
+/*describe('Student CRUD tests', function() {
 	beforeEach(function(done) {
 		// Create user credentials
 		credentials = {
@@ -265,4 +265,4 @@ describe('Student CRUD tests', function() {
 		Student.remove().exec();
 		done();
 	});
-});
+});*/
