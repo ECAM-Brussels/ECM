@@ -10,7 +10,8 @@ module.exports = function(app) {
 
 	// Rooms Routes
 	app.route('/rooms')
-	   .get(users.hasAuthorization(canview), rooms.list);
+	   .get(users.hasAuthorization(canview), rooms.list)
+	   .post(users.hasAuthorization(canedit), rooms.create);
 
 	app.route('/rooms/:roomId')
 	   .get(users.hasAuthorization(canview), rooms.read)

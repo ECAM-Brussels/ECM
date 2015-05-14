@@ -25,20 +25,20 @@
 				<div class="form-group">
 					<label class="control-label">Picture</label>
 					<div class="controls">
-						<div ng-if="! path">
+						<div data-ng-if="! path">
 							You can load one picture for the room from your computer.
 						</div>
-						<div ng-if="path">
-							<img ng-src="{{path}}" width="300" height="200" alt="Room picture" />
+						<div data-ng-if="path">
+							<img data-ng-src="{{path}}" width="300" height="200" alt="Room picture" />
 						</div>
 						<progressbar data-ng-if="progressValue" class="progress-striped active" animate="true" max="100" value="progressValue" type="success"><i>{{progressValue}} %</i></progressbar>
-						<div class="btn btn-default" ngf-select accept="image/*" ngf-allow-dir="false" ng-model="files">Select file</div>
+						<div class="btn btn-default" ngf-select accept="image/*" ngf-allow-dir="false" data-ng-model="files" data-ng-hide="uploading">Select file</div>
 					</div>
 				</div>
 				<div class="form-group">
 					<button type="submit" class="btn btn-primary">Create</button>
 				</div>
-				<div data-ng-show="error" class="text-danger">
+				<div data-ng-if="error" class="text-danger">
 					<strong data-ng-bind="error"></strong>
 				</div>
             </fieldset>

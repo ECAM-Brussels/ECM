@@ -3,11 +3,13 @@
 // Rooms controller
 angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Rooms', 'Upload', function ($scope, $stateParams, $location, Authentication, Rooms, Upload) {
 	$scope.authentication = Authentication;
-	$scope.path = '';
+	$scope.uploading = false;
+	$scope.path = null;
+	$scope.progressValue = null;
 
-	// Create new Room
+	// Create new room
 	$scope.create = function() {
-		// Create new Room object
+		// Create new room object
 		var room = new Rooms({
 			ID: this.ID,
 			name: this.name,
@@ -18,8 +20,6 @@ angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams',
 		// Redirect after save
 		room.$save(function(response) {
 			$location.path('rooms/' + response.ID);
-			// Clear form fields
-			$scope.name = '';
 		}, function(errorResponse) {
 			$scope.error = errorResponse.data.message;
 		});
@@ -29,7 +29,6 @@ angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams',
 	$scope.remove = function(room) {
 		if (room) {
 			room.$remove();
-
 			for (var i in $scope.rooms) {
 				if ($scope.rooms[i] === room) {
 					$scope.rooms.splice(i, 1);
@@ -45,7 +44,6 @@ angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams',
 	// Update existing Room
 	$scope.update = function() {
 		var room = $scope.room;
-
 		room.$update(function() {
 			$location.path('rooms/' + room.ID);
 		}, function(errorResponse) {
@@ -66,13 +64,16 @@ angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams',
 	};
 
 	// For the file upload
-	$scope.$watch('files', function(){
+	$scope.$watch('files', function() {
 		$scope.upload($scope.files);
 	});
 
 	$scope.upload = function(files) {
-		if (files && files.length === 1) {
+		if (! $scope.uploading && files && files.length === 1) {
+			// Reset form
+			$scope.uploading = true;
 			$scope.path = null;
+			// Launch the upload
 			Upload.upload({
 				url: 'upload/room',
 				fields: {'username': $scope.authentication.user._id},
@@ -82,6 +83,7 @@ angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams',
 			}).success(function(data, status, headers, config) {
 				$scope.progressValue = null;
 				$scope.path = 'images/uploads/' + data;
+				$scope.uploading = false;
 			});
 		}
 	};
