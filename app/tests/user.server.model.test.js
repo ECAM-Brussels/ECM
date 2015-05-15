@@ -78,7 +78,7 @@ describe('User Model Unit Tests:', function() {
 				should.exist(err);
 				done();
 			});
-		})
+		});
 
 		it('should fail to save a user with an existing username', function(done) {
 			user.save();
@@ -87,7 +87,7 @@ describe('User Model Unit Tests:', function() {
 				should.exist(err);
 				done();
 			});
-		})
+		});
 
 		it('should be able to show an error when try to save without firstname', function(done) {
 			user.firstName = '';
