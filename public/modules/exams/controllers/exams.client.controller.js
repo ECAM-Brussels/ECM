@@ -253,4 +253,9 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 			});
 		}
 	};
+
+	$scope.downloadCopy = function(copy, index) {
+		console.log('Download : ' + copy + ' at ' + index);
+		return $http.post('/download/copy', {'copy': copy, 'index': index});
+	};
 }]);

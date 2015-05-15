@@ -9,6 +9,8 @@ var mongoose = require('mongoose'),
 	Copy = mongoose.model('Copy'),
 	fs = require('fs-extra'),
 	path = require('path'),
+	process = require('process'),
+	child_process = require('child_process'),
 	_ = require('lodash');
 
 /**
@@ -144,6 +146,17 @@ exports.hasAuthorization = function(req, res, next) {
 	next();
 };
 
+function isTeacher(teacher, activities) {
+	for (var i = 0; i < activities.length; i++) {
+		for (var j = 0; j < activities[i].teachers.length; j++) {
+			if (activities[i].teachers[j]._id == teacher) { // == works but === do not work...
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 exports.listMyExams = function(req, res) { 
 	Exam.find({}, 'course activities groups date')
 		.populate('course', 'ID name coordinator')
@@ -177,17 +190,6 @@ exports.listMyExams = function(req, res) {
 	});
 };
 
-function isTeacher(teacher, activities) {
-	for (var i = 0; i < activities.length; i++) {
-		for (var j = 0; j < activities[i].teachers.length; j++) {
-			if (activities[i].teachers[j]._id == teacher) { // == works but === do not work...
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
 /**
  * Create a copy
  */
@@ -208,6 +210,25 @@ exports.createCopy = function(req, res) {
 	});
 };
 
+// Download a PDF copy for the exam
+exports.downloadCopy = function(req, res) {
+	var path = require('path');
+	console.log('Download : ' + req.body);
+	console.log('Filename : ' + require.main.filename);
+	console.log('Path : ' + path);
+	var dest = path.dirname(require.main.filename) + '/copies/' + req.body.copy + '/copy_' + req.body.index + '.pdf';
+	console.log('Dest : ' + dest);
+	fs.readFile(dest, function(err, content) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		}
+		res.writeHead(200, {'Content-Type': 'application/pdf'});
+		res.end(content);
+	});
+};
+
 // Upload a PDF copy for the exam
 exports.uploadCopy = function(req, res) {
 	// Create directory if not existing
@@ -217,7 +238,7 @@ exports.uploadCopy = function(req, res) {
 	}
 	// Copy PDF file
 	var file = req.files.file;
-	dest = dest + '/copy_' + req.body.index + '.pdf';
+	dest = dest + '/' + path.basename(file.path);
 	fs.copy(file.path, dest, function(err) {
 		if (err) {
 			return res.status(400).send({
@@ -226,20 +247,36 @@ exports.uploadCopy = function(req, res) {
 		}
 		// Delete PDF file from /tmp
 		fs.unlink(file.path, function(err){});
-		// Update database
-		Copy.findById(req.body.copy)
-			.exec(function(err, copy) {
-			copy.files[req.body.index] = {
-				created: new Date(),
-				user: req.user
-			};
-			Copy.update({_id: copy._id}, {$set: {files: copy.files}}, function(err) {
-				if (err) {
-					return res.status(400).send({
-						message: errorHandler.getErrorMessage(err)
-					});
-				}
-				res.jsonp(copy.files[req.body.index]);
+		// Create the final PDF from text file
+		var src = path.dirname(require.main.filename) + '/pdfgen/templates/basic-template.tex';
+		var content = fs.readFileSync(src, {encoding: 'utf8', flag: 'r'}, function(err){});
+		content = content.replace(/!filename!/g, path.basename(file.path));
+		content = content.replace(/!filepath!/g, dest);
+		dest = path.dirname(require.main.filename) + '/copies/' + req.body.copy + '/copy_' + req.body.index + '.tex';
+		fs.writeFileSync(dest, content, {encoding: 'utf8', flag: 'w'}, function(err){});
+		process.chdir(path.dirname(dest));
+		child_process.execFile('pdflatex', [path.basename(dest)], function(err, stdout, stderr) {
+			if (err) {
+				console.log('ERROR : ' + err);
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			}
+			// Update database
+			Copy.findById(req.body.copy)
+				.exec(function(err, copy) {
+				copy.files[req.body.index] = {
+					created: new Date(),
+					user: req.user
+				};
+				Copy.update({_id: copy._id}, {$set: {files: copy.files}}, function(err) {
+					if (err) {
+						return res.status(400).send({
+							message: errorHandler.getErrorMessage(err)
+						});
+					}
+					res.jsonp(copy.files[req.body.index]);
+				});
 			});
 		});
 	});

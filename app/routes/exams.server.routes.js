@@ -28,6 +28,9 @@ module.exports = function(app) {
 	app.route('/upload/copy')
 		.post(users.hasAuthorization(canedit), multiparty(), exams.uploadCopy);
 
+	app.route('/download/copy')
+		.post(users.hasAuthorization(['admin', 'teacher']), exams.downloadCopy);
+
 	// Finish by binding the exam middleware
 	app.param('examId', exams.examByID);
 };
