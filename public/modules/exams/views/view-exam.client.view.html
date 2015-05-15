@@ -3,6 +3,9 @@
 
 	<h2>Information</h2>
 
+	<div id="bla">
+	</div>
+
 	<dl class="dl-horizontal">
 		<dt>Course</dt>
 		<dd>{{exam.course.ID}} &mdash; {{exam.course.name}}</dd>
@@ -55,20 +58,22 @@
 		<p>Only one PDF has to be uploaded for all the activities of the course.</p>
 
 		<div data-ng-if="exam.copies.length === 1">
-			<form class="form-inline">
-				<ul class="list-group">
-					<li class="list-group-item" data-ng-repeat="i in getNumber(exam.copies[0].series) track by $index">
-						<p><b>Serie {{$index + 1}}</b></p>
-						<div data-ng-if="exam.copies[0].files[$index]">
-							<p>A file has been uploaded on {{exam.copies[0].files[$index].created | date: "dd MMM yyyy H:mm"}} (<a data-ng-click="downloadCopy(exam.copies[0]._id, $index)">Preview file</a>).</p>
-						</div>
-						<progressbar data-ng-if="progressValue[$index]" class="progress-striped active" animate="true" max="100" value="progressValue[$index]" type="success"><i>{{progressValue[$index]}} %</i></progressbar>
-						<div>
+			<ul class="list-group">
+				<li class="list-group-item" data-ng-repeat="i in getNumber(exam.copies[0].series) track by $index">
+					<p><b>Serie {{$index + 1}}</b></p>
+					<div data-ng-if="exam.copies[0].files[$index]">
+						<form method="post" action="/download/copy" target="_blank">
+							<p>A file has been uploaded on {{exam.copies[0].files[$index].created | date: "dd MMM yyyy H:mm"}} (<input type="hidden" name="copy" data-ng-value="exam.copies[0]._id"><input type="hidden" name="index" data-ng-value="$index"><button type="submit" class="btn btn-link">Preview file</button>)</p>
+						</form>
+					</div>
+					<progressbar data-ng-if="progressValue[$index]" class="progress-striped active" animate="true" max="100" value="progressValue[$index]" type="success"><i>{{progressValue[$index]}} %</i></progressbar>
+					<div>
+						<form class="form-inline">
 							<button data-ng-if="! uploading[$index]" class="btn btn-primary" ngf-select accept="application/pdf" ngf-allow-dir="false" data-ng-model="files" ngf-change="fileSelected($files, $event, $index, exam.copies[0])">Upload file</button> <button data-ng-if="exam.copies[0].files[$index]" class="btn btn-success">Validate file</button>
-						</div>
-					</li>
-				</ul>
-			</form>
+						</form>
+					</div>
+				</li>
+			</ul>
 		</div>
 
 		<div data-ng-if="exam.copies.length === 0">
