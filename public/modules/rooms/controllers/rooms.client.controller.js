@@ -73,6 +73,7 @@ angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams',
 			// Reset form
 			$scope.uploading = true;
 			$scope.path = null;
+			$scope.progressValue = 0;
 			// Launch the upload
 			Upload.upload({
 				url: 'upload/room',
