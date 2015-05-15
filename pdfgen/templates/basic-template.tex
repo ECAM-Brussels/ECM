@@ -44,9 +44,10 @@ N$^\circ$!num! & & Auditoire !room! (Siège \oldstylenums{!seatnumber!}) \\
 	
 	%%% Questions
 	\setcounter{page}{0}
+	\centering
 	\newcounter{p}
 	\forloop{p}{1}{\value{p} < \numexpr\the\pdflastximagepages+1}{
 		\clearpage
-		\includegraphics[width=17.9cm,page=\value{p}]{!filepath!}
+		\includegraphics[height=23.5cm,page=\value{p}]{!filepath!}
 	}
 \end{document}
