@@ -213,11 +213,7 @@ exports.createCopy = function(req, res) {
 // Download a PDF copy for the exam
 exports.downloadCopy = function(req, res) {
 	var path = require('path');
-	console.log('Download : ' + req.body);
-	console.log('Filename : ' + require.main.filename);
-	console.log('Path : ' + path);
 	var dest = path.dirname(require.main.filename) + '/copies/' + req.body.copy + '/copy_' + req.body.index + '.pdf';
-	console.log('Dest : ' + dest);
 	fs.readFile(dest, function(err, content) {
 		if (err) {
 			return res.status(400).send({

@@ -256,6 +256,20 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 
 	$scope.downloadCopy = function(copy, index) {
 		console.log('Download : ' + copy + ' at ' + index);
-		return $http.post('/download/copy', {'copy': copy, 'index': index});
+		$location.url('/download/copy/' + copy + '/' + index);
+//		$http.post('/download/copy', {'copy': copy, 'index': index}).success(function(data, status, headers, config) {
+//			var element = angular.element('<a/>');
+//			console.log(element);
+//			element.attr({
+//				href: 'data:application/pdf,' + data,
+//				target: '_blank',
+//				download: 'copy.pdf'
+//			})[0].click();
+//			var tag = document.createElement('a');
+//			tag.href = 'data:application/octet-stream,' + data;
+//			document.getElementById('bla').appendChild(tag);
+//			tag.click();
+//			console.log(data);
+//		});
 	};
 }]);
