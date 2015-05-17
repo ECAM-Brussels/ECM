@@ -226,6 +226,21 @@ exports.downloadCopy = function(req, res) {
 	});
 };
 
+exports.validateCopy = function(req, res) {
+	Copy.findById(req.body.copy)
+		.exec(function(err, copy) {
+		copy.files[req.body.index].validated = true;
+		Copy.update({_id: copy._id}, {$set: {files: copy.files}}, function(err) {
+			if (err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			}
+			res.send('OK');
+		});
+	});
+};
+
 // Upload a PDF copy for the exam
 exports.uploadCopy = function(req, res) {
 	// Create directory if not existing

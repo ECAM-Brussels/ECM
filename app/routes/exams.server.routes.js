@@ -24,6 +24,8 @@ module.exports = function(app) {
 	// Copies routes
 	app.route('/copies')
 		.post(users.hasAuthorization(canedit), exams.createCopy);
+	app.route('/copies/validate')
+		.post(users.hasAuthorization(['teacher']), exams.validateCopy);
 
 	app.route('/upload/copy')
 		.post(users.hasAuthorization(canedit), multiparty(), exams.uploadCopy);
