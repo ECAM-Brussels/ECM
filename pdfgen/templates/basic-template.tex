@@ -14,19 +14,22 @@
 
 \setlength{\oddsidemargin}{1.5cm}
 \setlength{\textwidth}{18cm}
-\setlength{\topmargin}{1.5cm}
+\setlength{\textheight}{26cm}
+\setlength{\topmargin}{0.75cm}
 \setlength{\headsep}{0.5cm}
 \setlength{\parindent}{0cm}
 
 \fancyhead{}
 \fancyfoot{}
-\fancyhead[C]{{\renewcommand{\arraystretch}{1.5}\begin{tabularx}{\textwidth}{|lXr|}
+\fancyhead[C]{\textbf{Classement} : N$^\circ$\oldstylenums{!classement!} --- \textbf{Auditoire} : !room! (siège !seatnumber!) \\[4mm] {\renewcommand{\arraystretch}{1.5}\begin{tabularx}{\textwidth}{|lXr|}
 \hline
-!firstname! \textsc{!lastname!} (!matricule!) & & !date! \\
-N$^\circ$!num! & & Auditoire !room! (Siège \oldstylenums{!seatnumber!}) \\
+Nom : !firstname! \textsc{!lastname!} (!matricule!) & & !datetime! \\
+Matricule : !matricule! & & Série !serie! \\
 \multicolumn{3}{|c|}{\large\bfseries !courseid! --- !coursename!} \\[2mm]
 \hline
 \end{tabularx}}}
+\fancyfoot[RE,LO]{!date! --- série~!serie!}
+\fancyfoot[C]{Examen !courseid!}
 \fancyfoot[RO,LE]{Page~\thepage}
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
@@ -34,7 +37,7 @@ N$^\circ$!num! & & Auditoire !room! (Siège \oldstylenums{!seatnumber!}) \\
 
 \begin{document}
 	%%% Title page
-	\ \vspace{1cm}
+	\ \vspace{1.5cm}
 	
 	\begin{desclist}{\sf\bfseries}{}[\hspace{2.5cm}]
 		\item[Name] !filename!
