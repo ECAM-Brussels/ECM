@@ -72,11 +72,10 @@ exports.delete = function(req, res) {
  * List of all exams
  */
 exports.list = function(req, res) { 
-	Exam.find({}, 'course groups date')
-//		.populate('course', 'ID name')
-		.populate('course', 'ID name', null, {sort: {'ID': 1}})
+	Exam.find({}, 'course groups date printed ready')
+		.populate('course', 'ID name')
 		.populate('groups', 'name')
-//		.sort({'course': 1})
+		.sort({'date': 1})
 		.exec(function(err, exams) {
 		if (err) {
 			return res.status(400).send({

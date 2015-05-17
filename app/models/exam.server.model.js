@@ -45,7 +45,15 @@ var ExamSchema = new Schema({
 	copies: [{
 		type: Schema.ObjectId,
 		ref: 'Copy'
-	}]
+	}],
+	printed: {
+		type: Date,
+		default: null
+	},
+	ready: {
+		type: Boolean,
+		default: false
+	}
 });
 
 mongoose.model('Exam', ExamSchema);

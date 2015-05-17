@@ -18,6 +18,14 @@ footer > div {
 	padding: 20px 0;
 }
 
+img.grayscale {
+	filter: grayscale(1);
+	-webkit-filter: grayscale(1);
+	-moz-filter: grayscale(1);
+	-o-filter: grayscale(1);
+	-ms-filter: grayscale(1);
+}
+
 .content {
 	margin-top: 50px;
 }
