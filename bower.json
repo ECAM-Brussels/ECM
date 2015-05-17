@@ -1,24 +1,24 @@
 {
-  "name": "ECM",
-  "version": "0.0.1",
-  "description": "Exam Copies Manager",
-  "dependencies": {
-    "bootstrap": "~3",
-    "angular": "1.*",
-    "angular-resource": "1.*",
-    "angular-mocks": "1.*",
-    "angular-cookies": "1.*",
-    "angular-animate": "1.*",
-    "angular-touch": "1.*",
-    "angular-sanitize": "1.*",
-    "angular-bootstrap": "~0.11.2",
-    "angular-ui-utils": "~0.1.1",
-    "angular-ui-router": "~0.2.11",
-    "angular-route": "1.*",
-    "ng-file-upload": "~4.1.4",
-    "ng-tags-input": "~2.3.0"
-  },
-  "resolutions": {
-    "angular": ">=1.2.1"
-  }
+	"name": "ECM",
+	"version": "0.0.1",
+	"description": "Exam Copies Manager",
+	"dependencies": {
+		"bootstrap": "~3",
+		"angular": "1.*",
+		"angular-resource": "1.*",
+		"angular-mocks": "1.*",
+		"angular-cookies": "1.*",
+		"angular-animate": "1.*",
+		"angular-touch": "1.*",
+		"angular-sanitize": "1.*",
+		"angular-bootstrap": "~0.11.2",
+		"angular-ui-utils": "~0.1.1",
+		"angular-ui-router": "~0.2.11",
+		"angular-route": "1.*",
+		"ng-file-upload": "~4.1.4",
+		"ng-tags-input": "~2.3.0"
+	},
+	"resolutions": {
+		"angular": ">=1.2.1"
+	}
 }

@@ -14,16 +14,17 @@
 
 \setlength{\oddsidemargin}{1.5cm}
 \setlength{\textwidth}{18cm}
-\setlength{\textheight}{26cm}
+\setlength{\textheight}{23.8cm}
 \setlength{\topmargin}{0.75cm}
 \setlength{\headsep}{0.5cm}
+\setlength{\headheight}{3cm}
 \setlength{\parindent}{0cm}
 
 \fancyhead{}
 \fancyfoot{}
 \fancyhead[C]{\textbf{Classement} : N$^\circ$\oldstylenums{!classement!} --- \textbf{Auditoire} : !room! (siège !seatnumber!) \\[4mm] {\renewcommand{\arraystretch}{1.5}\begin{tabularx}{\textwidth}{|lXr|}
 \hline
-Nom : !firstname! \textsc{!lastname!} (!matricule!) & & !datetime! \\
+Nom : !firstname! \textsc{!lastname!} & & !datetime! \\
 Matricule : !matricule! & & Série !serie! \\
 \multicolumn{3}{|c|}{\large\bfseries !courseid! --- !coursename!} \\[2mm]
 \hline
@@ -37,7 +38,7 @@ Matricule : !matricule! & & Série !serie! \\
 
 \begin{document}
 	%%% Title page
-	\ \vspace{1.5cm}
+	\thispagestyle{plain}
 	
 	\begin{desclist}{\sf\bfseries}{}[\hspace{2.5cm}]
 		\item[Name] !filename!

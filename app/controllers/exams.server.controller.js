@@ -11,6 +11,7 @@ var mongoose = require('mongoose'),
 	path = require('path'),
 	process = require('process'),
 	child_process = require('child_process'),
+	moment = require('moment'),
 	_ = require('lodash');
 
 /**
@@ -95,7 +96,7 @@ exports.examByID = function(req, res, next, id) {
 		.populate('rooms', 'ID')
 		.populate('activities', 'ID teachers')
 		.populate('groups', 'name')
-		.populate('copies', 'activity created user series files')
+		.populate('copies', 'exam activity created user series files')
 		.exec(function(err, exam) {
 		if (err) {
 			return next(err);
@@ -243,51 +244,71 @@ exports.validateCopy = function(req, res) {
 
 // Upload a PDF copy for the exam
 exports.uploadCopy = function(req, res) {
-	// Create directory if not existing
-	var dest = path.dirname(require.main.filename) + '/copies/' + req.body.copy;
-	if (! fs.existsSync(dest)) {
-		fs.mkdirSync (dest);
-	}
-	// Copy PDF file
-	var file = req.files.file;
-	dest = dest + '/' + path.basename(file.path);
-	fs.copy(file.path, dest, function(err) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
+	// Check exam
+	Exam.findById(req.body.exam, 'course date')
+		.populate('course', 'ID name')
+		.exec(function(err, exam) {
+		// Create directory if not existing
+		var dest = path.dirname(require.main.filename) + '/copies/' + req.body.copy;
+		if (! fs.existsSync(dest)) {
+			fs.mkdirSync (dest);
 		}
-		// Delete PDF file from /tmp
-		fs.unlink(file.path, function(err){});
-		// Create the final PDF from text file
-		var src = path.dirname(require.main.filename) + '/pdfgen/templates/basic-template.tex';
-		var content = fs.readFileSync(src, {encoding: 'utf8', flag: 'r'}, function(err){});
-		content = content.replace(/!filename!/g, path.basename(file.path));
-		content = content.replace(/!filepath!/g, dest);
-		dest = path.dirname(require.main.filename) + '/copies/' + req.body.copy + '/copy_' + req.body.index + '.tex';
-		fs.writeFileSync(dest, content, {encoding: 'utf8', flag: 'w'}, function(err){});
-		process.chdir(path.dirname(dest));
-		child_process.execFile('pdflatex', [path.basename(dest)], function(err, stdout, stderr) {
+		// Copy PDF file
+		var file = req.files.file;
+		dest = dest + '/' + path.basename(file.path);
+		fs.copy(file.path, dest, function(err) {
 			if (err) {
-				console.log('ERROR : ' + err);
 				return res.status(400).send({
 					message: errorHandler.getErrorMessage(err)
 				});
 			}
-			// Update database
-			Copy.findById(req.body.copy)
-				.exec(function(err, copy) {
-				copy.files[req.body.index] = {
-					created: new Date(),
-					user: req.user
-				};
-				Copy.update({_id: copy._id}, {$set: {files: copy.files}}, function(err) {
-					if (err) {
-						return res.status(400).send({
-							message: errorHandler.getErrorMessage(err)
-						});
-					}
-					res.jsonp(copy.files[req.body.index]);
+			// Delete PDF file from /tmp
+			fs.unlink(file.path, function(err){});
+			// Create the final PDF from text file
+			var src = path.dirname(require.main.filename) + '/pdfgen/templates/basic-template.tex';
+			var content = fs.readFileSync(src, {encoding: 'utf8', flag: 'r'}, function(err){});
+			content = content.replace(/!filename!/g, path.basename(file.path));
+			content = content.replace(/!filepath!/g, dest);
+			var examdate = moment(exam.date);
+			content = content.replace(/!datetime!/g, examdate.format('DD/MM/YYYY HH:mm'));
+			content = content.replace(/!date!/g, examdate.format('DD/MM/YYYY'));
+			content = content.replace(/!firstname!/g, '');
+			content = content.replace(/!lastname!/g, '');
+			content = content.replace(/!matricule!/g, '');
+			content = content.replace(/!courseid!/g, exam.course.ID);
+			content = content.replace(/!coursename!/g, exam.course.name);
+			content = content.replace(/!serie!/g, req.body.index);
+			content = content.replace(/!classement!/g, '\\hspace{1cm}');
+			content = content.replace(/!room!/g, '\\hspace{1.5cm}');
+			content = content.replace(/!seatnumber!/g, '\\hspace{1cm}');
+			var now = new Date();
+			content = content.replace(/!gendate!/g, now.getDate() + '/' + now.getMonth() + '/' + now.getFullYear() + ' ' + now.getHours() + ':' + now.getMinutes());
+			// Compile the LaTeX file
+			dest = path.dirname(require.main.filename) + '/copies/' + req.body.copy + '/copy_' + req.body.index + '.tex';
+			fs.writeFileSync(dest, content, {encoding: 'utf8', flag: 'w'}, function(err){});
+			process.chdir(path.dirname(dest));
+			child_process.execFile('pdflatex', [path.basename(dest)], function(err, stdout, stderr) {
+				if (err) {
+					console.log('ERROR : ' + err);
+					return res.status(400).send({
+						message: errorHandler.getErrorMessage(err)
+					});
+				}
+				// Update database
+				Copy.findById(req.body.copy)
+					.exec(function(err, copy) {
+					copy.files[req.body.index] = {
+						created: new Date(),
+						user: req.user
+					};
+					Copy.update({_id: copy._id}, {$set: {files: copy.files}}, function(err) {
+						if (err) {
+							return res.status(400).send({
+								message: errorHandler.getErrorMessage(err)
+							});
+						}
+						res.jsonp(copy.files[req.body.index]);
+					});
 				});
 			});
 		});

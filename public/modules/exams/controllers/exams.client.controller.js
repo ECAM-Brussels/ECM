@@ -241,6 +241,7 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 				fields: {
 					'username': $scope.authentication.user._id,
 					'copy': copy._id,
+					'exam': copy.exam,
 					'index': index
 				},
 				file: files[0]
