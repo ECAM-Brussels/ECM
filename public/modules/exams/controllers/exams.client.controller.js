@@ -144,11 +144,13 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 			if ($scope.exam.split) {
 				// 
 			} else {
-				$scope.progressValue = new Array($scope.exam.copies[0].series);
-				$scope.uploading = new Array($scope.exam.copies[0].series);
-				for (var i = 0; i < $scope.exam.copies[0].series; i++) {
-					$scope.progressValue[i] = null;
-					$scope.uploading[i] = false;
+				if ($scope.exam.copies[0]) {
+					$scope.progressValue = new Array($scope.exam.copies[0].series);
+					$scope.uploading = new Array($scope.exam.copies[0].series);
+					for (var i = 0; i < $scope.exam.copies[0].series; i++) {
+						$scope.progressValue[i] = null;
+						$scope.uploading[i] = false;
+					}
 				}
 			}
 		});

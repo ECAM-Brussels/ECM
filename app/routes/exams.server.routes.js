@@ -18,17 +18,17 @@ module.exports = function(app) {
 
 	app.route('/exams/:examId')
 		.get(users.hasAuthorization(canview), exams.read)
-		.put(users.hasAuthorization(canedit), exams.update)
+		.put(users.hasAuthorization(['admin', 'teacher']), exams.update)
 		.delete(users.hasAuthorization(canedit), exams.delete);
 
 	// Copies routes
 	app.route('/copies')
-		.post(users.hasAuthorization(canedit), exams.createCopy);
+		.post(users.hasAuthorization(['teacher']), exams.createCopy);
 	app.route('/copies/validate')
 		.post(users.hasAuthorization(['teacher']), exams.validateCopy);
 
 	app.route('/upload/copy')
-		.post(users.hasAuthorization(canedit), multiparty(), exams.uploadCopy);
+		.post(users.hasAuthorization(['admin', 'teacher']), multiparty(), exams.uploadCopy);
 
 	app.route('/download/copy')
 		.post(users.hasAuthorization(['admin', 'teacher']), exams.downloadCopy);
