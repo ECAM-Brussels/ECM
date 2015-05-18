@@ -28,6 +28,14 @@ angular.module('exams').config(['$stateProvider', function($stateProvider) {
 		url: '/print/exams/:examId',
 		templateUrl: 'modules/exams/views/view-print-exam.client.view.html'
 	})
+	.state('manageExams', {
+		url: '/manage/exams',
+		templateUrl: 'modules/exams/views/manage-exams.client.view.html'
+	})
+	.state('viewManageExams', {
+		url: '/manage/exams/:examId',
+		templateUrl: 'modules/exams/views/view-manage-exam.client.view.html'
+	})
 	.state('editExam', {
 		url: '/exams/:examId/edit',
 		templateUrl: 'modules/exams/views/edit-exam.client.view.html'

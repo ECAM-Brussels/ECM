@@ -1,0 +1,33 @@
+<section data-ng-controller="ExamsController" data-ng-init="findOne()">
+	<h1>{{exam.course.ID}}</h1>
+
+	<h2>Information</h2>
+
+	<div id="bla">
+	</div>
+
+	<dl class="dl-horizontal">
+		<dt>Course</dt>
+		<dd>{{exam.course.ID}} &mdash; {{exam.course.name}}</dd>
+		<dt>Coordinator</dt>
+		<dd>{{exam.course.coordinator.username}}</dd>
+		<dt>Date</dt>
+		<dd>{{exam.date | date: "dd MMM yyyy H:mm"}}</dd>
+		<dt>Rooms</dt>
+		<dd><span data-ng-repeat="room in exam.rooms">{{room.ID}} </span></dd>
+		<dt>Groups</dt>
+		<dd><span data-ng-repeat="group in exam.groups">{{group.name}} </span></dd>
+	</dl>
+
+	<h2>Affectation</h2>
+
+	<div data-ng-if="! exam.affectation || exam.affectation.length">
+		<ul>
+			<li class="list-group-item" data-ng-repeat="i in getNumber(exam.affectation.length) track by $index"><b>#{{$index + 1}}</b> {{exam.affectation[$index].student.firstname}} {{exam.affectation[$index].student.lastname}} with seat #{{exam.affectation[$index].seat}} in room {{exam.affectation[$index].room.ID}}</li>
+		</ul>
+	</div>
+
+	<div class="alert alert-warning text-center" data-ng-if="exam.affectation && ! exam.affectation.length">
+        Affectations have not been computed yet.
+    </div>
+</section>

@@ -90,7 +90,7 @@ exports.list = function(req, res) {
  * Exam middleware
  */
 exports.examByID = function(req, res, next, id) { 
-	Exam.findById(id, 'course activities rooms groups date split copies')
+	Exam.findById(id, 'course activities rooms groups date split copies affectation')
 		.populate('course', 'ID name coordinator')
 		.populate('rooms', 'ID')
 		.populate('activities', 'ID teachers')
@@ -128,8 +128,26 @@ exports.examByID = function(req, res, next, id) {
 						return next(new Error('Failed to load Exam ' + id));
 					}
 
-					req.exam = exam;
-					next();
+					Exam.populate(exam, {path: 'affectation.room', select: 'ID', model: 'Room'}, function (err, exam) {
+						if (err) {
+							return next(err);
+						}
+						if (! exam) {
+							return next(new Error('Failed to load Exam ' + id));
+						}
+
+						Exam.populate(exam, {path: 'affectation.student', select: 'firstname lastname', model: 'Student'}, function (err, exam) {
+							if (err) {
+								return next(err);
+							}
+							if (! exam) {
+								return next(new Error('Failed to load Exam ' + id));
+							}
+
+							req.exam = exam;
+							next();
+						});
+					});
 				});
 			});
 		});

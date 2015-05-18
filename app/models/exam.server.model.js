@@ -53,6 +53,22 @@ var ExamSchema = new Schema({
 	ready: {
 		type: Boolean,
 		default: false
+	},
+	affectation: {
+		type: [new Schema({
+			student: {
+				type: Schema.ObjectId,
+				ref: 'User'
+			},
+			seat: {
+				type: Number,
+				required: true
+			},
+			room: {
+				type: Schema.ObjectId,
+				ref: 'Room'
+			}
+		})]
 	}
 });
 
