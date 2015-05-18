@@ -31,7 +31,7 @@ module.exports = function(app) {
 		.post(users.hasAuthorization(['admin', 'teacher']), multiparty(), exams.uploadCopy);
 
 	app.route('/download/copy')
-		.post(users.hasAuthorization(['admin', 'teacher']), exams.downloadCopy);
+		.post(users.hasAuthorization(['admin', 'teacher', 'printer']), exams.downloadCopy);
 
 	// Finish by binding the exam middleware
 	app.param('examId', exams.examByID);

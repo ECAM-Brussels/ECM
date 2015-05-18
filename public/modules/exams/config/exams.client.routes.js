@@ -24,6 +24,10 @@ angular.module('exams').config(['$stateProvider', function($stateProvider) {
 		url: '/print/exams',
 		templateUrl: 'modules/exams/views/print-exams.client.view.html'
 	})
+	.state('viewPrintExams', {
+		url: '/print/exams/:examId',
+		templateUrl: 'modules/exams/views/view-print-exam.client.view.html'
+	})
 	.state('editExam', {
 		url: '/exams/:examId/edit',
 		templateUrl: 'modules/exams/views/edit-exam.client.view.html'

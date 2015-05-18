@@ -262,4 +262,13 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 			$scope.exam.copies[0].files[index].validated = true;
 		});
 	};
+
+	$scope.downloadCopy = function(copy, index) {
+		if (copy.files[index] && copy.files[index].validated) {
+			console.log('Bla blaaaabla bla');
+			$http.post('/download/copy', {'copy': copy._id, 'index': index}).success(function(data, status, headers, config) {
+				console.log(data);
+			});
+		}
+	};
 }]);

@@ -1,0 +1,46 @@
+<section data-ng-controller="ExamsController" data-ng-init="findOne()">
+	<h1>{{exam.course.ID}}</h1>
+
+	<h2>Information</h2>
+
+	<div id="bla">
+	</div>
+
+	<dl class="dl-horizontal">
+		<dt>Course</dt>
+		<dd>{{exam.course.ID}} &mdash; {{exam.course.name}}</dd>
+		<dt>Coordinator</dt>
+		<dd>{{exam.course.coordinator.username}}</dd>
+		<dt>Date</dt>
+		<dd>{{exam.date | date: "dd MMM yyyy H:mm"}}</dd>
+		<dt>Rooms</dt>
+		<dd><span data-ng-repeat="room in exam.rooms">{{room.ID}} </span></dd>
+		<dt>Groups</dt>
+		<dd><span data-ng-repeat="group in exam.groups">{{group.name}} </span></dd>
+	</dl>
+
+	<h2>Copies</h2>
+
+	<div data-ng-if="exam.split">
+		<p>One PDF file has to be uploaded for each activity of the course.</p>
+	</div>
+
+	<div data-ng-if="! exam.split">
+		<p>Only one PDF has to be uploaded for all the activities of the course.</p>
+
+		<div data-ng-if="exam.copies.length === 1">
+			<ul class="list-group">
+				<li class="list-group-item" data-ng-repeat="i in getNumber(exam.copies[0].series) track by $index">
+					<b>Serie {{$index + 1}}</b>
+					<span data-ng-if="exam.copies[0].files[$index]">A validated copy has been uploaded on {{exam.copies[0].files[$index].created | date: "dd MMM yyyy H:mm"}}</span>
+					<span data-ng-if="! exam.copies[0].files[$index].validated">The copy has not been validated yet.</span>
+					<span class="pull-right"><img src="images/pdf.png" width="23" height="24" alt="PDF" data-ng-class="{grayscale: ! exam.copies[0].files[$index].validated}" data-ng-click="downloadCopy(exam.copies[0], $index)"></span>
+				</li>
+			</ul>
+		</div>
+
+		<div data-ng-if="exam.copies.length === 0" class="alert alert-warning" role="alert">
+			The number of series has not been defined yet.
+		</div>
+	</div>
+</section>
