@@ -1,7 +1,7 @@
 'use strict';
 
 // Exams controller
-angular.module('exams').controller('ExamsController', ['$scope', '$stateParams', '$location', '$window', 'Authentication', 'Exams', 'MyExams', 'Copies', '$http', 'Upload', function($scope, $stateParams, $location, $window, Authentication, Exams, MyExams, Copies, $http, Upload) {
+angular.module('exams').controller('ExamsController', ['$scope', '$stateParams', '$location', '$window', 'Authentication', 'Exams', 'MyExams', 'Copies', '$http', 'Upload', '$filter', function($scope, $stateParams, $location, $window, Authentication, Exams, MyExams, Copies, $http, Upload, $filter) {
 	$scope.authentication = Authentication;
 	$scope.split = false;
 	$scope.uploading = null;
@@ -19,7 +19,7 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		}
 	});
 	$scope.loadCourses = function(query) {
-		return coursesList;
+		return $filter('filter')(coursesList, query);
 	};
 
 	// Load activities
@@ -30,7 +30,7 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		allActivities = data;
 	});
 	$scope.loadActivities = function(query) {
-		return $scope.activitiesList;
+		return $filter('filter')($scope.activitiesList, query);
 	};
 
 	// Load rooms
@@ -45,7 +45,7 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		}
 	});
 	$scope.loadRooms = function(query) {
-		return roomsList;
+		return $filter('filter')(roomsList, query);
 	};
 
 	// Load groups
@@ -60,7 +60,7 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		}
 	});
 	$scope.loadGroups = function(query) {
-		return groupsList;
+		return $filter('filter')(groupsList, query);
 	};
 
 	// Create new exam

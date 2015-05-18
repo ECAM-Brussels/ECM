@@ -1,7 +1,7 @@
 'use strict';
 
 // Courses controller
-angular.module('courses').controller('CoursesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Courses', 'MyCourses', '$http', function($scope, $stateParams, $location, Authentication, Courses, MyCourses, $http) {
+angular.module('courses').controller('CoursesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Courses', 'MyCourses', '$http', '$filter', function($scope, $stateParams, $location, Authentication, Courses, MyCourses, $http, $filter) {
 	$scope.authentication = Authentication;
 
 	// Load teachers
@@ -16,7 +16,7 @@ angular.module('courses').controller('CoursesController', ['$scope', '$statePara
 		}
 	});
 	$scope.loadTeachers = function(query) {
-		return $scope.allTeachers;
+		return $filter('filter')($scope.allTeachers, query);
 	};
 
 	// Load activities
@@ -31,7 +31,7 @@ angular.module('courses').controller('CoursesController', ['$scope', '$statePara
 		}
 	});
 	$scope.loadActivities = function(query) {
-		return $scope.allActivities;
+		return $filter('filter')($scope.allActivities, query)
 	};
 
 	// Create new course

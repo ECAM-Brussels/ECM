@@ -1,7 +1,7 @@
 'use strict';
 
 // Activities controller
-angular.module('activities').controller('ActivitiesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Activities', '$http', function($scope, $stateParams, $location, Authentication, Activities, $http) {
+angular.module('activities').controller('ActivitiesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Activities', '$http', '$filter', function($scope, $stateParams, $location, Authentication, Activities, $http, $filter) {
 	$scope.authentication = Authentication;
 	$scope.teachers = [];
 	$scope.allTeachers = [];
@@ -16,7 +16,7 @@ angular.module('activities').controller('ActivitiesController', ['$scope', '$sta
 	});
 
 	$scope.loadTeachers = function(query) {
-		return $scope.allTeachers;
+		return $filter('filter')($scope.allTeachers, query);
 	};
 
 	// Create new activity
