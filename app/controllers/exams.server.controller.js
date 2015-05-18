@@ -167,7 +167,7 @@ exports.hasAuthorization = function(req, res, next) {
 function isTeacher(teacher, activities) {
 	for (var i = 0; i < activities.length; i++) {
 		for (var j = 0; j < activities[i].teachers.length; j++) {
-			if (activities[i].teachers[j]._id.toString() === teacher) { // == works but === do not work...
+			if (activities[i].teachers[j].toString() === teacher) { // == works but === do not work...
 				return true;
 			}
 		}
@@ -177,7 +177,7 @@ function isTeacher(teacher, activities) {
 
 exports.listMyExams = function(req, res) { 
 	Exam.find({}, 'course activities groups date')
-		.populate('course', 'ID name coordinator')
+		.populate('course', 'ID name coordinator activities')
 		.populate('activities', 'teachers')
 		.populate('groups', 'name')
 		.sort({'ID': 1})
@@ -193,18 +193,25 @@ exports.listMyExams = function(req, res) {
 					message: 'Sorry, I failed populating your exams'
 				});
 			}
-			var tokeep = [];
+			Exam.populate(exams, {path: 'course.activities', select: 'ID name teachers', model: 'Activity'}, function(err, exam) {
+				if (err) {
+					return res.status(400).send({
+						message: 'Sorry, I failed populating your exams'
+					});
+				}
+				var tokeep = [];
 
-			for (var i = 0; i < exams.length; i++) {
-				if (exams[i].course.coordinator.toString() === req.user.id) { // == works but === do not work...
-					tokeep.push(exams[i]);
-				} else {
-					if (isTeacher(req.user.id, exams[i].activities)) {
+				for (var i = 0; i < exams.length; i++) {
+					if (exams[i].course.coordinator.toString() === req.user.id) { // == works but === do not work...
 						tokeep.push(exams[i]);
+					} else {
+						if (isTeacher(req.user.id, exams[i].course.activities)) {
+							tokeep.push(exams[i]);
+						}
 					}
 				}
-			}
-			res.jsonp(tokeep);
+				res.jsonp(tokeep);
+			});
 		});
 	});
 };
