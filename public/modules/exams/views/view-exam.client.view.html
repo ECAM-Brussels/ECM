@@ -84,4 +84,16 @@
 			</form>
 		</div>
 	</div>
+
+	<h2>Affectation</h2>
+
+	<div data-ng-if="! exam.affectation || exam.affectation.length">
+		<ul class="list-group">
+			<li class="list-group-item" data-ng-repeat="i in getNumber(exam.affectation.length) track by $index"><b>#{{$index + 1}}</b> {{exam.affectation[$index].student.firstname}} {{exam.affectation[$index].student.lastname}} with seat #{{exam.affectation[$index].seat}} in room {{exam.affectation[$index].room.ID}}</li>
+		</ul>
+	</div>
+
+	<div class="alert alert-warning text-center" data-ng-if="exam.affectation && ! exam.affectation.length">
+		Affectations have not been computed yet.
+	</div>
 </section>
