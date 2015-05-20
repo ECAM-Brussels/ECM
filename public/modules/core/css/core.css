@@ -26,6 +26,10 @@ img.grayscale, input[type="image"].grayscale {
 	-ms-filter: grayscale(1);
 }
 
+form.in-form {
+	display: inline-block;
+}
+
 .content {
 	margin-top: 50px;
 }

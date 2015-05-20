@@ -36,6 +36,10 @@ var CopySchema = new Schema({
 			validated: {
 				type: Boolean,
 				default: false
+			},
+			name: {
+				type: String,
+				required: true
 			}
 		})]
 	},

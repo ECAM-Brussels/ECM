@@ -90,7 +90,7 @@ exports.list = function(req, res) {
  * Exam middleware
  */
 exports.examByID = function(req, res, next, id) { 
-	Exam.findById(id, 'course activities rooms groups date split copies affectation')
+	Exam.findById(id, 'course activities rooms groups date split copies affectation ready printed')
 		.populate('course', 'ID name coordinator')
 		.populate('rooms', 'ID')
 		.populate('activities', 'ID teachers')
@@ -251,6 +251,89 @@ exports.downloadCopy = function(req, res) {
 	});
 };
 
+exports.downloadCopies = function(req, res) {
+	console.log('Downloading copies from exam ' + req.body.exam);
+	Exam.findById(req.body.exam)
+		.populate('copies', 'files')
+		.populate('course', 'ID name')
+		.exec(function(err, exam) {
+		// if (err)
+		Exam.populate(exam, {path: 'affectation.student', select: 'matricule firstname lastname', model: 'Student'}, function(err, exam) {
+			if (err) {
+				return res.status(400).send({
+					message: 'Sorry, I failed populating your exams'
+				});
+			}
+			Exam.populate(exam, {path: 'affectation.room', select: 'ID', model: 'Room'}, function(err, exam) {
+				if (err) {
+					return res.status(400).send({
+						message: 'Sorry, I failed populating your exams'
+					});
+				}
+				// Create directory if not existing
+				var dest = path.dirname(require.main.filename) + '/copies/' + exam._id;
+				if (! fs.existsSync(dest)) {
+					fs.mkdirSync (dest);
+				}
+				// Copy all the files
+				for (var i = 0; i < exam.copies[0].files.length; i++) {
+					var filename = exam.copies[0].files[i].name;
+					var src = path.dirname(require.main.filename) + '/copies/' + exam.copies[0]._id + '/' + exam.copies[0].files[i].name;
+					var dest = path.dirname(require.main.filename) + '/copies/' + exam._id + '/' + exam.copies[0].files[i].name;
+					fs.copy(src, dest, function(err){});
+				}
+				// For each student
+				var affectation = exam.affectation;
+				var totalGenerated = 0;
+				for (var i = 0; i < affectation.length; i++) {
+					console.log(affectation[i]);
+					console.log(exam.copies[0].files[affectation[i].serie].name);
+					// Create the final PDF from text file
+					src = path.dirname(require.main.filename) + '/pdfgen/templates/basic-template.tex';
+					var content = fs.readFileSync(src, {encoding: 'utf8', flag: 'r'}, function(err){});
+				//	content = content.replace(/!filename!/g, path.basename(file.path));
+					content = content.replace(/!filepath!/g, path.dirname(require.main.filename) + '/copies/' + exam._id + '/' + exam.copies[0].files[i].name);
+					var examdate = moment(exam.date);
+					content = content.replace(/!datetime!/g, examdate.format('DD/MM/YYYY HH:mm'));
+					content = content.replace(/!date!/g, examdate.format('DD/MM/YYYY'));
+					content = content.replace(/!firstname!/g, affectation[i].student.firstname);
+					content = content.replace(/!lastname!/g, affectation[i].student.lastname);
+					content = content.replace(/!matricule!/g, affectation[i].student.matricule);
+					content = content.replace(/!courseid!/g, exam.course.ID);
+					content = content.replace(/!coursename!/g, exam.course.name);
+					content = content.replace(/!serie!/g, affectation[i].serie + 1);
+					content = content.replace(/!classement!/g, i + 1);
+					content = content.replace(/!room!/g, affectation[i].room.ID);
+					content = content.replace(/!seatnumber!/g, affectation[i].seat);
+				//	var now = new Date();
+				//	content = content.replace(/!gendate!/g, now.getDate() + '/' + now.getMonth() + '/' + now.getFullYear() + ' ' + now.getHours() + ':' + now.getMinutes());
+					dest = path.dirname(require.main.filename) + '/copies/' + exam._id + '/student_' + i + '.tex';
+					fs.writeFileSync(dest, content, {encoding: 'utf8', flag: 'w'}, function(err){});
+					process.chdir(path.dirname(dest));
+					child_process.execFile('pdflatex', [path.basename(dest)], function(err, stdout, stderr) {
+						if (err) {
+							console.log('ERROR : ' + err);
+							return res.status(400).send({
+								message: errorHandler.getErrorMessage(err)
+							});
+						}
+						console.log('PDF student ' + totalGenerated + ' generated');
+						totalGenerated++;
+						if (totalGenerated === affectation.length) {
+							console.log('Finished all generation.');
+							process.chdir(path.dirname(require.main.filename) + '/copies');
+							child_process.execFile('zip', ['-r', 'copies-' + exam._id + '.zip', exam._id], function(err, stdout, stderr) {
+								console.log('ZIP OK');
+								res.sendFile(path.dirname(require.main.filename) + '/copies/copies-' + exam._id + '.zip');
+							});
+						} 
+					});
+				}
+			});
+		});
+	});
+};
+
 exports.validateCopy = function(req, res) {
 	Copy.findById(req.body.copy)
 		.exec(function(err, copy) {
@@ -323,7 +406,8 @@ exports.uploadCopy = function(req, res) {
 					.exec(function(err, copy) {
 					copy.files[req.body.index] = {
 						created: new Date(),
-						user: req.user
+						user: req.user,
+						name: path.basename(file.path)
 					};
 					Copy.update({_id: copy._id}, {$set: {files: copy.files}}, function(err) {
 						if (err) {

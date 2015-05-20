@@ -18,7 +18,7 @@ module.exports = function(app) {
 
 	app.route('/exams/:examId')
 		.get(users.hasAuthorization(canview), exams.read)
-		.put(users.hasAuthorization(['admin', 'teacher']), exams.update)
+		.put(users.hasAuthorization(['admin', 'teacher', 'printer']), exams.update)
 		.delete(users.hasAuthorization(canedit), exams.delete);
 
 	// Copies routes
@@ -32,6 +32,8 @@ module.exports = function(app) {
 
 	app.route('/download/copy')
 		.post(users.hasAuthorization(['admin', 'teacher', 'printer']), exams.downloadCopy);
+	app.route('/download/copies')
+		.post(users.hasAuthorization(['admin', 'printer']), exams.downloadCopies);
 
 	// Finish by binding the exam middleware
 	app.param('examId', exams.examByID);

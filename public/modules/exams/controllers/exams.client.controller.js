@@ -267,4 +267,16 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 			$scope.exam.copies[0].files[index].validated = true;
 		});
 	};
+
+	$scope.validatePrint = function(exam) {
+		console.log(exam);
+		var exam = $scope.exam;
+		exam.printed = new Date();
+		exam.$update(function() {
+			$location.path('print/exams/' + exam._id);
+		}, function(errorResponse) {
+			exam.printed = null;
+			$scope.error = errorResponse.data.message;
+		});
+	};
 }]);
