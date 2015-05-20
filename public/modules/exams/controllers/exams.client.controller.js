@@ -207,18 +207,19 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 
 	// Set the number of series
 	$scope.setSeries = function (activityID) {
+		var series = this.series;
 		// Create new copy object
 		var copy = new Copies({
 			exam: $scope.exam._id,
 			activity: activityID === -1 ? null : activityID,
-			series: this.series
+			series: series
 		});
 		// Redirect after save
 		copy.$save(function(response) {
 			// Attach copy to exam
-			$scope.exam.copies.push(copy._id);
+			$scope.exam.copies.push(copy);
 			$scope.exam.$update(function() {
-				$window.location.reload();
+//				$scope.exam.copies.push(copy);
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
@@ -228,7 +229,11 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 	};
 
 	$scope.getNumber = function(n) {
-		return new Array(n);
+		var tab = new Array();
+		for (var i = 0; i < n; i++) {
+			tab.push(i);
+		}
+		return tab;
 	};
 
 	$scope.fileSelected = function(files, event, index, copy) {
