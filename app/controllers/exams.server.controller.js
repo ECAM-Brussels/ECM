@@ -335,16 +335,70 @@ exports.downloadCopies = function(req, res) {
 };
 
 exports.validateCopy = function(req, res) {
-	Copy.findById(req.body.copy)
-		.exec(function(err, copy) {
-		copy.files[req.body.index].validated = true;
-		Copy.update({_id: copy._id}, {$set: {files: copy.files}}, function(err) {
+	var copies = req.body.copies;
+	var copyindex = req.body.copyindex;
+	var fileindex = req.body.fileindex;
+	// Check args
+	if (! (0 <= copyindex && copyindex < copies.length && 0 <= fileindex && fileindex < copies[copyindex].files.length)) {
+		return res.status(400).send({
+			message: 'Invalid arguments'
+		});
+	}
+	// Find the copy to validate
+	Copy.findById(copies[copyindex]._id).exec(function(err, copy) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		}
+		if (! copy) {
+			return res.status(400).send({
+				message: 'Impossible to find the specified copy'
+			});
+		}
+		// Mark the copy as validated
+		copies[copyindex].files[fileindex].validated = true;
+		copy.files[fileindex].validated = true;
+		Copy.update({'_id': copy._id}, {$set: {files: copy.files}}, function(err) {
 			if (err) {
 				return res.status(400).send({
 					message: errorHandler.getErrorMessage(err)
 				});
 			}
-			res.send('OK');
+			// Check if all files have been validated
+			var ready = true;
+			for (var i = 0; i < copies.length && ready; i++) {
+				for (var j = 0; j < copies[i].files.length && ready; j++) {
+					if (! copies[i].files[j] || ! copies[i].files[j].validated) {
+						ready = false;
+					}
+				}
+			}
+			// Update the exam to mark it ready
+			if (ready) {
+				Exam.findById(copies[copyindex].exam).exec(function(err, exam){
+					if (err) {
+						return res.status(400).send({
+							message: errorHandler.getErrorMessage(err)
+						});
+					}
+					if (! exam) {
+						return res.status(400).send({
+							message: 'Impossible to find the specified exam'
+						});
+					}
+					Exam.update({'_id': exam._id}, {$set: {ready: true}}, function(err) {
+						if (err) {
+							return res.status(400).send({
+								message: errorHandler.getErrorMessage(err)
+							});
+						}
+						res.send('OK ready');
+					})
+				});
+			} else {
+				res.send('OK not ready');
+			}
 		});
 	});
 };

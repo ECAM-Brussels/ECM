@@ -68,9 +68,8 @@
 					</div>
 					<progressbar data-ng-if="progressValue[$index]" class="progress-striped active" animate="true" max="100" value="progressValue[$index]" type="success"><i>{{progressValue[$index]}} %</i></progressbar>
 					<div data-ng-if="! exam.copies[0].files[$index].validated">
-						<form class="form-inline">
-							<button data-ng-if="! uploading[$index]" class="btn btn-primary" ngf-select accept="application/pdf" ngf-allow-dir="false" data-ng-model="files" ngf-change="fileSelected($files, $event, $index, exam.copies[0])">Upload file</button> <button data-ng-if="exam.copies[0].files[$index]" data-ng-click="validate(exam.copies[0], $index)" class="btn btn-success">Validate file</button>
-						</form>
+						<button data-ng-if="! uploading[$index]" class="btn btn-primary" ngf-select accept="application/pdf" ngf-allow-dir="false" data-ng-model="files" ngf-change="fileSelected($files, $event, $index, exam.copies[0])">Upload file</button>
+						<button data-ng-if="exam.copies[0].files[$index]" data-ng-click="validate(exam.copies, 0, $index)" class="btn btn-success">Validate file</button>
 					</div>
 				</li>
 			</ul>

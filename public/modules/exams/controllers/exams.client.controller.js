@@ -262,10 +262,13 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		}
 	};
 
-	$scope.validate = function(copy, index) {
-		$http.post('/copies/validate', {'copy': copy._id, 'index': index}).success(function(data, status, headers, config) {
-			$scope.exam.copies[0].files[index].validated = true;
-		});
+	// Validate a file of a copy of an exam
+	$scope.validate = function(copies, copyindex, fileindex) {
+		if (0 <= copyindex && copyindex < copies.length && 0 <= fileindex && fileindex < copies[copyindex].files.length) {
+			$http.post('/copies/validate', {'copies': copies, 'copyindex': copyindex, 'fileindex': fileindex}).success(function(data, status, headers, config) {
+				copies[copyindex].files[fileindex].validated = true;
+			});
+		}
 	};
 
 	$scope.validatePrint = function(exam) {
