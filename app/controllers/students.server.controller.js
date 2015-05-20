@@ -116,8 +116,8 @@ exports.hasAuthorization = function(req, res, next) {
 };
 
 function importStudent(i, data, user) {
-	console.log(i + ' : ' + data);
-	Student.findOne({'matricule': data[2]}, '_id').exec(function(err, student) {
+//	console.log(i + ' : ' + data);
+	Student.findOne({'matricule': data[2]}).exec(function(err, student) {
 		if (err) {
 			console.log('   Error.');
 		}
@@ -130,6 +130,8 @@ function importStudent(i, data, user) {
 				user: user
 			});
 			student.save(function(err){});
+		} else {
+			console.log('{student: ObjectId("' + student._id + '"), seat: 0, room: ObjectId("xxx"), serie: 0}, ');
 		}
 	});
 }
@@ -137,6 +139,7 @@ function importStudent(i, data, user) {
 exports.importStudents = function(req, res) {
 	var data = req.body.data;
 	for (var i = 0; i < data.length; i++) {
-		importStudent(i, data[i], req.user);
+		var id = importStudent(i, data[i], req.user);
+		console.log(i + ' ' + data[i] + ' : ' + id);
 	}
 };
