@@ -98,13 +98,19 @@ angular.module('students').controller('StudentsController', ['$scope', '$statePa
 	var readCSV = function(CSVFile) {
 		Papa.parse(CSVFile, {
 			complete: function(results) {
-				workOnCSV(results);
+				workOnCSV(results.data);
 			}
 		});
 	};
 
 	var workOnCSV = function(data) {
 		console.log(data);
+		for (var i = 0; i < data.length; i++) {
+			console.log(data[i]);
+		}
+		$http.post('/import/students', {'data': data}).success(function(data, status, headers, config) {
+			// 
+		});
 	};
 
 	load_script('/serve/papaparse.min.js');

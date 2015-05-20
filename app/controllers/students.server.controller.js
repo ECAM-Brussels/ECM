@@ -114,3 +114,29 @@ exports.hasAuthorization = function(req, res, next) {
 	}
 	next();
 };
+
+function importStudent(i, data, user) {
+	console.log(i + ' : ' + data);
+	Student.findOne({'matricule': data[2]}, '_id').exec(function(err, student) {
+		if (err) {
+			console.log('   Error.');
+		}
+		if (! student) {
+			console.log('   Student not found, importing ' + data);
+			var student = new Student({
+				matricule: data[2],
+				firstname: data[1],
+				lastname: data[0],
+				user: user
+			});
+			student.save(function(err){});
+		}
+	});
+}
+
+exports.importStudents = function(req, res) {
+	var data = req.body.data;
+	for (var i = 0; i < data.length; i++) {
+		importStudent(i, data[i], req.user);
+	}
+};

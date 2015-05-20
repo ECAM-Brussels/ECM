@@ -67,6 +67,10 @@ var ExamSchema = new Schema({
 			room: {
 				type: Schema.ObjectId,
 				ref: 'Room'
+			},
+			serie: {
+				type: Number,
+				required: true
 			}
 		})]
 	}
