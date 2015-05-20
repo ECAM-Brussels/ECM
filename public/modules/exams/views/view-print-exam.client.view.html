@@ -39,18 +39,20 @@
 		</div>
 	</div>
 
-	<h2>Actions</h2>
-
-	<p>Download an archive with the exam copies for each student.</p>
 
 	<div data-ng-if="exam.ready">
+		<h2>Actions</h2>
+
+		<p>Download an archive with the exam copies for each student.</p>
+
 		<form method="post" action="/download/copies" target="_blank" class="in-form">
 			<input type="hidden" name="exam" data-ng-value="exam._id">
 			<button type="submit" class="btn btn-primary">Download copies</button>
 		</form>
 		<button class="btn btn-success" data-ng-click="validatePrint(exam._id)" data-ng-if="! exam.printed">Validate printing</button>
-	</div>
-	<div data-ng-show="error" class="text-danger">
-		<strong data-ng-bind="error"></strong>
+	
+		<div data-ng-show="error" class="text-danger">
+			<strong data-ng-bind="error"></strong>
+		</div>
 	</div>
 </section>
