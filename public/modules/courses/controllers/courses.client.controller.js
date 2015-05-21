@@ -31,7 +31,7 @@ angular.module('courses').controller('CoursesController', ['$scope', '$statePara
 		}
 	});
 	$scope.loadActivities = function(query) {
-		return $filter('filter')($scope.allActivities, query)
+		return $filter('filter')($scope.allActivities, query);
 	};
 
 	// Create new course

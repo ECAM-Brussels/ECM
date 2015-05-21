@@ -49,7 +49,7 @@
 			<input type="hidden" name="exam" data-ng-value="exam._id">
 			<button type="submit" class="btn btn-primary">Download copies</button>
 		</form>
-		<button class="btn btn-success" data-ng-click="validatePrint(exam._id)" data-ng-if="! exam.printed">Validate printing</button>
+		<button class="btn btn-success" data-ng-click="validatePrint()" data-ng-if="! exam.printed">Validate printing</button>
 	
 		<div data-ng-show="error" class="text-danger">
 			<strong data-ng-bind="error"></strong>

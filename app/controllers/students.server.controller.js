@@ -123,7 +123,7 @@ function importStudent(i, data, user) {
 		}
 		if (! student) {
 			console.log('   Student not found, importing ' + data);
-			var student = new Student({
+			student = new Student({
 				matricule: data[2],
 				firstname: data[1],
 				lastname: data[0],

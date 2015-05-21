@@ -142,7 +142,7 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		}, function(err) {
 			// Fill uploading and progressValue
 			if ($scope.exam.split) {
-				// 
+				console.log('Split');
 			} else {
 				if ($scope.exam.copies[0]) {
 					$scope.progressValue = new Array($scope.exam.copies[0].series);
@@ -229,7 +229,7 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 	};
 
 	$scope.getNumber = function(n) {
-		var tab = new Array();
+		var tab = [];
 		for (var i = 0; i < n; i++) {
 			tab.push(i);
 		}
@@ -271,8 +271,7 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		}
 	};
 
-	$scope.validatePrint = function(exam) {
-		console.log(exam);
+	$scope.validatePrint = function() {
 		var exam = $scope.exam;
 		exam.printed = new Date();
 		exam.$update(function() {

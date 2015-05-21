@@ -252,47 +252,58 @@ exports.downloadCopy = function(req, res) {
 };
 
 exports.downloadCopies = function(req, res) {
-	console.log('Downloading copies from exam ' + req.body.exam);
-	Exam.findById(req.body.exam)
+	var examid = req.body.exam;
+	// Find the exam from which to print the copies
+	Exam.findById(examid)
 		.populate('copies', 'files')
 		.populate('course', 'ID name')
 		.exec(function(err, exam) {
-		// if (err)
 		Exam.populate(exam, {path: 'affectation.student', select: 'matricule firstname lastname', model: 'Student'}, function(err, exam) {
 			if (err) {
 				return res.status(400).send({
-					message: 'Sorry, I failed populating your exams'
+					message: 'Impossible to load registered students'
 				});
 			}
 			Exam.populate(exam, {path: 'affectation.room', select: 'ID', model: 'Room'}, function(err, exam) {
 				if (err) {
 					return res.status(400).send({
-						message: 'Sorry, I failed populating your exams'
+						message: 'Impossible to load rooms'
 					});
 				}
-				// Create directory if not existing
-				var dest = path.dirname(require.main.filename) + '/copies/' + exam._id;
-				if (! fs.existsSync(dest)) {
-					fs.mkdirSync (dest);
+				// Create directory to store copies
+				var copiespath = path.dirname(require.main.filename) + '/copies/' + examid;
+				if (! fs.existsSync(copiespath)) {
+					fs.mkdirSync (copiespath);
 				}
-				// Copy all the files
-				for (var i = 0; i < exam.copies[0].files.length; i++) {
-					var filename = exam.copies[0].files[i].name;
-					var src = path.dirname(require.main.filename) + '/copies/' + exam.copies[0]._id + '/' + exam.copies[0].files[i].name;
-					var dest = path.dirname(require.main.filename) + '/copies/' + exam._id + '/' + exam.copies[0].files[i].name;
-					fs.copy(src, dest, function(err){});
+				// Copy all the PDF source files
+				var copies = exam.copies[0];
+				for (var i = 0; i < copies.files.length; i++) {
+					var pdfsrc = path.dirname(require.main.filename) + '/copies/' + copies._id + '/' + copies.files[i].name;
+					var pdfdest = copiespath + '/' + copies.files[i].name;
+					fs.copy(pdfsrc, pdfdest, function(err) {
+						if (err) {
+							return res.status(400).send({
+								message: 'Error while copying PDF source file for a copy'
+							});
+						}
+					});
 				}
-				// For each student
+				// For each student, generate his copy
 				var affectation = exam.affectation;
 				var totalGenerated = 0;
-				for (var i = 0; i < affectation.length; i++) {
-					console.log(affectation[i]);
-					console.log(exam.copies[0].files[affectation[i].serie].name);
+				for (i = 0; i < affectation.length; i++) {
 					// Create the final PDF from text file
-					src = path.dirname(require.main.filename) + '/pdfgen/templates/basic-template.tex';
-					var content = fs.readFileSync(src, {encoding: 'utf8', flag: 'r'}, function(err){});
-				//	content = content.replace(/!filename!/g, path.basename(file.path));
-					content = content.replace(/!filepath!/g, path.dirname(require.main.filename) + '/copies/' + exam._id + '/' + exam.copies[0].files[i].name);
+					var templatesrc = path.dirname(require.main.filename) + '/pdfgen/templates/basic-template.tex';
+					var content = fs.readFileSync(templatesrc, {encoding: 'utf8', flag: 'r'}, function(err) {
+						if (err) {
+							return res.status(400).send({
+								message: 'Error while copying the exam copy template'
+							});
+						}
+					});
+					// Fill in the template
+					content = content.replace(/!filename!/g, copies.files[i].name);
+					content = content.replace(/!filepath!/g, copiespath + '/' + copies.files[i].name);
 					var examdate = moment(exam.date);
 					content = content.replace(/!datetime!/g, examdate.format('DD/MM/YYYY HH:mm'));
 					content = content.replace(/!date!/g, examdate.format('DD/MM/YYYY'));
@@ -302,29 +313,46 @@ exports.downloadCopies = function(req, res) {
 					content = content.replace(/!courseid!/g, exam.course.ID);
 					content = content.replace(/!coursename!/g, exam.course.name);
 					content = content.replace(/!serie!/g, affectation[i].serie + 1);
-					content = content.replace(/!classement!/g, i + 1);
+					content = content.replace(/!classement!/g, affectation[i].number);
 					content = content.replace(/!room!/g, affectation[i].room.ID);
 					content = content.replace(/!seatnumber!/g, affectation[i].seat);
-				//	var now = new Date();
-				//	content = content.replace(/!gendate!/g, now.getDate() + '/' + now.getMonth() + '/' + now.getFullYear() + ' ' + now.getHours() + ':' + now.getMinutes());
-					dest = path.dirname(require.main.filename) + '/copies/' + exam._id + '/student_' + i + '.tex';
-					fs.writeFileSync(dest, content, {encoding: 'utf8', flag: 'w'}, function(err){});
-					process.chdir(path.dirname(dest));
-					child_process.execFile('pdflatex', [path.basename(dest)], function(err, stdout, stderr) {
+					var now = moment();
+					content = content.replace(/!gendate!/g, now.format('DD/MM/YYYY HH:mm'));
+					// Create the .tex file for the student
+					var texsrc = copiespath + '/' + (i + 1) + 'copy_' + (affectation[i].serie + 1) + '_student_' + affectation[i].number + '.tex';
+					fs.writeFileSync(texsrc, content, {encoding: 'utf8', flag: 'w'}, function(err) {
 						if (err) {
-							console.log('ERROR : ' + err);
 							return res.status(400).send({
-								message: errorHandler.getErrorMessage(err)
+								message: 'Error while writing .tex file for a student'
 							});
 						}
-						console.log('PDF student ' + totalGenerated + ' generated');
+					});
+					// Compile the .tex file
+					process.chdir(path.dirname(texsrc));
+					child_process.execFile('pdflatex', [path.basename(texsrc)], function(err, stdout, stderr) {
+						if (err) {
+							return res.status(400).send({
+								message: 'Error while compiling the .tex file\n' + err
+							});
+						}
+						console.log('Progress: ' + (totalGenerated + 1) + '/' + affectation.length);
 						totalGenerated++;
+						// All .tex files have been compiled
 						if (totalGenerated === affectation.length) {
-							console.log('Finished all generation.');
+							// Delete all PDF files
+							for (i = 0; i < copies.files.length; i++) {
+								fs.unlink(copiespath + '/' + copies.files[i].name, function(err){});
+							}
+							// Build a ZIP archive with all copies
 							process.chdir(path.dirname(require.main.filename) + '/copies');
-							child_process.execFile('zip', ['-r', 'copies-' + exam._id + '.zip', exam._id], function(err, stdout, stderr) {
-								console.log('ZIP OK');
-								res.sendFile(path.dirname(require.main.filename) + '/copies/copies-' + exam._id + '.zip');
+							child_process.execFile('zip', ['-r', 'copies-' + examid + '.zip', examid, '-i*.pdf'], function(err, stdout, stderr) {
+								if (err) {
+									console.log(err);
+									return res.status(400).send({
+										message: 'Error while generating the ZIP file'
+									});
+								}
+								res.sendFile(path.dirname(require.main.filename) + '/copies/copies-' + examid + '.zip');
 							});
 						} 
 					});
@@ -394,7 +422,7 @@ exports.validateCopy = function(req, res) {
 							});
 						}
 						res.send('OK ready');
-					})
+					});
 				});
 			} else {
 				res.send('OK not ready');
