@@ -19,11 +19,34 @@
 		<dd><span data-ng-repeat="group in exam.groups">{{group.name}} </span></dd>
 	</dl>
 
+	<h2>Copies</h2>
+
+	<div data-ng-if="exam.split">
+		<p>One PDF file has to be uploaded for each activity of the course.</p>
+	</div>
+
+	<div data-ng-if="! exam.split">
+		<div data-ng-if="exam.copies.length === 1">
+			<ul class="list-group">
+				<li class="list-group-item" data-ng-repeat="i in getNumber(exam.copies[0].series) track by $index">
+					<b>Serie {{$index + 1}}</b>
+					<span data-ng-if="exam.copies[0].files[$index].validated">Validated copy uploaded on {{exam.copies[0].files[$index].created | date: "dd MMM yyyy H:mm"}}</span>
+					<span data-ng-if="! exam.copies[0].files[$index].validated">The copy has not been validated yet.</span>
+					<span class="pull-right"><form method="post" action="/download/copy" target="_blank"><input type="hidden" name="copy" data-ng-value="exam.copies[0]._id"><input type="hidden" name="index" data-ng-value="$index"><input type="image" src="images/pdf.png" width="23" height="24" alt="PDF" data-ng-class="{grayscale: ! exam.copies[0].files[$index].validated}" data-ng-disabled="! exam.copies[0].files[$index].validated"></form></span>
+				</li>
+			</ul>
+		</div>
+
+		<div data-ng-if="exam.copies.length === 0" class="alert alert-warning" role="alert">
+			The number of series has not been defined yet.
+		</div>
+	</div>
+
 	<h2>Affectation</h2>
 
 	<div data-ng-if="! exam.affectation || exam.affectation.length">
-		<ul>
-			<li class="list-group-item" data-ng-repeat="i in getNumber(exam.affectation.length) track by $index"><b>#{{$index + 1}}</b> {{exam.affectation[$index].student.firstname}} {{exam.affectation[$index].student.lastname}} with seat #{{exam.affectation[$index].seat}} in room {{exam.affectation[$index].room.ID}}</li>
+		<ul class="list-group">
+			<li class="list-group-item" data-ng-repeat="i in getNumber(exam.affectation.length) track by $index"><b>#{{exam.affectation[$index].number}}</b> {{exam.affectation[$index].student.firstname}} {{exam.affectation[$index].student.lastname}} with seat #{{exam.affectation[$index].seat}} in room {{exam.affectation[$index].room.ID}}</li>
 		</ul>
 	</div>
 

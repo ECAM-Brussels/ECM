@@ -31,7 +31,7 @@ module.exports = function(app) {
 		.post(users.hasAuthorization(['admin', 'teacher']), multiparty(), exams.uploadCopy);
 
 	app.route('/download/copy')
-		.post(users.hasAuthorization(['admin', 'teacher', 'printer']), exams.downloadCopy);
+		.post(users.hasAuthorization(['admin', 'manager', 'teacher', 'printer']), exams.downloadCopy);
 	app.route('/download/copies')
 		.post(users.hasAuthorization(['admin', 'printer']), exams.downloadCopies);
 
