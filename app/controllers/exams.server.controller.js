@@ -260,12 +260,14 @@ exports.downloadCopies = function(req, res) {
 		.exec(function(err, exam) {
 		Exam.populate(exam, {path: 'affectation.student', select: 'matricule firstname lastname', model: 'Student'}, function(err, exam) {
 			if (err) {
+				console.log('Populate student : ' + err);
 				return res.status(400).send({
 					message: 'Impossible to load registered students'
 				});
 			}
 			Exam.populate(exam, {path: 'affectation.room', select: 'ID', model: 'Room'}, function(err, exam) {
 				if (err) {
+					console.log('Populate rooms : ' + err);
 					return res.status(400).send({
 						message: 'Impossible to load rooms'
 					});
@@ -282,6 +284,7 @@ exports.downloadCopies = function(req, res) {
 					var pdfdest = copiespath + '/' + copies.files[i].name;
 					fs.copy(pdfsrc, pdfdest, function(err) {
 						if (err) {
+							console.log('Copy PDF failed : ' + err);
 							return res.status(400).send({
 								message: 'Error while copying PDF source file for a copy'
 							});
@@ -296,6 +299,7 @@ exports.downloadCopies = function(req, res) {
 					var templatesrc = path.dirname(require.main.filename) + '/pdfgen/templates/basic-template.tex';
 					var content = fs.readFileSync(templatesrc, {encoding: 'utf8', flag: 'r'}, function(err) {
 						if (err) {
+							console.log('Template copy failed : ' + err);
 							return res.status(400).send({
 								message: 'Error while copying the exam copy template'
 							});
@@ -322,6 +326,7 @@ exports.downloadCopies = function(req, res) {
 					var texsrc = copiespath + '/' + (i + 1) + 'copy_' + (affectation[i].serie + 1) + '_student_' + affectation[i].number + '.tex';
 					fs.writeFileSync(texsrc, content, {encoding: 'utf8', flag: 'w'}, function(err) {
 						if (err) {
+							console.log('TeX file write failed : ' + err);
 							return res.status(400).send({
 								message: 'Error while writing .tex file for a student'
 							});
@@ -331,6 +336,7 @@ exports.downloadCopies = function(req, res) {
 					process.chdir(path.dirname(texsrc));
 					child_process.execFile('pdflatex', [path.basename(texsrc)], function(err, stdout, stderr) {
 						if (err) {
+							console.log('pdflatex error : ' + err);
 							return res.status(400).send({
 								message: 'Error while compiling the .tex file\n' + err
 							});
@@ -347,7 +353,7 @@ exports.downloadCopies = function(req, res) {
 							process.chdir(path.dirname(require.main.filename) + '/copies');
 							child_process.execFile('zip', ['-r', 'copies-' + examid + '.zip', examid, '-i*.pdf'], function(err, stdout, stderr) {
 								if (err) {
-									console.log(err);
+									console.log('Zip generation error : ' + err);
 									return res.status(400).send({
 										message: 'Error while generating the ZIP file'
 									});
