@@ -60,9 +60,15 @@ var ExamSchema = new Schema({
 				type: Schema.ObjectId,
 				ref: 'User'
 			},
+			number: {
+				type: Number,
+				required: true,
+				default: 1
+			},
 			seat: {
 				type: Number,
-				required: true
+				required: true,
+				default: 1
 			},
 			room: {
 				type: Schema.ObjectId,
@@ -70,7 +76,8 @@ var ExamSchema = new Schema({
 			},
 			serie: {
 				type: Number,
-				required: true
+				required: true,
+				default: 0
 			}
 		})]
 	}
