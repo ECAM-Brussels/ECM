@@ -302,8 +302,8 @@ exports.downloadCopies = function(req, res) {
 						}
 					});
 					// Fill in the template
-					content = content.replace(/!filename!/g, copies.files[i].name);
-					content = content.replace(/!filepath!/g, copiespath + '/' + copies.files[i].name);
+					content = content.replace(/!filename!/g, copies.files[affectation[i].serie].name);
+					content = content.replace(/!filepath!/g, copiespath + '/' + copies.files[affectation[i].serie].name);
 					var examdate = moment(exam.date);
 					content = content.replace(/!datetime!/g, examdate.format('DD/MM/YYYY HH:mm'));
 					content = content.replace(/!date!/g, examdate.format('DD/MM/YYYY'));
