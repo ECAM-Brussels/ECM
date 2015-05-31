@@ -43,5 +43,5 @@ angular.module('exams').config(['$stateProvider', function($stateProvider) {
 }]);
 
 angular.module('exams').config(['$compileProvider', function($compileProvider) {
-	$compileProvider.aHrefSanitizationWhitelist(/^data:text\/csv;.*/);
+	$compileProvider.aHrefSanitizationWhitelist(/^(data:text\/csv;.*)|https?:.*/);
 }]);
