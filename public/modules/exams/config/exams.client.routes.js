@@ -41,3 +41,7 @@ angular.module('exams').config(['$stateProvider', function($stateProvider) {
 		templateUrl: 'modules/exams/views/edit-exam.client.view.html'
 	});
 }]);
+
+angular.module('exams').config(['$compileProvider', function($compileProvider) {
+	$compileProvider.aHrefSanitizationWhitelist(/^data:text\/csv;.*/);
+}]);

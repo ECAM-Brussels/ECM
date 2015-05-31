@@ -45,12 +45,24 @@
 	<h2>Affectation</h2>
 
 	<div data-ng-if="! exam.affectation || exam.affectation.length">
-		<ul class="list-group">
-			<li class="list-group-item" data-ng-repeat="i in getNumber(exam.affectation.length) track by $index"><b>#{{exam.affectation[$index].number}}</b> {{exam.affectation[$index].student.firstname}} {{exam.affectation[$index].student.lastname}} with seat #{{exam.affectation[$index].seat}} in room {{exam.affectation[$index].room.ID}}</li>
-		</ul>
+		<tabset>
+			<tab data-ng-repeat="room in exam.rooms" heading="{{room.ID}}">
+				<ul class="list-group">
+					<li class="list-group-item" data-ng-repeat="i in getNumber(exam.affectation.length) track by $index" data-ng-if="exam.affectation[$index].room.ID==room.ID"><b>#{{exam.affectation[$index].number}}</b> {{exam.affectation[$index].student.firstname}} {{exam.affectation[$index].student.lastname}} with seat #{{exam.affectation[$index].seat}} in room {{exam.affectation[$index].room.ID}}</li>
+				</ul>
+			</tab>
+		</tabset>
 	</div>
 
 	<div class="alert alert-warning text-center" data-ng-if="exam.affectation && ! exam.affectation.length">
         Affectations have not been computed yet.
     </div>
+
+    <div data-ng-if="! exam.affectation || exam.affectation.length">
+		<h2>Actions</h2>
+
+		<div>
+			<a data-ng-if="affectationCSV" data-ng-href="data:text/csv;charset=utf-8,{{affectationCSV}}" download="affectation-{{exam.course.ID}}.csv" class="btn btn-primary">Download affectation</a>
+		</div>
+	</div>
 </section>

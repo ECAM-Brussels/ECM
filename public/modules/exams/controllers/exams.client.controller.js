@@ -140,18 +140,29 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		$scope.exam = Exams.get({ 
 			examId: $stateParams.examId
 		}, function(err) {
+			var exam = $scope.exam;
 			// Fill uploading and progressValue
-			if ($scope.exam.split) {
+			if (exam.split) {
 				console.log('Split');
 			} else {
-				if ($scope.exam.copies[0]) {
-					$scope.progressValue = new Array($scope.exam.copies[0].series);
-					$scope.uploading = new Array($scope.exam.copies[0].series);
+				if (exam.copies[0]) {
+					$scope.progressValue = new Array(exam.copies[0].series);
+					$scope.uploading = new Array(exam.copies[0].series);
 					for (var i = 0; i < $scope.exam.copies[0].series; i++) {
 						$scope.progressValue[i] = null;
 						$scope.uploading[i] = false;
 					}
 				}
+			}
+			// Build CSV with affectation
+			if (! exam.affectation || exam.affectation.length) {
+				$scope.affectationCSV = 'Num;Firstname;Lastname;Seat;Room\n';
+				for (var i = 0; i < exam.affectation.length; i++) {
+					var affectation = exam.affectation[i];
+					var student = affectation.student;
+					$scope.affectationCSV += affectation.number + ';' + student.firstname + ';' + student.lastname + ';' + affectation.seat + ';' + affectation.room.ID + '\n';
+				}
+				$scope.affectationCSV = encodeURIComponent($scope.affectationCSV);
 			}
 		});
 	};
