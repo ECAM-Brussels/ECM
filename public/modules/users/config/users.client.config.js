@@ -27,10 +27,10 @@ angular.module('users').config(['$httpProvider', function($httpProvider) {
 
 // Users edit module
 angular.module('students').run(['Menus', function(Menus) {
-	var canedit = ['admin'];
+	// Set manage menu items
+	Menus.addSubMenuItem('topbar', 'manage', 'Users', 'users', 'users', false, ['admin']);
 
 	// Set top bar menu items
-	Menus.addMenuItem('topbar', 'Users', 'users', 'dropdown', '/users(/create)?', false, canedit);
-	Menus.addSubMenuItem('topbar', 'users', 'List', 'users', 'users', false, canedit);
-	Menus.addSubMenuItem('topbar', 'users', 'Create', 'users/create', 'users/create', false, canedit);
+//	Menus.addMenuItem('topbar', 'Users', 'users', 'dropdown', '/users(/create)?', false, ['admin']);
+//	Menus.addSubMenuItem('topbar', 'users', 'Create', 'users/create', 'users/create', false, ['admin']);
 }]);
