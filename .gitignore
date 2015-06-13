@@ -8,8 +8,8 @@ app/tests/coverage/
 .bower-*/
 .idea/
 copies/
-public/humans.txt
 public/dist/
+public/humans.txt
 public/images/rooms/
 public/images/uploads/
 config/env/*.js

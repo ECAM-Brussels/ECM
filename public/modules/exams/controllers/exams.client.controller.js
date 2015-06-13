@@ -157,8 +157,8 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 			// Build CSV with affectation
 			if (! exam.affectation || exam.affectation.length) {
 				$scope.affectationCSV = 'Num;Firstname;Lastname;Seat;Room\n';
-				for (var i = 0; i < exam.affectation.length; i++) {
-					var affectation = exam.affectation[i];
+				for (var j = 0; j < exam.affectation.length; j++) {
+					var affectation = exam.affectation[j];
 					var student = affectation.student;
 					$scope.affectationCSV += affectation.number + ';' + student.firstname + ';' + student.lastname + ';' + affectation.seat + ';' + affectation.room.ID + '\n';
 				}
