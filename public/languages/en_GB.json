@@ -1,4 +1,15 @@
 {
-	"TITLE": "Hellommmmmdddsdsdfzfd",
-	"SUBJECT": "this is it"
+	"JUMBOTRON_INTRO": "Welcome on the open-source solution to manage exams copies and to automatically generate pre-filled and ready-to-print PDF files for the exams.",
+	"LEARN_MORE": "Learn more",
+	"MANAGEMENT_TOOL": "Management tool",
+	"MANAGEMENT_TOOL_DESC": "ECM allows you to manage rooms, teachers and courses. Creating a new exam for a set of students and uploading its statement as a PDF file is made easy thanks to the intuitive interface.",
+	"GENUINE_ALGORITHM": "Genuine algorithms",
+	"GENUINE_ALGORITHM_DESC": "ECM contains algorithms for a genuine selection and attribution of rooms for the exams and for an automatic seat-assignment proposal of the students, with possible manual post-customisation.",
+	"PDF_GENERATION": "PDF generation",
+	"PDF_GENERATION_DESC": "ECM will automatically build ready-to-print and pre-filled PDF files, from a set of templates, with the statements of all the exams. Templates and fields to pre-fill are highly customisable.",
+	"BY": "By",
+	"ECM_AUTHORS": "the ECM authors",
+
+	"SIGN_UP": "Sign Up",
+	"SIGN_IN": "Sign In"
 }

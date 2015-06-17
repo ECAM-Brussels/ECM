@@ -1,4 +1,15 @@
 {
-	"TITLE": "Bonnjour",
-	"SUBJECT": "this is it"
+	"JUMBOTRON_INTRO": "Bienvenue sur la solution open-source qui permet de gérer des copies d'examen et d'automatiquement générer des fichiers PDF pré-remplis et prêts à imprimer pour les examens.",
+	"LEARN_MORE": "En savoir plus",
+	"MANAGEMENT_TOOL": "Outil de gestion",
+	"MANAGEMENT_TOOL_DESC": "ECM vous permet de gérer les auditoires, les enseignants et les cours. Créer un nouvel examen pour un ensemble d'étudiants et uploader son énoncé sous forme d'un fichier PDF est facilement réalisé grâce à l'interface intuitive.",
+	"GENUINE_ALGORITHM": "Algorithmes authentiques",
+	"GENUINE_ALGORITHM_DESC": "ECM est construit à partir d'algorithmes permettant une sélection et une attribution d'auditoires pour les examens et pour une affectation automatique des sièges pour les étudiants inscrits à l'examen, avec la possibilité d'édition postérieure manuelle.",
+	"PDF_GENERATION": "Génération de PDF",
+	"PDF_GENERATION_DESC": "ECM va automatiquement construire des fichiers PDF pré-remplis et prêts à imprimer, à partir d'un ensemble de modèles, avec l'ensemble des énoncés de l'examen. Les modèles, ainsi que les champs pouvant être pré-remplis, sont hautement personnalisables.",
+	"BY": "Par",
+	"ECM_AUTHORS": "les auteurs d'ECM",
+
+	"SIGN_UP": "Créer un compte",
+	"SIGN_IN": "Se connecter"
 }

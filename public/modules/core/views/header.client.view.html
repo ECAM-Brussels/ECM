@@ -25,11 +25,11 @@
 		</ul>
 		<ul class="nav navbar-nav navbar-right" ng-if="! authentication.user">
 			<li ui-route="/signup" ng-class="{active: $uiRoute}">
-				<a href="/#!/signup">Sign Up</a>
+				<a href="/#!/signup">{{'SIGN_UP' | translate}}</a>
 			</li>
 			<li class="divider-vertical"></li>
 			<li ui-route="/signin" ng-class="{active: $uiRoute}">
-				<a href="/#!/signin">Sign In</a>
+				<a href="/#!/signin">{{'SIGN_IN' | translate}}</a>
 			</li>
 		</ul>
 		<ul class="nav navbar-nav navbar-right" ng-if="authentication.user">
