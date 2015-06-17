@@ -1,11 +1,26 @@
 'use strict';
 
-//Start by defining the main module and adding the module dependencies
-angular.module(ApplicationConfiguration.applicationModuleName, ApplicationConfiguration.applicationModuleVendorDependencies);
+// Start by defining the main module and adding the module dependencies
+var app = angular.module(ApplicationConfiguration.applicationModuleName, ApplicationConfiguration.applicationModuleVendorDependencies);
 
 // Setting HTML5 Location Mode
-angular.module(ApplicationConfiguration.applicationModuleName).config(['$locationProvider', function($locationProvider) {
+app.config(['$locationProvider', function($locationProvider) {
 	$locationProvider.hashPrefix('!');
+}]);
+
+// Configure translation
+app.config(['$translateProvider', function($translateProvider) {
+	$translateProvider.useStaticFilesLoader({
+		prefix: 'languages/',
+		suffix: '.json'
+	});
+	$translateProvider.preferredLanguage('en_GB');
+}]);
+app.controller('LanguageController', ['$scope', '$translate', function ($scope, $translate) {
+	$scope.lang = 'en_GB';
+	$scope.changeLanguage = function(lang) {
+		$translate.use(lang);
+	};
 }]);
 
 //Then define the init function for starting up the application

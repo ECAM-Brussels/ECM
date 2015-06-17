@@ -4,7 +4,7 @@
 var ApplicationConfiguration = (function() {
 	// Init module configuration options
 	var applicationModuleName = 'ECM';
-	var applicationModuleVendorDependencies = ['ngResource', 'ngCookies',  'ngAnimate',  'ngTouch',  'ngSanitize',  'ui.router', 'ui.bootstrap', 'ui.utils', 'ngRoute', 'ngFileUpload', 'ngTagsInput'];
+	var applicationModuleVendorDependencies = ['ngResource', 'ngCookies',  'ngAnimate',  'ngTouch',  'ngSanitize',  'ui.router', 'ui.bootstrap', 'ui.utils', 'ngRoute', 'ngFileUpload', 'ngTagsInput', 'pascalprecht.translate', 'nya.bootstrap.select'];
 
 	// Add a new vertical module
 	var registerModule = function(moduleName, dependencies) {
