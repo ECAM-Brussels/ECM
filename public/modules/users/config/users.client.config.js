@@ -25,12 +25,8 @@ angular.module('users').config(['$httpProvider', function($httpProvider) {
 	}]);
 }]);
 
-// Users edit module
-angular.module('students').run(['Menus', function(Menus) {
+// Set up the menu for the users module
+angular.module('users').run(['Menus', function(Menus) {
 	// Set manage menu items
 	Menus.addSubMenuItem('topbar', 'manage', 'Users', 'users', 'users', false, ['admin']);
-
-	// Set top bar menu items
-//	Menus.addMenuItem('topbar', 'Users', 'users', 'dropdown', '/users(/create)?', false, ['admin']);
-//	Menus.addSubMenuItem('topbar', 'users', 'Create', 'users/create', 'users/create', false, ['admin']);
 }]);
