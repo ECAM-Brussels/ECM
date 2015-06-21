@@ -16,9 +16,10 @@ app.config(['$translateProvider', function($translateProvider) {
 		suffix: '.json'
 	});
 	$translateProvider.preferredLanguage('en_GB');
+	$translateProvider.useLocalStorage();
 }]);
-app.controller('LanguageController', ['$scope', '$translate', function($scope, $translate) {
-	$scope.lang = 'en_GB';
+app.controller('LanguageController', ['$scope', '$translate', '$translateLocalStorage', function($scope, $translate, $translateLocalStorage) {
+	$scope.lang = $translateLocalStorage.get('NG_TRANSLATE_LANG_KEY');
 	$scope.changeLanguage = function(lang) {
 		$translate.use(lang);
 	};

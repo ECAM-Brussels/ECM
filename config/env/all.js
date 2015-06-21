@@ -31,13 +31,15 @@ module.exports = {
 				'public/lib/angular-touch/angular-touch.min.js',
 				'public/lib/angular-translate/angular-translate.min.js',
 				'public/lib/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js',
+				'public/lib/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js',
+				'public/lib/angular-translate-storage-local/angular-translate-storage-local.min.js',
 				'public/lib/angular-ui-router/release/angular-ui-router.min.js',
 				'public/lib/angular-ui-utils/ui-utils.min.js',
 				'public/lib/jquery/dist/jquery.min.js',
-				'public/lib/bootstrap/dist/js/bootstrap.min.js',
 				'public/lib/ng-file-upload/ng-file-upload-all.min.js',
 				'public/lib/ng-tags-input/ng-tags-input.min.js',
-				'public/lib/nya-bootstrap-select/dist/js/nya-bs-select.min.js'
+				'public/lib/nya-bootstrap-select/dist/js/nya-bs-select.min.js',
+				'public/lib/bootstrap/dist/js/bootstrap.min.js'
 			]
 		},
 		css: [
