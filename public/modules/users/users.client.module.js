@@ -1,4 +1,4 @@
 'use strict';
 
-// Use Applicaion configuration module to register a new module
+// Use ApplicationConfiguration module to register the users module
 ApplicationConfiguration.registerModule('users');

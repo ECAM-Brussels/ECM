@@ -1,12 +1,19 @@
 'use strict';
-angular.module( 'users' ).controller( 'UsersController', [ '$scope', '$stateParams', '$http', '$location', 'Authentication', 'Users', function ( $scope, $stateParams, $http, $location, Authentication, Users) {
+
+angular.module('users').controller('UsersController', ['$scope', '$stateParams', '$http', '$location', 'Authentication', 'Users', function($scope, $stateParams, $http, $location, Authentication, Users) {
 	$scope.authentication = Authentication;
 
+	var exists = function(val, array) {
+		return array.indexOf(val) > -1;
+	};
+
+	// Get all users
 	$scope.find = function() {
 		$scope.users = Users.query();
 	};
 
-	$scope.createUser = function () {
+	// Create one user
+	$scope.createUser = function() {
 		$http.post('/users', $scope.credentials).success(function(response) {
 			$location.path('/users');
 		}).error(function(response) {
@@ -14,6 +21,7 @@ angular.module( 'users' ).controller( 'UsersController', [ '$scope', '$statePara
 		});
 	};
 
+	// Update one user
 	$scope.updateUser = function() {
 		var user = $scope.profile;
 		user.$update(function() {
@@ -23,7 +31,7 @@ angular.module( 'users' ).controller( 'UsersController', [ '$scope', '$statePara
 		});
 	};
 	
-	// Find existing user
+	// Find one user
 	$scope.findOne = function() {
 		var user = Users.get({
 			serial: $stateParams.serial
@@ -39,11 +47,7 @@ angular.module( 'users' ).controller( 'UsersController', [ '$scope', '$statePara
 		});
 	};
 
-	var exists = function(val, array) {
-		return array.indexOf(val) > -1;
-	};
-
-	// Find existing user
+	// Remove one user
 	$scope.remove = function(profile) {
 		if (profile) {
 			profile.$remove();

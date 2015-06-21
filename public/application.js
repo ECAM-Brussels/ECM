@@ -16,14 +16,14 @@ app.config(['$translateProvider', function($translateProvider) {
 	});
 	$translateProvider.preferredLanguage('en_GB');
 }]);
-app.controller('LanguageController', ['$scope', '$translate', function ($scope, $translate) {
+app.controller('LanguageController', ['$scope', '$translate', function($scope, $translate) {
 	$scope.lang = 'en_GB';
 	$scope.changeLanguage = function(lang) {
 		$translate.use(lang);
 	};
 }]);
 
-//Then define the init function for starting up the application
+// Then define the function to start up the application
 angular.element(document).ready(function() {
 	// Fixing facebook bug with redirect
 	if (window.location.hash === '#_=_') {
