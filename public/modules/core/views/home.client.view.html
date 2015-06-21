@@ -1,36 +1,42 @@
 <section data-ng-controller="HomeController">
-	<div class="jumbotron">
-		<div class="container">
-			<div class="row">
-				<h2>Exam Copies Manager</h2>
-				<p>{{'JUMBOTRON_INTRO' | translate}}</p>
+	<div data-ng-if="! authentication.user">
+		<div class="jumbotron">
+			<div class="container">
+				<div class="row">
+					<h2>Exam Copies Manager</h2>
+					<p>{{'HOME.JUMBOTRON_INTRO' | translate}}</p>
+				</div>
+				<div class="row">
+					<p><a class="btn btn-primary btn-lg" href="http://github.com/combefis/ECM" target="_blank">{{'HOME.LEARN_MORE' | translate}}</a></p>
+				</div>
 			</div>
-			<div class="row">
-				<p><a class="btn btn-primary btn-lg" href="http://github.com/combefis/ECM" target="_blank">{{'LEARN_MORE' | translate}}</a></p>
+		</div>
+		<div class="row">
+			<div class="col-md-4">
+				<div class="row text-center">
+					<img src="/images/management-tool.png" alt="Management tool" width="150" height="150" />
+					<h3>{{'HOME.MANAGEMENT_TOOL' | translate}}</h3>
+				</div>
+				<p>{{'HOME.MANAGEMENT_TOOL_DESC' | translate}}</p>
+			</div>
+			<div class="col-md-4">
+				<div class="row text-center">
+					<img src="/images/genuine-algorithms.png" alt="Genuine algorithms" width="150" height="150" />
+					<h3>{{'HOME.GENUINE_ALGORITHM' | translate}}</h3>
+				</div>
+				<p>{{'HOME.GENUINE_ALGORITHM_DESC' | translate}}</p>
+			</div>
+			<div class="col-md-4">
+				<div class="row text-center">
+					<img src="/images/pdf-generation.png" alt="PDF generation" width="150" height="150" />
+					<h3>{{'HOME.PDF_GENERATION' | translate}}</h3>
+				</div>
+				<p>{{'HOME.PDF_GENERATION_DESC' | translate}}</p>
 			</div>
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-md-4">
-			<div class="row text-center">
-				<img src="/images/management-tool.png" alt="Management tool" width="150" height="150" />
-				<h3>{{'MANAGEMENT_TOOL' | translate}}</h3>
-			</div>
-			<p>{{'MANAGEMENT_TOOL_DESC' | translate}}</p>
-		</div>
-		<div class="col-md-4">
-			<div class="row text-center">
-				<img src="/images/genuine-algorithms.png" alt="Genuine algorithms" width="150" height="150" />
-				<h3>{{'GENUINE_ALGORITHM' | translate}}</h3>
-			</div>
-			<p>{{'GENUINE_ALGORITHM_DESC' | translate}}</p>
-		</div>
-		<div class="col-md-4">
-			<div class="row text-center">
-				<img src="/images/pdf-generation.png" alt="PDF generation" width="150" height="150" />
-				<h3>{{'PDF_GENERATION' | translate}}</h3>
-			</div>
-			<p>{{'PDF_GENERATION_DESC' | translate}}</p>
-		</div>
+
+	<div data-ng-if="authentication.user">
+		<h1>{{"DASHBOARD.DASHBOARD" | translate}}</h1>
 	</div>
 </section>
