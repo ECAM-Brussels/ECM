@@ -3,7 +3,7 @@
 // Set up the menu for the exams module
 angular.module('exams').run(['Menus', function(Menus) {
 	// Set dashboard menu items
-	Menus.addSubMenuItem('topbar', 'dashboard', 'My exams', 'list/myExams', 'list/myExams', false, ['teacher']);
+	Menus.addSubMenuItem('topbar', 'dashboard', 'MENU.MY_EXAMS', 'list/myExams', 'list/myExams', false, ['teacher']);
 
 	// Set manage menu items
 	Menus.addSubMenuItem('topbar', 'manage', 'Exams', 'exams', 'exams', false, ['admin']);

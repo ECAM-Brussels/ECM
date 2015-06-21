@@ -12,8 +12,19 @@
 	"DASHBOARD": {
 		"DASHBOARD": "Dashboard"
 	},
+	"MENU": {
+		"DASHBOARD": "Dashboard",
+		"MANAGE": "Manage",
+		"TOOLS": "Tools",
+		"SIGNUP": "Sign Up",
+		"SIGNIN": "Sign In",
+		"SIGNOUT": "Sign Out",
+		"EDIT_PROFILE": "Edit Profile",
+		"MANAGE_SOCIAL": "Manage Social Accounts",
+		"CHANGE_PWD": "Change Password",
+		"MY_COURSES": "My Courses",
+		"MY_EXAMS": "My Exams"
+	},
 	"BY": "By",
-	"ECM_AUTHORS": "the ECM authors",
-	"SIGN_UP": "Sign Up",
-	"SIGN_IN": "Sign In"
+	"ECM_AUTHORS": "the ECM authors"
 }

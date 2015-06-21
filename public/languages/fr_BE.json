@@ -12,8 +12,19 @@
 	"DASHBOARD": {
 		"DASHBOARD": "Tableau de bord"
 	},
+	"MENU": {
+		"DASHBOARD": "Tableau de bord",
+		"MANAGE": "Gestion",
+		"TOOLS": "Outils",
+		"SIGNUP": "Créer un compte",
+		"SIGNIN": "Se connecter",
+		"SIGNOUT": "Se déconnecter",
+		"EDIT_PROFILE": "Modifier son profil",
+		"MANAGE_SOCIAL": "Gérer ses réseaux sociaux",
+		"CHANGE_PWD": "Modifier son mot de passe",
+		"MY_COURSES": "Mes cours",
+		"MY_EXAMS": "Mes examens"
+	},
 	"BY": "Par",
-	"ECM_AUTHORS": "les auteurs d'ECM",
-	"SIGN_UP": "Créer un compte",
-	"SIGN_IN": "Se connecter"
+	"ECM_AUTHORS": "les auteurs d'ECM"
 }

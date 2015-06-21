@@ -10,7 +10,7 @@ app.config(['$locationProvider', function($locationProvider) {
 
 // Configure translation
 app.config(['$translateProvider', function($translateProvider) {
-	$translateProvider.useSanitizeValueStrategy('sanitize');
+	$translateProvider.useSanitizeValueStrategy('escape');
 	$translateProvider.useStaticFilesLoader({
 		prefix: 'languages/',
 		suffix: '.json'
