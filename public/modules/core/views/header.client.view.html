@@ -23,9 +23,6 @@
 			</li>
 		</ul>
 		<ul class="nav navbar-nav navbar-right" data-ng-if="! authentication.user">
-			<li ui-route="/signup" data-ng-class="{active: $uiRoute}">
-				<a href="/#!/signup">{{'MENU.SIGNUP' | translate}}</a>
-			</li>
 			<li class="divider-vertical"></li>
 			<li ui-route="/signin" data-ng-class="{active: $uiRoute}">
 				<a href="/#!/signin">{{'MENU.SIGNIN' | translate}}</a>
@@ -38,10 +35,11 @@
 				</a>
 				<ul class="dropdown-menu">
 					<li>
-						<a href="/#!/settings/profile">{{'MENU.EDIT_PROFILE' | translate}}</a>
+						<a data-ng-href="/#!/users/{{authentication.user.serial}}">{{'MENU.VIEW_PROFILE' | translate}}</a>
 					</li>
+					<li class="divider"></li>
 					<li>
-						<a href="/#!/settings/accounts">{{'MENU.MANAGE_SOCIAL' | translate}}</a>
+						<a href="/#!/settings/profile">{{'MENU.EDIT_PROFILE' | translate}}</a>
 					</li>
 					<li data-ng-show="authentication.user.provider === 'local'">
 						<a href="/#!/settings/password">{{'MENU.CHANGE_PWD' | translate}}</a>

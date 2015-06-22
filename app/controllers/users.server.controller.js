@@ -3,11 +3,10 @@
 /**
  * Module dependencies.
  */
-
 var mongoose = require('mongoose'),
-  errorHandler = require('./errors.server.controller'),
-  User = mongoose.model('User'),
-  _ = require('lodash');
+	errorHandler = require('./errors.server.controller'),
+	User = mongoose.model('User'),
+	_ = require('lodash');
 
 /**
  * Extend user's controller
@@ -17,5 +16,5 @@ module.exports = _.extend(
 	require('./users/users.authorization.server.controller'),
 	require('./users/users.password.server.controller'),
 	require('./users/users.profile.server.controller'),
-  require('./users/users.find.server.controller.js')
+	require('./users/users.find.server.controller.js')
 );

@@ -1,4 +1,7 @@
 {
+	"DASHBOARD": {
+		"DASHBOARD": "Tableau de bord"
+	},
 	"HOME": {
 		"JUMBOTRON_INTRO": "Bienvenue sur la solution open-source qui permet de gérer des copies d'examen et d'automatiquement générer des fichiers PDF pré-remplis et prêts à imprimer pour les examens.",
 		"LEARN_MORE": "En savoir plus",
@@ -9,21 +12,23 @@
 		"PDF_GENERATION": "Génération de PDF",
 		"PDF_GENERATION_DESC": "ECM va automatiquement construire des fichiers PDF pré-remplis et prêts à imprimer, à partir d'un ensemble de modèles, avec l'ensemble des énoncés de l'examen. Les modèles, ainsi que les champs pouvant être pré-remplis, sont hautement personnalisables."
 	},
-	"DASHBOARD": {
-		"DASHBOARD": "Tableau de bord"
-	},
 	"MENU": {
 		"DASHBOARD": "Tableau de bord",
 		"MANAGE": "Gestion",
 		"TOOLS": "Outils",
-		"SIGNUP": "Créer un compte",
 		"SIGNIN": "Se connecter",
 		"SIGNOUT": "Se déconnecter",
-		"EDIT_PROFILE": "Modifier son profil",
-		"MANAGE_SOCIAL": "Gérer ses réseaux sociaux",
-		"CHANGE_PWD": "Modifier son mot de passe",
+		"VIEW_PROFILE": "Voir mon profil",
+		"EDIT_PROFILE": "Modifier mon profil",
+		"CHANGE_PWD": "Modifier mon mot de passe",
 		"MY_COURSES": "Mes cours",
 		"MY_EXAMS": "Mes examens"
+	},
+	"SIGNIN": {
+		"SIGNIN": "Connexion",
+		"USERNAME": "Nom d'utilisateur",
+		"PASSWORD": "Mot de passe",
+		"FORGOT": "Mot de passe oublié ?"
 	},
 	"BY": "Par",
 	"ECM_AUTHORS": "les auteurs d'ECM"
