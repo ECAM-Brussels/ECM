@@ -23,6 +23,10 @@ footer > div {
 	padding: 20px 0;
 }
 
+img.iconuserpic {
+	margin-top: -7px;
+}
+
 img.grayscale, input[type="image"].grayscale {
 	filter: grayscale(1);
 	-webkit-filter: grayscale(1);
