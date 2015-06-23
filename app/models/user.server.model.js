@@ -31,19 +31,19 @@ var UserSchema = new Schema({
 		unique: true,
 		required: 'Please fill your serial'
 	},
-	firstName: {
+	firstname: {
 		type: String,
 		trim: true,
 		default: '',
 		validate: [validateLocalStrategyProperty, 'Please fill your firstname']
 	},
-	lastName: {
+	lastname: {
 		type: String,
 		trim: true,
 		default: '',
 		validate: [validateLocalStrategyProperty, 'Please fill your lastname']
 	},
-	displayName: {
+	displayname: {
 		type: String,
 		trim: true
 	},
@@ -53,6 +53,10 @@ var UserSchema = new Schema({
 		default: '',
 		validate: [validateLocalStrategyProperty, 'Please fill your email address'],
 		match: [/.+\@.+\..+/, 'Please fill a valid email address']
+	},
+	picture: {
+		type: Boolean,
+		default: false
 	},
 	username: {
 		type: String,
@@ -72,8 +76,6 @@ var UserSchema = new Schema({
 		type: String,
 		required: true
 	},
-	providerData: {},
-	additionalProvidersData: {},
 	roles: {
 		type: [{
 			type: String,
