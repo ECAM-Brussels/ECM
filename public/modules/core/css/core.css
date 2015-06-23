@@ -3,6 +3,11 @@ h1 {
 }
 
 h2 {
+	margin: 30px 0px 20px 0px;
+	font-size: 27px;
+}
+
+h3 {
 	font-size: 20px;
 }
 

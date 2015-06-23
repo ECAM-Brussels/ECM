@@ -1,26 +1,34 @@
 <section data-ng-controller="UsersController" data-ng-init="findOne()">
-	<div class="page-header">
-		<h1><span data-ng-bind="profile.serial"></span> : <span data-ng-bind="profile.displayName"></span></h1>
-	</div>
-  <h3><br> Roles : <br> <ul>
-    <h4>
-      <li data-ng-show="profile.rights.user"> User </li>
-      <li data-ng-show="profile.rights.printer"> Printer </li>
-      <li data-ng-show="profile.rights.teacher"> Teacher </li>
-      <li data-ng-show="profile.rights.manager"> Manager </li>
-      <li data-ng-show="profile.rights.admin"> Admin </li>
-    </h4>
-  </ul>
-  <br>
-  Email : {{profile.email}}
-  </h3>
+	<h2>{{profile.displayName}}</h2>
 
-	<div class="pull-right" data-ng-show="authentication.user">
-		<a class="btn btn-primary" href="/#!/users/{{profile.serial}}/edit">
-			<i class="glyphicon glyphicon-edit"></i>
-		</a>
-		<a class="btn btn-primary" data-ng-click="remove();">
-			<i class="glyphicon glyphicon-trash"></i>
-		</a>
+	<h3>Information</h3>
+
+	<div ng-if="profile.picture" class="pull-right">
+		<img ng-src="/images/users/{{profile._id}}.jpg" width="150" height="190" alt="Picture of {{profile.serial}}" />
+	</div>
+
+	<div class="pull-left">
+		<dl class="dl-horizontal">
+			<dt>Serial</dt>
+			<dd>{{profile.serial}}</dd>
+
+			<dt>Firstname</dt>
+			<dd>{{profile.firstname}}</dd>
+
+			<dt>Lastname</dt>
+			<dd>{{profile.lastname}}</dd>
+
+			<dt>Email</dt>
+			<dd>{{profile.email}}</dd>
+
+			<dt>Roles</dt>
+			<dd>
+				<span data-ng-if="profile.rights.admin">Admin, </span>
+				<span data-ng-if="profile.rights.manager">Manager, </span>
+				<span data-ng-if="profile.rights.teacher">Teacher, </span>
+				<span data-ng-if="profile.rights.printer">Printer, </span>
+				User
+			</dd>
+		</dl>
 	</div>
 </section>
