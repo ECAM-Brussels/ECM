@@ -21,9 +21,9 @@ module.exports = function(app) {
 		.post(users.hasAuthorization(['admin', 'manager']), users.createUser);
 
 	app.route('/users/:userId')
-		.get(users.hasAuthorization(['admin', 'teacher']), users.hasTeacherAuthorization(), users.read)
+		.get(users.hasAuthorization(['admin', 'manager', 'teacher']), users.hasTeacherAuthorization(), users.read)
 		.post(users.hasAuthorization(['admin', 'manager']), users.createUser)
-		.put(users.hasAuthorization(['admin', 'teacher'], users.hasTeacherAuthorization()), users.update)
+		.put(users.hasAuthorization(['admin', 'manager', 'teacher'], users.hasTeacherAuthorization()), users.update)
 		.delete(users.hasAuthorization(['admin', 'manager']), users.delete);
 
 	app.route('/auth/forgot')
