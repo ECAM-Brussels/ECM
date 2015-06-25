@@ -6,5 +6,5 @@ angular.module('courses').run(['Menus', function(Menus) {
 	Menus.addSubMenuItem('topbar', 'dashboard', 'MENU.MY_COURSES', 'list/myCourses', 'list/myCourses', false, ['teacher']);
 
 	// Set manage menu items
-	Menus.addSubMenuItem('topbar', 'manage', 'Courses', 'courses', 'courses', false, ['admin']);
+	Menus.addSubMenuItem('topbar', 'manage', 'MENU.COURSES', 'courses', 'courses', false, ['admin']);
 }]);

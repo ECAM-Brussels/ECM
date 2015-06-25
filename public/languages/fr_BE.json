@@ -35,6 +35,24 @@
 		"SAVE_PWD": "Enregistrer le mot de passe",
 		"SAVE_PWD_SUCCESS": "Mot de passe enregistré avec succès"
 	},
+	"COURSES": {
+		"COURSES": "Cours",
+		"NEW_ACTIVITY": "Nouvelle activité",
+		"NEW_COURSE": "Nouveau cours",
+		"NO_COURSE_AVAILABLE": "Aucun cours disponible pour le moment.",
+		"MY_COURSES": "Mes cours",
+		"CREATE_COURSE": "Créer un cours",
+		"ID": "Sigle",
+		"NAME": "Nom",
+		"COORDINATOR": "Coordinateur",
+		"ACTIVITIES": "Activités",
+		"ADD_TEACHER": "Ajouter un enseignant",
+		"ADD_ACTIVITY": "Ajouter une activité",
+		"CREATE": "Créer",
+		"INFORMATION": "Informations",
+		"WEIGHT": "Crédits",
+		"BY": "par"
+	},
 	"MENU": {
 		"DASHBOARD": "Tableau de bord",
 		"MANAGE": "Gestion",
@@ -45,7 +63,8 @@
 		"EDIT_PROFILE": "Modifier mon profil",
 		"CHANGE_PWD": "Modifier mon mot de passe",
 		"MY_COURSES": "Mes cours",
-		"MY_EXAMS": "Mes examens"
+		"MY_EXAMS": "Mes examens",
+		"COURSES": "Cours"
 	},
 	"SIGNIN": {
 		"SIGNIN": "Connexion",

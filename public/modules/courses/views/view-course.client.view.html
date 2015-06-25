@@ -1,18 +1,18 @@
 <section data-ng-controller="CoursesController" data-ng-init="findOne()">
-	<h1>{{course.ID}} &mdash; {{course.name}}</h1>
+	<h2>{{course.ID}} &mdash; {{course.name}}</h2>
 
-	<h2>Information</h2>
+	<h3>{{'COURSES.INFORMATION' | translate}}</h3>
 
 	<dl class="dl-horizontal">
-		<dt>Coordinator</dt>
+		<dt>{{'COURSES.COORDINATOR' | translate}}</dt>
 		<dd>{{course.coordinator.username}}</dd>
-		<dt>Weight</dt>
+		<dt>{{'COURSES.WEIGHT' | translate}}</dt>
 		<dd>{{course.totalWeight}} ECTS</dd>
 	</dl>
 
-	<h2>Activities</h2>
+	<h3>{{'COURSES.ACTIVITIES' | translate}}</h3>
 
 	<ul class="list-group">
-		<li class="list-group-item" ng-repeat="activity in course.activities"><b>{{activity.ID}}</b> &mdash; {{activity.name}} ({{activity.weight}} ECTS) by<span ng-repeat="teacher in activity.teachers"> {{teacher.username}}</span></li>
+		<li class="list-group-item" ng-repeat="activity in course.activities"><b>{{activity.ID}}</b> &mdash; {{activity.name}} ({{activity.weight}} ECTS) {{'COURSES.BY' | translate}}<span ng-repeat="teacher in activity.teachers"> {{teacher.username}}{{$last ? '' : ','}}</span></li>
 	</ul>
 </section>

@@ -13,10 +13,10 @@ module.exports = {
 	assets: {
 		lib: {
 			css: [
-				'public/lib/bootstrap/dist/css/bootstrap.css',
-				'public/lib/bootstrap/dist/css/bootstrap-theme.css',
-				'public/lib/ng-tags-input/ng-tags-input.bootstrap.css',
-				'public/lib/ng-tags-input/ng-tags-input.css',
+				'public/lib/bootstrap/dist/css/bootstrap.min.css',
+				'public/lib/bootstrap/dist/css/bootstrap-theme.min.css',
+				'public/lib/ng-tags-input/ng-tags-input.min.css',
+				'public/lib/ng-tags-input/ng-tags-input.bootstrap.min.css',
 				'public/lib/nya-bootstrap-select/dist/css/nya-bs-select.min.css'
 			],
 			js: [

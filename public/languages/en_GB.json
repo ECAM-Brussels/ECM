@@ -35,6 +35,24 @@
 		"SAVE_PWD": "Save password",
 		"SAVE_PWD_SUCCESS": "Password changed successfully"
 	},
+	"COURSES": {
+		"COURSES": "Courses",
+		"NEW_ACTIVITY": "New activity",
+		"NEW_COURSE": "New course",
+		"NO_COURSE_AVAILABLE": "No courses available yet.",
+		"MY_COURSES": "My courses",
+		"CREATE_COURSE": "Create course",
+		"ID": "ID",
+		"NAME": "Name",
+		"COORDINATOR": "Coordinator",
+		"ACTIVITIES": "Activities",
+		"ADD_TEACHER": "Add a teacher",
+		"ADD_ACTIVITY": "Add an activity",
+		"CREATE": "Create",
+		"INFORMATION": "Information",
+		"WEIGHT": "Weight",
+		"BY": "by"
+	},
 	"MENU": {
 		"DASHBOARD": "Dashboard",
 		"MANAGE": "Manage",
@@ -45,7 +63,8 @@
 		"EDIT_PROFILE": "Edit my profile",
 		"CHANGE_PWD": "Change my password",
 		"MY_COURSES": "My courses",
-		"MY_EXAMS": "My exams"
+		"MY_EXAMS": "My exams",
+		"COURSES": "Courses"
 	},
 	"SIGNIN": {
 		"SIGNIN": "Sign in",

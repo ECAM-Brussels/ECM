@@ -1,10 +1,14 @@
 <section data-ng-controller="CoursesController" data-ng-init="findMyCourses()">
-    <h1>My courses</h1>
+	<h2>{{'COURSES.MY_COURSES' | translate}}</h2>
 
-    <div class="list-group" data-ng-if="! courses.$resolved || courses.length">
-        <a data-ng-repeat="course in courses" data-ng-href="#!/courses/{{course.ID}}" class="list-group-item"><b>{{course.ID}}</b> &mdash; {{course.name}}</a>
-    </div>
-    <div class="alert alert-warning text-center" data-ng-if="courses.$resolved && ! courses.length">
-        You don't have any courses.
-    </div>
+	<div class="list-group" data-ng-if="! courses.$resolved || courses.length">
+		<a data-ng-repeat="course in courses | orderBy: '+ID'" data-ng-href="#!/courses/{{course.ID}}" class="list-group-item">
+			<h3><b>{{course.ID}}</b> &mdash; {{course.name}} ({{course.coordinator.serial}})</h3>
+			<ul>
+				<li data-ng-repeat="activity in course.activities | orderBy: '+ID'">{{activity.ID}} &mdash; {{activity.name}} (<span data-ng-repeat="teacher in activity.teachers | orderBy: '+serial'">{{teacher.serial}}{{$last ? '' : ', '}}</span>)</li>
+			</ul>
+		</a>
+	</div>
+
+	<div data-ng-if="courses.$resolved && ! courses.length">{{'COURSES.NO_COURSE_AVAILABLE' | translate}}</div>
 </section>

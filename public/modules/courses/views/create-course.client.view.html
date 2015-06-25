@@ -1,35 +1,35 @@
 <section data-ng-controller="CoursesController">
-	<h1>Create course</h1>
+	<h2>{{'COURSES.CREATE_COURSE' | translate}}</h2>
 
 	<div class="col-md-12">
 		<form class="form-horizontal" data-ng-submit="create()" novalidate>
 			<fieldset>
 				<div class="form-group">
-					<label class="control-label" for="ID">ID</label>
+					<label class="control-label" for="ID">{{'COURSES.ID' | translate}}</label>
 					<div class="controls">
 						<input type="text" data-ng-model="ID" id="ID" class="form-control" placeholder="LI4C" required>
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label" for="name">Name</label>
+					<label class="control-label" for="name">{{'COURSES.NAME' | translate}}</label>
 					<div class="controls">
-						<input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Name" required>
+						<input type="text" data-ng-model="name" id="name" class="form-control" placeholder="{{'COURSES.NAME' | translate}}" required>
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label">Coordinator</label>
-					<tags-input data-ng-model="coordinator" display-property="name" max-tags="1" placeholder="Add a teacher">
+					<label class="control-label">{{'COURSES.COORDINATOR' | translate}}</label>
+					<tags-input data-ng-model="coordinator" display-property="name" max-tags="1" placeholder="{{'COURSES.ADD_TEACHER' | translate}}">
 						<auto-complete source="loadTeachers($query)"></auto-complete>
 					</tags-input>
 				</div>
 				<div class="form-group">
-					<label class="control-label">Activities</label>
-					<tags-input data-ng-model="activities" display-property="name" placeholder="Add an activity">
+					<label class="control-label">{{'COURSES.ACTIVITIES' | translate}}</label>
+					<tags-input data-ng-model="activities" display-property="name" placeholder="{{'COURSES.ADD_ACTIVITY' | translate}}">
 						<auto-complete source="loadActivities($query)"></auto-complete>
 					</tags-input>
 				</div>
 				<div class="form-group">
-					<button type="submit" class="btn btn-primary">Create</button>
+					<button type="submit" class="btn btn-primary">{{'COURSES.CREATE' | translate}}</button>
 				</div>
 				<div data-ng-show="error" class="text-danger">
 					<strong data-ng-bind="error"></strong>

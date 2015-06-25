@@ -72,7 +72,7 @@ exports.delete = function(req, res) {
 exports.list = function(req, res) { 
 	Course.find({}, 'ID name coordinator activities')
 		  .populate('coordinator', 'serial')
-		  .populate('activities', 'ID')
+		  .populate('activities', 'ID name teachers')
 		  .sort({'ID': 1})
 		  .exec(function(err, courses) {
 		if (err) {
@@ -80,7 +80,15 @@ exports.list = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		}
-		res.jsonp(courses);
+
+		Course.populate(courses, {path: 'activities.teachers', select: 'serial', model: 'User'}, function(err, courses) {
+			if (err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			}
+			res.jsonp(courses);
+		});
 	});
 };
 
@@ -129,8 +137,21 @@ exports.hasAuthorization = function(req, res, next) {
 	next();
 };
 
+function isTeacher(teacher, activities) {
+	for (var i = 0; i < activities.length; i++) {
+		for (var j = 0; j < activities[i].teachers.length; j++) {
+			if (activities[i].teachers[j]._id.toString() === teacher) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 exports.listMyCourses = function(req, res) { 
-	Course.find({coordinator: req.user.id}, 'ID name')
+	Course.find({}, 'ID name coordinator activities')
+		  .populate('coordinator', 'serial')
+		  .populate('activities', 'ID name teachers')
 		  .sort({'ID': 1})
 		  .exec(function(err, courses) {
 		if (err) {
@@ -138,6 +159,25 @@ exports.listMyCourses = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		}
-		res.jsonp(courses);
+		
+		Course.populate(courses, {path: 'activities.teachers', select: 'serial', model: 'User'}, function(err, courses) {
+			if (err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			}
+
+			// Keep course if coordinator or if involved in one activity
+			var tokeep = [];
+
+			for (var i = 0; i < courses.length; i++) {
+				if (courses[i].coordinator._id.toString() === req.user.id) {
+					tokeep.push(courses[i]);
+				} else if (isTeacher(req.user.id, courses[i].activities)) {
+					tokeep.push(courses[i]);
+				}
+			}
+			res.jsonp(tokeep);
+		});
 	});
 };
