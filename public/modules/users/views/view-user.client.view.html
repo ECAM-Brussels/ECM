@@ -1,7 +1,7 @@
 <section data-ng-controller="UsersController" data-ng-init="findOne()">
 	<h2>{{profile.displayname}}</h2>
 
-	<h3>Information</h3>
+	<h3>{{'PROFILE.INFORMATION' | translate}}</h3>
 
 	<div ng-if="profile.picture" class="pull-right">
 		<img ng-src="/images/users/{{profile._id}}.jpg" width="150" height="150" alt="Picture of {{profile.serial}}" />
@@ -9,25 +9,25 @@
 
 	<div class="pull-left">
 		<dl class="dl-horizontal">
-			<dt>Serial</dt>
+			<dt>{{'PROFILE.SERIAL' | translate}}</dt>
 			<dd>{{profile.serial}}</dd>
 
-			<dt>Firstname</dt>
+			<dt>{{'PROFILE.FIRSTNAME' | translate}}</dt>
 			<dd>{{profile.firstname}}</dd>
 
-			<dt>Lastname</dt>
+			<dt>{{'PROFILE.LASTNAME' | translate}}</dt>
 			<dd>{{profile.lastname}}</dd>
 
-			<dt>Email</dt>
+			<dt>{{'PROFILE.EMAIL' | translate}}</dt>
 			<dd>{{profile.email}}</dd>
 
-			<dt>Roles</dt>
+			<dt>{{'PROFILE.ROLES' | translate}}</dt>
 			<dd>
-				<span data-ng-if="profile.rights.admin">Admin, </span>
-				<span data-ng-if="profile.rights.manager">Manager, </span>
-				<span data-ng-if="profile.rights.teacher">Teacher, </span>
-				<span data-ng-if="profile.rights.printer">Printer, </span>
-				User
+				<span data-ng-if="profile.rights.admin">{{'PROFILE.ADMIN' | translate}}, </span>
+				<span data-ng-if="profile.rights.manager">{{'PROFILE.MANAGER' | translate}}, </span>
+				<span data-ng-if="profile.rights.teacher">{{'PROFILE.TEACHER' | translate}}, </span>
+				<span data-ng-if="profile.rights.printer">{{'PROFILE.PRINTER' | translate}}, </span>
+				{{'PROFILE.USER' | translate}}
 			</dd>
 		</dl>
 	</div>
