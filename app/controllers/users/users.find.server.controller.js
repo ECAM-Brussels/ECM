@@ -9,8 +9,7 @@ var _ = require('lodash'),
 	User = mongoose.model('User');
 
 exports.find = function(req, res) { 
-	User.find({}, 'serial displayName')
-		.sort({serial: 1})
+	User.find({}, 'serial displayname')
 		.exec(function(err, users) {
 		if (err) {
 			return res.status(400).send({

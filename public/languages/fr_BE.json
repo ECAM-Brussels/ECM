@@ -53,6 +53,22 @@
 		"WEIGHT": "Crédits",
 		"BY": "par"
 	},
+	"USERS": {
+		"USERS": "Utilisateurs",
+		"NEW_USER": "Nouvel utilisateur",
+		"NO_USER_AVAILABLE": "Aucun utilisateur disponible pour le moment.",
+		"CREATE_USER": "Créer un utilisateur",
+		"SERIAL": "Identifiant",
+		"FIRSTNAME": "Prénom",
+		"LASTNAME": "Nom",
+		"EMAIL": "E-mail",
+		"RIGHTS": "Droits",
+		"TEACHER": "Enseignant",
+		"MANAGER": "Gestionnaire",
+		"PRINTER": "Imprimeur",
+		"ADMIN": "Administrateur",
+		"PASSWORD": "Mot de passe"
+	},
 	"MENU": {
 		"DASHBOARD": "Tableau de bord",
 		"MANAGE": "Gestion",

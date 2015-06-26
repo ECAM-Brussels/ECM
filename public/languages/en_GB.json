@@ -39,7 +39,7 @@
 		"COURSES": "Courses",
 		"NEW_ACTIVITY": "New activity",
 		"NEW_COURSE": "New course",
-		"NO_COURSE_AVAILABLE": "No courses available yet.",
+		"NO_COURSE_AVAILABLE": "No course available yet.",
 		"MY_COURSES": "My courses",
 		"CREATE_COURSE": "Create course",
 		"ID": "ID",
@@ -52,6 +52,22 @@
 		"INFORMATION": "Information",
 		"WEIGHT": "Weight",
 		"BY": "by"
+	},
+	"USERS": {
+		"USERS": "Users",
+		"NEW_USER": "New user",
+		"NO_USER_AVAILABLE": "No user available yet.",
+		"CREATE_USER": "Create user",
+		"SERIAL": "Serial",
+		"FIRSTNAME": "Firstname",
+		"LASTNAME": "Lastname",
+		"EMAIL": "Email",
+		"RIGHTS": "Rights",
+		"TEACHER": "Teacher",
+		"MANAGER": "Manager",
+		"PRINTER": "Printer",
+		"ADMIN": "Admin",
+		"PASSWORD": "Password"
 	},
 	"MENU": {
 		"DASHBOARD": "Dashboard",

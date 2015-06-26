@@ -1,10 +1,13 @@
 <section data-ng-controller="UsersController" data-ng-init="find()">
-	<h1>Users</h1>
+	<h2>{{'USERS.USERS' | translate}}</h2>
+
+	<div>
+		<p class="text-right"><a href="#!/users/create" class="btn btn-success"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{'USERS.NEW_USER' | translate}}</a></p>
+	</div>
 
 	<div class="list-group" data-ng-if="! users.$resolved || users.length">
-		<a data-ng-repeat="user in users" data-ng-href="#!/users/{{user.serial}}" class="list-group-item"><b>{{user.serial}}</b> &mdash; {{user.displayName}}</a>
+		<a data-ng-repeat="user in users | orderBy: '+serial'" data-ng-href="#!/users/{{user.serial}}" class="list-group-item"><b>{{user.serial}}</b> &mdash; {{user.displayname}}</a>
 	</div>
-	<div class="alert alert-warning text-center" data-ng-if="users.$resolved && users.length == 0">
-		No users yet, why don't you <a href="/#!/users/create">create one</a>?
-	</div>
+
+	<div data-ng-if="users.$resolved && users.length == 0">{{'USERS.NO_USER_AVAILABLE' | translate}}</div>
 </section>
