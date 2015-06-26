@@ -42,7 +42,6 @@ exports.signout = function(req, res) {
 exports.createUser = function(req, res) {
 	// Init Variables
 	var user = new User(req.body);
-	var message = null;
 	// Add missing user fields
 	var roles = ['user'];
 	if (req.body.rights.teacher) {
@@ -60,18 +59,17 @@ exports.createUser = function(req, res) {
 	user.username = user.serial;
 	user.roles = roles;
 	user.provider = 'local';
-	user.displayName = user.firstName + ' ' + user.lastName;
+	user.displayname = user.firstname + ' ' + user.lastname;
 	// Then save the user 
 	user.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
-		} else {
-			return res.status(200).send({
-				message: 'User created'
-			});
 		}
+		return res.status(200).send({
+			message: 'User created'
+		});
 	});
 };
 
