@@ -12,7 +12,7 @@ app.config(['$locationProvider', function($locationProvider) {
 app.config(['$translateProvider', function($translateProvider) {
 	$translateProvider.useSanitizeValueStrategy('escape');
 	$translateProvider.useStaticFilesLoader({
-		prefix: 'languages/',
+		prefix: 'lang/',
 		suffix: '.json'
 	});
 	$translateProvider.preferredLanguage('en_GB');
