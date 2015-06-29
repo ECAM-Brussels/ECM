@@ -18,7 +18,7 @@ exports.create = function(req, res) {
 		ID: req.body.ID,
 		name: req.body.name,
 		seats: req.body.seats,
-		picture: req.body.path != null && req.body.path !== '',
+		picture: req.body.path !== null && req.body.path !== '',
 		user: req.user
 	});
 	room.save(function(err) {
@@ -28,7 +28,7 @@ exports.create = function(req, res) {
 			});
 		}
 		// Save picture
-		if (req.body.path != null && req.body.path !== '') {
+		if (req.body.path !== null && req.body.path !== '') {
 			var src = '/tmp/' + path.basename(req.body.path);
 			var dest = path.dirname(require.main.filename) + '/public/images/rooms/' + room._id + '.jpg';
 			fs.copy(src, dest, function(err) {
