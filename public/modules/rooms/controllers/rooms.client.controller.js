@@ -64,10 +64,6 @@ angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams',
 	};
 
 	// For the file upload
-	$scope.$watch('files', function() {
-		$scope.upload($scope.files);
-	});
-
 	$scope.upload = function(files) {
 		if (! $scope.uploading && files && files.length === 1) {
 			// Reset form
