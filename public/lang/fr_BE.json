@@ -67,7 +67,22 @@
 		"MANAGER": "Gestionnaire",
 		"PRINTER": "Imprimeur",
 		"ADMIN": "Administrateur",
-		"PASSWORD": "Mot de passe"
+		"PASSWORD": "Mot de passe",
+		"CREATE": "Créer"
+	},
+	"ROOMS": {
+		"ROOMS": "Auditoires",
+		"NEW_ROOM": "Nouvel auditoire",
+		"NO_ROOM_AVAILABLE": "Aucun auditoire disponible pour le moment",
+		"CREATE_ROOM": "Créer un auditoire",
+		"ID": "Identifiant",
+		"NAME": "Nom",
+		"NAME_EXAMPLE": "Salle de réunion du premier étage",
+		"SEATS": "Sièges",
+		"PICTURE": "Photo",
+		"LOAD_ONE_PICTURE": "Vous pouvez télécharger une photo pour l'auditoire depuis votre ordinateur.",
+		"SELECT_FILE": "Sélectionner un fichier",
+		"CREATE": "Créer"
 	},
 	"MENU": {
 		"DASHBOARD": "Tableau de bord",

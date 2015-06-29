@@ -1,47 +1,47 @@
 <section data-ng-controller="RoomsController">
-	<h1>Create room</h1>
+	<h2>{{'ROOMS.CREATE_ROOM' | translate}}</h2>
 
 	<div class="col-md-12">
 		<form class="form-horizontal" data-ng-submit="create()" novalidate>
 			<fieldset>
 				<div class="form-group">
-					<label class="control-label" for="ID">ID</label>
+					<label class="control-label" for="ID">{{'ROOMS.ID' | translate}}</label>
 					<div class="controls">
 						<input type="text" data-ng-model="ID" id="ID" class="form-control" placeholder="A000" required>
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label" for="name">Name</label>
+					<label class="control-label" for="name">{{'ROOMS.NAME' | translate}}</label>
 					<div class="controls">
-						<input type="text" data-ng-model="name" id="name" class="form-control" placeholder="First floor meeting room" required>
+						<input type="text" data-ng-model="name" id="name" class="form-control" placeholder="{{'ROOMS.NAME_EXAMPLE' | translate}}" required>
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label" for="seats">Seats</label>
+					<label class="control-label" for="seats">{{'ROOMS.SEATS' | translate}}</label>
 					<div class="controls">
 						<input type="text" data-ng-model="seats" id="seats" class="form-control" placeholder="20" required>
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label">Picture</label>
+					<label class="control-label">{{'ROOMS.PICTURE' | translate}}</label>
 					<div class="controls">
 						<div data-ng-if="! path">
-							You can load one picture for the room from your computer.
+							{{'ROOMS.LOAD_ONE_PICTURE' | translate}}
 						</div>
 						<div data-ng-if="path">
 							<img data-ng-src="{{path}}" width="300" height="200" alt="Room picture" />
 						</div>
 						<progressbar data-ng-if="progressValue" class="progress-striped active" animate="true" max="100" value="progressValue" type="success"><i>{{progressValue}} %</i></progressbar>
-						<div class="btn btn-default" ngf-select accept="image/*" ngf-allow-dir="false" data-ng-model="files" data-ng-hide="uploading">Select file</div>
+						<div class="btn btn-default" ngf-select accept="image/*" ngf-allow-dir="false" data-ng-model="files" data-ng-hide="uploading">{{'ROOMS.SELECT_FILE' | translate}}</div>
 					</div>
 				</div>
 				<div class="form-group">
-					<button type="submit" class="btn btn-primary">Create</button>
+					<button type="submit" class="btn btn-primary">{{'ROOMS.CREATE' | translate}}</button>
 				</div>
 				<div data-ng-if="error" class="text-danger">
 					<strong data-ng-bind="error"></strong>
 				</div>
-            </fieldset>
-        </form>
-    </div>
+			</fieldset>
+		</form>
+	</div>
 </section>

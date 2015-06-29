@@ -1,11 +1,13 @@
 <section data-ng-controller="RoomsController" data-ng-init="find()">
+	<h2>{{'ROOMS.ROOMS' | translate}}</h2>
 
-	<h1>Rooms</h1>
+	<div>
+		<p class="text-right"><a href="#!/rooms/create" class="btn btn-success"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{'ROOMS.NEW_ROOM' | translate}}</a></p>
+	</div>
 
 	<div class="list-group" data-ng-if="! rooms.$resolved || rooms.length">
 		<a data-ng-repeat="room in rooms" data-ng-href="#!/rooms/{{room.ID}}" class="list-group-item"><b>{{room.ID}}</b> &mdash; {{room.name}}</a>
-    </div>
-    <div class="alert alert-warning text-center" data-ng-if="rooms.$resolved && ! rooms.length">
-    	No rooms yet, why don't you <a href="/#!/rooms/create">create one</a>?
-    </div>
+	</div>
+
+	<div data-ng-if="rooms.$resolved && ! rooms.length">{{'ROOMS.NO_ROOM_AVAILABLE' | translate}}</div>
 </section>

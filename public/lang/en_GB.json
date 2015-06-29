@@ -67,7 +67,22 @@
 		"MANAGER": "Manager",
 		"PRINTER": "Printer",
 		"ADMIN": "Admin",
-		"PASSWORD": "Password"
+		"PASSWORD": "Password",
+		"CREATE": "Create"
+	},
+	"ROOMS": {
+		"ROOMS": "Rooms",
+		"NEW_ROOM": "New room",
+		"NO_ROOM_AVAILABLE": "No room available yet",
+		"CREATE_ROOM": "Create room",
+		"ID": "ID",
+		"NAME": "Name",
+		"NAME_EXAMPLE": "First floor meeting room",
+		"SEATS": "Seats",
+		"PICTURE": "Picture",
+		"LOAD_ONE_PICTURE": "You can load one picture for the room from your computer.",
+		"SELECT_FILE": "Select file",
+		"CREATE": "Create"
 	},
 	"MENU": {
 		"DASHBOARD": "Dashboard",
