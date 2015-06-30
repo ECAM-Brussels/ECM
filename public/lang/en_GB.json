@@ -86,7 +86,27 @@
 		"INFORMATION": "Information",
 		"PICTURE_OF": "Picture of",
 		"MAP": "Room map",
-		"NO_MAP_AVAILABLE": "No room map is available."
+		"NO_MAP_AVAILABLE": "No room map available yet."
+	},
+	"STUDENTS": {
+		"STUDENTS": "Students",
+		"NEW_GROUP": "New group",
+		"NEW_STUDENT": "New student",
+		"NO_STUDENT_AVAILABLE": "No student available yet.",
+		"CREATE_GROUP": "Create group",
+		"NAME": "Name",
+		"DESCRIPTION": "Description",
+		"CREATE": "Create",
+		"GROUPS": "Groups",
+		"NO_GROUP_AVAILABLE": "No group available yet.",
+		"INFORMATION": "Information",
+		"CREATE_STUDENT": "Create student",
+		"MATRICULE": "Registration number",
+		"FIRSTNAME": "Firstname",
+		"LASTNAME": "Lastname",
+		"MIDDLE_NAMES": "Middle names",
+		"COMMA_SEP_NAMES": "Comma separated names",
+		"ADD_GROUP": "Add a group"
 	},
 	"MENU": {
 		"DASHBOARD": "Dashboard",

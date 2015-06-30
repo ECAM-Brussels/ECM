@@ -1,10 +1,14 @@
 <section data-ng-controller="StudentsController" data-ng-init="find()">
-	<h1>Students</h1>
+	<h2>{{'STUDENTS.STUDENTS' | translate}}</h2>
+
+	<div>
+		<p class="text-right"><a href="#!/groups/create" class="btn btn-success"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{'STUDENTS.NEW_GROUP' | translate}}</a>&#160;
+		<a href="#!/students/create" class="btn btn-success"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{'STUDENTS.NEW_STUDENT' | translate}}</a></p>
+	</div>
 
 	<div class="list-group" data-ng-if="! students.$resolved || students.length">
 		<a data-ng-repeat="student in students" data-ng-href="#!/students/{{student.matricule}}" class="list-group-item">{{student.firstname}} {{student.lastname}} ({{student.matricule}})</a>
-    </div>
-    <div class="alert alert-warning text-center" data-ng-if="students.$resolved && ! students.length">
-    	No students yet, why don't you <a href="/#!/students/create">create one</a>?
-    </div>
+	</div>
+	
+	<div data-ng-if="students.$resolved && ! students.length">{{'STUDENTS.NO_STUDENT_AVAILABLE' | translate}}</div>
 </section>

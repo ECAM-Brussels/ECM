@@ -1,10 +1,10 @@
 <section data-ng-controller="GroupsController" data-ng-init="findOne()">
-	<h1>{{group.name}}</h1>
+	<h2>{{group.name}}</h2>
 
-	<h2>Information</h2>	
+	<h3>{{'STUDENTS.INFORMATION' | translate}}</h3>
 
 	<dl class="dl-horizontal">
-		<dt>Description</dt>
+		<dt>{{'STUDENTS.DESCRIPTION' | translate}}</dt>
 		<dd>{{group.description}}</dd>
 	</dl>
 </section>

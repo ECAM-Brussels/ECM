@@ -18,6 +18,7 @@ var GroupSchema = new Schema({
 	},
 	description: {
 		type: String,
+		required: 'Please fill a description for the group',
 		default: ''
 	},
 	created: {

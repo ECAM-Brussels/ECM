@@ -88,6 +88,26 @@
 		"MAP": "Plan de l'auditoire",
 		"NO_MAP_AVAILABLE": "Aucun plan de l'auditoire disponible pour le moment."
 	},
+	"STUDENTS": {
+		"STUDENTS": "Étudiant",
+		"NEW_GROUP": "Nouveau groupe",
+		"NEW_STUDENT": "Nouvel étudiant",
+		"NO_STUDENT_AVAILABLE": "Aucun étudiant disponible pour le moment.",
+		"CREATE_GROUP": "Créer un groupe",
+		"NAME": "Nom",
+		"DESCRIPTION": "Description",
+		"CREATE": "Créer",
+		"GROUPS": "Groupes",
+		"NO_GROUP_AVAILABLE": "Aucun groupe disponible pour le moment.",
+		"INFORMATION": "Informations",
+		"CREATE_STUDENT": "Créer un étudiant",
+		"MATRICULE": "Matricule",
+		"FIRSTNAME": "Prénom",
+		"LASTNAME": "Nom",
+		"MIDDLE_NAMES": "Autres prénoms",
+		"COMMA_SEP_NAMES": "Prénoms séparés par des virgules",
+		"ADD_GROUP": "Ajouter un groupe"
+	},
 	"MENU": {
 		"DASHBOARD": "Tableau de bord",
 		"MANAGE": "Gestion",
