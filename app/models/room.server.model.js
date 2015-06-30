@@ -30,6 +30,10 @@ var RoomSchema = new Schema({
 		type: Boolean,
 		default: false
 	},
+	map: {
+		type: Boolean,
+		default: false
+	},
 	created: {
 		type: Date,
 		default: Date.now

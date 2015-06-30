@@ -1,7 +1,7 @@
 'use strict';
 
 // Rooms controller
-angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Rooms', 'Upload', function ($scope, $stateParams, $location, Authentication, Rooms, Upload) {
+angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams', '$location', '$http', 'Authentication', 'Rooms', 'Upload', function ($scope, $stateParams, $location, $http, Authentication, Rooms, Upload) {
 	$scope.authentication = Authentication;
 	$scope.uploading = false;
 	$scope.path = null;
@@ -83,5 +83,31 @@ angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams',
 				$scope.uploading = false;
 			});
 		}
+	};
+
+	// For the room map
+	$scope.drawMap = function() {
+		$http.get('images/rooms/' + $scope.room._id + '/map.json').success(function(data, status, headers, config) {
+			// Set up canvas
+			var canvas = document.getElementById('roomplaces');
+			canvas.width = data.width;
+			canvas.height = data.height;
+			// Initialise context
+			var context = canvas.getContext('2d');
+			context.strokeRect(0, 0, data.width, data.height);
+			// Draw all shapes
+			data.shapes.forEach (function(shape) {
+				var attr = shape.attr;
+				switch (shape.type) {
+					case 'rectangle':
+						context.strokeRect(attr.x, attr.y, attr.width, attr.height);
+					break;
+
+					case 'text':
+						context.strokeText(attr.value, attr.x, attr.y);
+					break;
+				}
+			});
+		});
 	};
 }]);

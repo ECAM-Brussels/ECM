@@ -19,6 +19,7 @@ exports.create = function(req, res) {
 		name: req.body.name,
 		seats: req.body.seats,
 		picture: req.body.path !== null && req.body.path !== '',
+		places: [],
 		user: req.user
 	});
 	room.save(function(err) {
@@ -30,7 +31,8 @@ exports.create = function(req, res) {
 		// Save picture
 		if (req.body.path !== null && req.body.path !== '') {
 			var src = '/tmp/' + path.basename(req.body.path);
-			var dest = path.dirname(require.main.filename) + '/public/images/rooms/' + room._id + '.jpg';
+			var dest = path.dirname(require.main.filename) + '/public/images/rooms/' + room._id + '/picture.jpg';
+			fs.ensureDirSync(path.dirname(dest));
 			fs.copy(src, dest, function(err) {
 				if (err) {
 					return res.status(400).send({
@@ -70,18 +72,15 @@ exports.read = function(req, res) {
  * Update a Room
  */
 exports.update = function(req, res) {
-	var room = req.room ;
-
-	room = _.extend(room , req.body);
-
+	var room = req.room;
+	room = _.extend(room, req.body);
 	room.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
-		} else {
-			res.jsonp(room);
 		}
+		res.jsonp(room);
 	});
 };
 
@@ -90,15 +89,13 @@ exports.update = function(req, res) {
  */
 exports.delete = function(req, res) {
 	var room = req.room;
-
 	room.remove(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
-		} else {
-			res.jsonp(room);
 		}
+		res.jsonp(room);
 	});
 };
 
@@ -106,16 +103,13 @@ exports.delete = function(req, res) {
  * List of Rooms
  */
 exports.list = function(req, res) { 
-	Room.find({}, 'ID name')
-		.sort({'ID': 1})
-		.exec(function(err, rooms) {
+	Room.find({}, 'ID name').exec(function(err, rooms) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
-		} else {
-			res.jsonp(rooms);
 		}
+		res.jsonp(rooms);
 	});
 };
 
@@ -123,23 +117,17 @@ exports.list = function(req, res) {
  * Room middleware
  */
 exports.roomByID = function(req, res, next, id) {
-	if (req.method === 'POST') return next();
-	Room.findOne({ID : id }, 'ID name seats picture')
-		.exec(function(err, room) {
-		if (err) return next(err);
-		if (! room) return next(new Error('Failed to load room ' + id));
-		
+	if (req.method === 'POST') {
+		return next();
+	}
+	Room.findOne({'ID' : id}, 'ID name seats picture map').exec(function(err, room) {
+		if (err) {
+			return next(err);
+		}
+		if (! room) {
+			return next(new Error('Failed to load room ' + id));
+		}		
 		req.room = room;
 		return next();
 	});
-};
-
-/**
- * Room authorization middleware
- */
-exports.hasAuthorization = function(req, res, next) {
-	if (req.room.user.id !== req.user.id) {
-		return res.status(403).send('User is not authorized');
-	}
-	next();
 };

@@ -1,15 +1,25 @@
 <section data-ng-controller="RoomsController" data-ng-init="findOne()">
+	<h2>{{room.ID}}</h2>
 
-	<h1>{{room.ID}} &mdash; {{room.name}}</h1>
-
-	<h2>Information</h2>	
+	<h3>{{'ROOMS.INFORMATION' | translate}}</h3>	
 
 	<div ng-if="room.picture" class="pull-right">
-		<img ng-src="/images/rooms/{{room._id}}.jpg" width="300" height="200" alt="Picture of {{room.ID}}" />
+		<img ng-src="/images/rooms/{{room._id}}/picture.jpg" width="300" height="200" alt="{{'ROOMS.PICTURE_OF' | translate}} {{room.ID}}" />
 	</div>
 
-	<dl class="dl-horizontal">
-		<dt>Seats</dt>
-		<dd>{{room.seats}}</dd>
-	</dl>
+	<div class="pull-left">
+		<dl class="dl-horizontal">
+			<dt>{{'ROOMS.ID' | translate}}</dt>
+			<dd>{{room.ID}}</dd>
+			<dt>{{'ROOMS.NAME' | translate}}</dt>
+			<dd>{{room.name}}</dd>
+			<dt>{{'ROOMS.SEATS' | translate}}</dt>
+			<dd>{{room.seats}}</dd>
+		</dl>
+
+		<h3>{{'ROOMS.MAP' | translate}}</h3>
+
+		<canvas id="roomplaces" data-ng-if="room.map" data-ng-init="drawMap()"></canvas>
+		<p data-ng-if="! room.map">{{'ROOMS.NO_MAP_AVAILABLE' | translate}}</p>
+	</div>
 </section>

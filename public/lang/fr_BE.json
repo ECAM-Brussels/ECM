@@ -82,7 +82,11 @@
 		"PICTURE": "Photo",
 		"LOAD_ONE_PICTURE": "Vous pouvez télécharger une photo pour l'auditoire depuis votre ordinateur.",
 		"SELECT_FILE": "Sélectionner un fichier",
-		"CREATE": "Créer"
+		"CREATE": "Créer",
+		"INFORMATION": "Informations",
+		"PICTURE_OF": "Photo de",
+		"MAP": "Plan de l'auditoire",
+		"NO_MAP_AVAILABLE": "Aucun plan de l'auditoire disponible pour le moment."
 	},
 	"MENU": {
 		"DASHBOARD": "Tableau de bord",
