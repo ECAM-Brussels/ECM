@@ -1,0 +1,40 @@
+<section data-ng-controller="ExamSessionsController">
+	<h2>{{'EXAMSESSIONS.CREATE_EXAMSESSION' | translate}}</h2>
+
+	<div class="col-md-12">
+		<form class="form-horizontal" data-ng-submit="create()" novalidate>
+			<fieldset>
+				<div class="form-group">
+					<label class="control-label" for="name">{{'EXAMSESSIONS.NAME' | translate}}</label>
+					<div class="controls">
+						<input type="text" data-ng-model="name" id="name" class="form-control" placeholder="{{'EXAMSESSIONS.NAME' | translate}}" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label" for="description">{{'EXAMSESSIONS.DESCRIPTION' | translate}}</label>
+					<div class="controls">
+						<input type="text" data-ng-model="description" id="description" class="form-control" placeholder="{{'EXAMSESSIONS.DESCRIPTION' | translate}}" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label" for="from">{{'EXAMSESSIONS.FROM' | translate}}</label>
+					<div class="controls">
+						<input type="date" data-ng-model="from" id="from" class="form-control" placeholder="2015-01-01" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label" for="to">{{'EXAMSESSIONS.TO' | translate}}</label>
+					<div class="controls">
+						<input type="date" data-ng-model="to" id="to" class="form-control" placeholder="2015-12-31" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary">{{'EXAMSESSIONS.CREATE' | translate}}</button>
+				</div>
+				<div data-ng-show="error" class="text-danger">
+					<strong data-ng-bind="error"></strong>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</section>

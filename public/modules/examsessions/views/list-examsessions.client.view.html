@@ -1,0 +1,13 @@
+<section data-ng-controller="ExamSessionsController" data-ng-init="find()">
+	<h2>{{'EXAMSESSIONS.EXAMSESSIONS' | translate}}</h2>
+
+	<div>
+		<p class="text-right"><a href="#!/examsessions/create" class="btn btn-success"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{'EXAMSESSIONS.NEW_EXAMSESSION' | translate}}</a></p>
+	</div>
+
+	<div class="list-group" data-ng-if="! examsessions.$resolved || examsessions.length">
+		<a data-ng-repeat="examsession in examsessions" data-ng-href="#!/examsessions/{{examsession._id}}" class="list-group-item"><b>{{examsession.name}}</b></a>
+	</div>
+
+	<div data-ng-if="examsessions.$resolved && ! examsessions.length">{{'EXAMSESSIONS.NO_EXAMSESSION_AVAILABLE' | translate}}</div>
+</section>
