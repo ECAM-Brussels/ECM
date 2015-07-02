@@ -89,7 +89,7 @@
 		"NO_MAP_AVAILABLE": "Aucun plan de l'auditoire disponible pour le moment."
 	},
 	"STUDENTS": {
-		"STUDENTS": "Étudiant",
+		"STUDENTS": "Étudiants",
 		"NEW_GROUP": "Nouveau groupe",
 		"NEW_STUDENT": "Nouvel étudiant",
 		"NO_STUDENT_AVAILABLE": "Aucun étudiant disponible pour le moment.",
@@ -119,7 +119,12 @@
 		"CHANGE_PWD": "Modifier mon mot de passe",
 		"MY_COURSES": "Mes cours",
 		"MY_EXAMS": "Mes examens",
-		"COURSES": "Cours"
+		"COURSES": "Cours",
+		"EXAMS": "Examens",
+		"ROOMS": "Auditoires",
+		"STUDENTS": "Étudiants",
+		"USERS": "Utilisateurs",
+		"IMPORT_STUDENTS": "Importer des étudiants"
 	},
 	"SIGNIN": {
 		"SIGNIN": "Connexion",

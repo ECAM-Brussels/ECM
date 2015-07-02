@@ -28,5 +28,5 @@ angular.module('users').config(['$httpProvider', function($httpProvider) {
 // Set up the menu for the users module
 angular.module('users').run(['Menus', function(Menus) {
 	// Set manage menu items
-	Menus.addSubMenuItem('topbar', 'manage', 'Users', 'users', 'users', false, ['admin']);
+	Menus.addSubMenuItem('topbar', 'manage', 'MENU.USERS', 'users', 'users', false, ['admin']);
 }]);
