@@ -108,6 +108,23 @@
 		"COMMA_SEP_NAMES": "Prénoms séparés par des virgules",
 		"ADD_GROUP": "Ajouter un groupe"
 	},
+	"EXAMS": {
+		"EXAMS": "Examens",
+		"NEW_EXAM": "Nouvel examen",
+		"NO_EXAM_AVAILABLE": "Aucun examen disponible pour le moment.",
+		"CREATE_EXAM": "Créer un examen",
+		"COURSE": "Cours",
+		"ADD_COURSE": "Ajouter un cours",
+		"ACTIVITIES": "Activités",
+		"ADD_ACTIVITY": "Ajouter une activité",
+		"UNIQUE_EXAM": "Examen unique pour toutes les activités",
+		"DATE": "Date",
+		"ROOMS": "Auditoires",
+		"ADD_ROOM": "Ajouter un auditoire",
+		"GROUPS": "Groupes",
+		"ADD_GROUP": "Ajouter un groupe",
+		"CREATE": "Créer"
+	},
 	"MENU": {
 		"DASHBOARD": "Tableau de bord",
 		"MANAGE": "Gestion",

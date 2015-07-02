@@ -1,10 +1,13 @@
 <section data-ng-controller="ExamsController" data-ng-init="find()">
-    <h1>Exams</h1>
+	<h2>{{'EXAMS.EXAMS' | translate}}</h2>
 
-    <div class="list-group" data-ng-if="! exams.$resolved || exams.length">
-        <a data-ng-repeat="exam in exams" data-ng-href="#!/exams/{{exam._id}}" class="list-group-item"><b>{{exam.course.ID}}</b> &mdash; {{exam.course.name}} on {{exam.date | date:'dd MMM yyyy H:mm'}} with<span ng-repeat="group in exam.groups"> {{group.name}}</span></a>
-    </div>
-    <div class="alert alert-warning text-center" data-ng-if="exams.$resolved && ! exams.length">
-    	No exams yet, why don't you <a href="/#!/exams/create">create one</a>?
-    </div>
+	<div>
+		<p class="text-right"><a href="#!/exams/create" class="btn btn-success"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{'EXAMS.NEW_EXAM' | translate}}</a></p>
+	</div>
+
+	<div class="list-group" data-ng-if="! exams.$resolved || exams.length">
+		<a data-ng-repeat="exam in exams" data-ng-href="#!/exams/{{exam._id}}" class="list-group-item"><b>{{exam.course.ID}}</b> &mdash; {{exam.course.name}} on {{exam.date | date:'dd MMM yyyy H:mm'}} with<span ng-repeat="group in exam.groups"> {{group.name}}</span></a>
+	</div>
+	
+	<div data-ng-if="exams.$resolved && ! exams.length">{{'EXAMS.NO_EXAM_AVAILABLE' | translate}}</div>
 </section>

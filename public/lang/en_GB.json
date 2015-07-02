@@ -108,6 +108,23 @@
 		"COMMA_SEP_NAMES": "Comma separated names",
 		"ADD_GROUP": "Add a group"
 	},
+	"EXAMS": {
+		"EXAMS": "Exams",
+		"NEW_EXAM": "New exam",
+		"NO_EXAM_AVAILABLE": "No exam available yet.",
+		"CREATE_EXAM": "Create exam",
+		"COURSE": "Course",
+		"ADD_COURSE": "Add a course",
+		"ACTIVITIES": "Activities",
+		"ADD_ACTIVITY": "Add an activity",
+		"UNIQUE_EXAM": "Unique exam for all activities",
+		"DATE": "Date",
+		"ROOMS": "Rooms",
+		"ADD_ROOM": "Add a room",
+		"GROUPS": "Groups",
+		"ADD_GROUP": "Add a group",
+		"CREATE": "Create"
+	},
 	"MENU": {
 		"DASHBOARD": "Dashboard",
 		"MANAGE": "Manage",
