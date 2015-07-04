@@ -121,7 +121,12 @@
 		"SET_EXAMSESSION": "Choose an exam session",
 		"DATE": "Date",
 		"DURATION": "Duration",
-		"CREATE": "Create"
+		"CREATE": "Create",
+		"INFORMATION": "Information",
+		"COORDINATOR": "Coordinator",
+		"MINUTES": "minutes",
+		"NO_REGISTERED_STUDENT": "No student registered yet.",
+		"NO_ROOM": "No room specified yet."
 	},
 	"EXAMSESSIONS": {
 		"EXAMSESSIONS": "Exam sessions",

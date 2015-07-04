@@ -1,98 +1,69 @@
 <section data-ng-controller="ExamsController" data-ng-init="findOne()">
-	<h1>{{exam.course.ID}}</h1>
+	<h2>{{exam.course.ID}}</h2>
 
-	<h2>Information</h2>
+	<h3>{{'EXAMS.INFORMATION' | translate}}</h3>
 
 	<div id="bla">
 	</div>
 
 	<dl class="dl-horizontal">
-		<dt>Course</dt>
+		<dt>{{'EXAMS.TITLE' | translate}}</dt>
+		<dd>{{exam.title ? exam.title : '&mdash;'}}</dd>
+		<dt>{{'EXAMS.COURSE' | translate}}</dt>
 		<dd>{{exam.course.ID}} &mdash; {{exam.course.name}}</dd>
-		<dt>Coordinator</dt>
+		<dt>{{'EXAMS.COORDINATOR' | translate}}</dt>
 		<dd>{{exam.course.coordinator.username}}</dd>
-		<dt>Date</dt>
-		<dd>{{exam.date | date: "dd MMM yyyy H:mm"}}</dd>
-		<dt>Rooms</dt>
-		<dd><span data-ng-repeat="room in exam.rooms">{{room.ID}} </span></dd>
-		<dt>Groups</dt>
-		<dd><span data-ng-repeat="group in exam.groups">{{group.name}} </span></dd>
+		<dt>{{'EXAMS.EXAMSESSION' | translate}}</dt>
+		<dd>{{exam.examsession.name}}</dd>
+		<dt>{{'EXAMS.DATE' | translate}}</dt>
+		<dd>{{exam.date | amDateFormat: 'dddd Do MMMM YYYY HH:mm'}}</dd>
+		<dt>{{'EXAMS.DURATION' | translate}}</dt>
+		<dd>{{exam.duration}} {{'EXAMS.MINUTES' | translate}}</dd>
 	</dl>
 
-	<h2>Copies</h2>
+	<tabset>
+		<tab heading="Copies">
+			<p>Only one PDF has to be uploaded for all the activities of the course.</p>
 
-	<div data-ng-if="exam.split">
-		<p>One PDF file has to be uploaded for each activity of the course.</p>
-		<ul class="list-group">
-			<li class="list-group-item" data-ng-repeat="activity in exam.activities">
-				<p><b>{{activity.ID}}</b> (<span data-ng-repeat="teacher in activity.teachers">{{teacher.username}} </span>)</p>
+			<div data-ng-if="exam.copies.length === 1">
+				<ul class="list-group">
+					<li class="list-group-item" data-ng-repeat="i in getNumber(exam.copies[0].series) track by $index">
+						<p><b>Serie {{$index + 1}}</b></p>
+						<div data-ng-if="exam.copies[0].files[$index]">
+							<form method="post" action="/download/copy" target="_blank">
+								<p>A file has been uploaded on {{exam.copies[0].files[$index].created | date: "dd MMM yyyy H:mm"}} (<input type="hidden" name="copy" data-ng-value="exam.copies[0]._id"><input type="hidden" name="index" data-ng-value="$index"><button type="submit" class="btn btn-link">Preview file</button>)</p>
+							</form>
+						</div>
+						<progressbar data-ng-if="progressValue[$index]" class="progress-striped active" animate="true" max="100" value="progressValue[$index]" type="success"><i>{{progressValue[$index]}} %</i></progressbar>
+						<div data-ng-if="! exam.copies[0].files[$index].validated">
+							<button data-ng-if="! uploading[$index]" class="btn btn-primary" ngf-select accept="application/pdf" ngf-allow-dir="false" data-ng-model="files" ngf-change="fileSelected($files, $event, $index, exam.copies[0])">Upload file</button>
+							<button data-ng-if="exam.copies[0].files[$index]" data-ng-click="validate(exam.copies, 0, $index)" class="btn btn-success">Validate file</button>
+						</div>
+					</li>
+				</ul>
+			</div>
 
-				<div data-ng-if="findCopy(activity, exam.copies)" data-ng-repeat="copy in exam.copies | filter: {activity: activity._id}">
-					<form class="form-inline">
-						<ul class="list-group">
-							<li class="list-group-item" data-ng-repeat="i in getNumber(copy.series) track by $index">
-								<b>Serie {{$index + 1}}</b>
-								<div data-ng-if="! copy.files[$index]" class="btn btn-default" ngf-select accept="application/pdf" ngf-allow-dir="false" data-ng-model="files" ngf-change="fileSelected($files, $event, $index, copy)">Upload file</div>
-								<div data-ng-if="copy.files[$index]">
-									File uploaded on {{copy.files[$index].created | date: "dd MMM yyyy H:mm"}}
-								</div>
-							</li>
-						</ul>
-					</form>
-				</div>
-
-				<div data-ng-if="! findCopy(activity, exam.copies)">
-					<div data-ng-if="findTeacher(authentication.user, activity.teachers)">
-						<form class="form-inline" data-ng-submit="setSeries(activity._id)" novalidate>
-							<div class="form-group">
-								<label>Number of series <input type="text" class="form-control" data-ng-model="series" placeholder="1" required></label> <button type="submit" class="btn btn-default">Create</button>
-							</div>
-						</form>
+			<div data-ng-if="exam.copies.length === 0">
+				<form class="form-inline" data-ng-submit="setSeries(-1)" novalidate>
+					<div class="form-group">
+						<label>Number of series <input type="text" class="form-control" data-ng-model="series" placeholder="1" required></label> <button type="submit" class="btn btn-default">Create</button>
 					</div>
-				</div>
-			</li>
-		</ul>
-	</div>
+				</form>
+			</div>
+		</tab>
 
-	<div data-ng-if="! exam.split">
-		<p>Only one PDF has to be uploaded for all the activities of the course.</p>
+		<tab heading="Registered students">
+			<div data-ng-if="! exam.affectation || exam.affectation.length">
+				<ul class="list-group">
+					<li class="list-group-item" data-ng-repeat="i in getNumber(exam.affectation.length) track by $index"><b>#{{exam.affectation[$index].number}}</b> {{exam.affectation[$index].student.firstname}} {{exam.affectation[$index].student.lastname}} with seat #{{exam.affectation[$index].seat}} in room {{exam.affectation[$index].room.ID}}</li>
+				</ul>
+			</div>
 
-		<div data-ng-if="exam.copies.length === 1">
-			<ul class="list-group">
-				<li class="list-group-item" data-ng-repeat="i in getNumber(exam.copies[0].series) track by $index">
-					<p><b>Serie {{$index + 1}}</b></p>
-					<div data-ng-if="exam.copies[0].files[$index]">
-						<form method="post" action="/download/copy" target="_blank">
-							<p>A file has been uploaded on {{exam.copies[0].files[$index].created | date: "dd MMM yyyy H:mm"}} (<input type="hidden" name="copy" data-ng-value="exam.copies[0]._id"><input type="hidden" name="index" data-ng-value="$index"><button type="submit" class="btn btn-link">Preview file</button>)</p>
-						</form>
-					</div>
-					<progressbar data-ng-if="progressValue[$index]" class="progress-striped active" animate="true" max="100" value="progressValue[$index]" type="success"><i>{{progressValue[$index]}} %</i></progressbar>
-					<div data-ng-if="! exam.copies[0].files[$index].validated">
-						<button data-ng-if="! uploading[$index]" class="btn btn-primary" ngf-select accept="application/pdf" ngf-allow-dir="false" data-ng-model="files" ngf-change="fileSelected($files, $event, $index, exam.copies[0])">Upload file</button>
-						<button data-ng-if="exam.copies[0].files[$index]" data-ng-click="validate(exam.copies, 0, $index)" class="btn btn-success">Validate file</button>
-					</div>
-				</li>
-			</ul>
-		</div>
-
-		<div data-ng-if="exam.copies.length === 0">
-			<form class="form-inline" data-ng-submit="setSeries(-1)" novalidate>
-				<div class="form-group">
-					<label>Number of series <input type="text" class="form-control" data-ng-model="series" placeholder="1" required></label> <button type="submit" class="btn btn-default">Create</button>
-				</div>
-			</form>
-		</div>
-	</div>
-
-	<h2>Affectation</h2>
-
-	<div data-ng-if="! exam.affectation || exam.affectation.length">
-		<ul class="list-group">
-			<li class="list-group-item" data-ng-repeat="i in getNumber(exam.affectation.length) track by $index"><b>#{{exam.affectation[$index].number}}</b> {{exam.affectation[$index].student.firstname}} {{exam.affectation[$index].student.lastname}} with seat #{{exam.affectation[$index].seat}} in room {{exam.affectation[$index].room.ID}}</li>
-		</ul>
-	</div>
-
-	<div class="alert alert-warning text-center" data-ng-if="exam.affectation && ! exam.affectation.length">
-		Affectations have not been computed yet.
-	</div>
+			<div data-ng-if="exam.affectation && ! exam.affectation.length">{{'EXAMS.NO_REGISTERED_STUDENT' | translate}}</div>
+		</tab>
+		
+		<tab heading="Rooms">
+			<div data-ng-if="exam.rooms && ! exam.rooms.length">{{'EXAMS.NO_ROOM' | translate}}</div>
+		</tab>
+	</tabset>
 </section>

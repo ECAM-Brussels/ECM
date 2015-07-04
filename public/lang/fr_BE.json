@@ -121,7 +121,12 @@
 		"SET_EXAMSESSION": "Choisir une session d'examen",
 		"DATE": "Date",
 		"DURATION": "Durée",
-		"CREATE": "Créer"
+		"CREATE": "Créer",
+		"INFORMATION": "Informations",
+		"COORDINATOR": "Coordinateur",
+		"MINUTES": "minutes",
+		"NO_REGISTERED_STUDENT": "Pas encore d'étudiant inscrit.",
+		"NO_ROOM": "Pas encore d'auditoire défini."
 	},
 	"EXAMSESSIONS": {
 		"EXAMSESSIONS": "Sessions d'examens",

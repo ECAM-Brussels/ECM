@@ -9,7 +9,7 @@
 		<tabset>
 			<tab data-ng-repeat="examsession in examsessions | orderBy: '+from'" heading="{{examsession.name}}">
 				<ul class="list-group">
-					<a data-ng-repeat="exam in exams | filterBySession: examsession | orderBy: '+date'" data-ng-href="#!/exams/{{exam._id}}" class="list-group-item"><b>{{exam.course.ID}}</b> &mdash; {{exam.course.name}} <span data-ng-if="exam.title">({{exam.title}})</span>, {{'EXAMS.ON' | translate}} {{exam.date | amDateFormat: 'dddd Do MMM YYYY'}}</a>
+					<a data-ng-repeat="exam in exams | filterBySession: examsession | orderBy: '+date'" data-ng-href="#!/exams/{{exam._id}}" class="list-group-item"><b>{{exam.course.ID}}</b> &mdash; {{exam.course.name}} <span data-ng-if="exam.title">({{exam.title}})</span>, {{'EXAMS.ON' | translate}} {{exam.date | amDateFormat: 'ddd Do MMM YYYY HH:mm'}}</a>
 				</ul>
 			</tab>
 		</tabset>

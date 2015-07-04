@@ -88,11 +88,10 @@ exports.list = function(req, res) {
  * Exam middleware
  */
 exports.examByID = function(req, res, next, id) { 
-	Exam.findById(id, 'course activities rooms groups date split copies affectation ready printed')
+	Exam.findById(id, 'title course examsession rooms date duration copies affectation ready printed')
 		.populate('course', 'ID name coordinator')
+		.populate('examsession', 'name')
 		.populate('rooms', 'ID')
-		.populate('activities', 'ID teachers')
-		.populate('groups', 'name')
 		.populate('copies', 'exam activity created user series files')
 		.exec(function(err, exam) {
 		if (err) {
