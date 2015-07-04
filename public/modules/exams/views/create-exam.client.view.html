@@ -12,8 +12,14 @@
 				</div>
 				<div class="form-group">
 					<label class="control-label">{{'EXAMS.COURSE' | translate}}</label>
-					<tags-input data-ng-model="courses" display-property="name" max-tags="1" add-from-autocomplete-only on-tag-added="changeCourse()" on-tag-removed="changeUnique()" placeholder="{{'EXAMS.ADD_COURSE' | translate}}">
-						<auto-complete source="loadCourses($query)"></auto-complete>
+					<tags-input data-ng-model="courses" display-property="name" max-tags="1" add-on-blur="false" add-from-autocomplete-only placeholder="{{'EXAMS.SET_COURSE' | translate}}">
+						<auto-complete source="loadCourses($query)" min-length="0"></auto-complete>
+					</tags-input>
+				</div>
+				<div class="form-group">
+					<label class="control-label">{{'EXAMS.EXAMSESSION' | translate}}</label>
+					<tags-input data-ng-model="examsessions" display-property="name" max-tags="1" add-on-blur="false" add-from-autocomplete-only placeholder="{{'EXAMS.SET_EXAMSESSION' | translate}}">
+						<auto-complete source="loadExamsessions($query)" min-length="0"></auto-complete>
 					</tags-input>
 				</div>
 				<div class="form-group">

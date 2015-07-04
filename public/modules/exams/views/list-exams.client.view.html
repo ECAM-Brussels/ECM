@@ -5,8 +5,14 @@
 		<p class="text-right"><a href="#!/exams/create" class="btn btn-success"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{'EXAMS.NEW_EXAM' | translate}}</a></p>
 	</div>
 
-	<div class="list-group" data-ng-if="! exams.$resolved || exams.length">
-		<a data-ng-repeat="exam in exams" data-ng-href="#!/exams/{{exam._id}}" class="list-group-item"><b>{{exam.course.ID}}</b> &mdash; {{exam.course.name}} on {{exam.date | date:'dd MMM yyyy H:mm'}}</a>
+	<div data-ng-if="! exams.$resolved || exams.length">
+		<tabset>
+			<tab data-ng-repeat="examsession in examsessions | orderBy: '+from'" heading="{{examsession.name}}">
+				<ul class="list-group">
+					<a data-ng-repeat="exam in exams | filterBySession: examsession | orderBy: '+date'" data-ng-href="#!/exams/{{exam._id}}" class="list-group-item"><b>{{exam.course.ID}}</b> &mdash; {{exam.course.name}} <span data-ng-if="exam.title">({{exam.title}})</span>, {{'EXAMS.ON' | translate}} {{exam.date | amDateFormat: 'dddd Do MMM YYYY'}}</a>
+				</ul>
+			</tab>
+		</tabset>
 	</div>
 	
 	<div data-ng-if="exams.$resolved && ! exams.length">{{'EXAMS.NO_EXAM_AVAILABLE' | translate}}</div>

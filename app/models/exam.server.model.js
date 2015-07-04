@@ -19,6 +19,11 @@ var ExamSchema = new Schema({
 		ref: 'Course',
 		required: 'Please specify a course for the exam'
 	},
+	examsession: {
+		type: Schema.ObjectId,
+		ref: 'ExamSession',
+		required: 'Please specify an exam session for the exam'
+	},
 	date: {
 		type: Date,
 		required: 'Please specify a date for the exam',

@@ -1,9 +1,21 @@
 'use strict';
 
+// Exams filter by session
+angular.module('exams').filter('filterBySession', function() {
+	return function(exams, examsession) {
+		var newItems = [];
+		exams.forEach(function(exam) {
+			if (exam.examsession.toString() === examsession._id) {
+				newItems.push(exam);
+			}
+		});
+		return newItems;
+	};
+});
+
 // Exams controller
 angular.module('exams').controller('ExamsController', ['$scope', '$stateParams', '$location', '$window', 'Authentication', 'Exams', 'MyExams', 'Copies', '$http', 'Upload', '$filter', function($scope, $stateParams, $location, $window, Authentication, Exams, MyExams, Copies, $http, Upload, $filter) {
 	$scope.authentication = Authentication;
-	$scope.split = false;
 	$scope.uploading = null;
 	$scope.progressValue = null;
 
@@ -11,38 +23,42 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 	$scope.courses = [];
 	var coursesList = [];
 	$http.get('/courses').success(function(data, status, headers, config) {
-		for (var i = 0; i < data.length; i++) {
+		data.forEach(function(course) {
 			coursesList.push({
-				name: data[i].ID,
-				course: data[i]
+				name: course.ID,
+				course: course
 			});
-		}
+		});
 	});
 	$scope.loadCourses = function(query) {
 		return $filter('filter')(coursesList, query);
 	};
 
-	// Load activities
-	$scope.activities = [];
-	var allActivities = [];
-	$scope.activitiesList = [];
-	$http.get('/activities').success(function(data, status, headers, config) {
-		allActivities = data;
+	// Load examsessions
+	$scope.examsessions = [];
+	var examsessionsList = [];
+	$http.get('/examsessions').success(function(data, status, headers, config) {
+		data.forEach(function(examsession) {
+			examsessionsList.push({
+				name: examsession.name,
+				examsession: examsession
+			});
+		});
 	});
-	$scope.loadActivities = function(query) {
-		return $filter('filter')($scope.activitiesList, query);
+	$scope.loadExamsessions = function(query) {
+		return $filter('filter')(examsessionsList, query);
 	};
 
 	// Load rooms
 	$scope.rooms = [];
 	var roomsList = [];
 	$http.get('/rooms').success(function(data, status, headers, config) {
-		for (var i = 0; i < data.length; i++) {
+		data.forEach(function(room) {
 			roomsList.push({
-				name: data[i].ID,
-				room: data[i]
+				name: room.ID,
+				room: room
 			});
-		}
+		});
 	});
 	$scope.loadRooms = function(query) {
 		return $filter('filter')(roomsList, query);
@@ -52,12 +68,12 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 	$scope.groups = [];
 	var groupsList = [];
 	$http.get('/groups').success(function(data, status, headers, config) {
-		for (var i = 0; i < data.length; i++) {
+		data.forEach(function(group) {
 			groupsList.push({
-				name: data[i].name,
-				group: data[i]
+				name: group.name,
+				group: group
 			});
-		}
+		});
 	});
 	$scope.loadGroups = function(query) {
 		return $filter('filter')(groupsList, query);
@@ -65,14 +81,11 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 
 	// Create new exam
 	$scope.create = function() {
-		var course = [];
-		if ($scope.courses.length > 0) {
-			course = $scope.courses[0].course._id;
-		}
 		// Create new exam object
 		var exam = new Exams({
 			title: this.title,
-			course: course,
+			course: $scope.courses.length > 0 ? $scope.courses[0].course._id : [],
+			examsession: $scope.examsessions.length > 0 ? $scope.examsessions[0].examsession._id : [],
 			date: this.date,
 			duration: this.duration
 		});
@@ -110,8 +123,14 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		});
 	};
 
-	// Find a list of exams
+	// Find all exams
 	$scope.find = function() {
+		// Load exam sessions
+		$scope.examsessions = [];
+		$http.get('/examsessions').success(function(data, status, headers, config) {
+			$scope.examsessions = data;
+		});
+		// Load exams
 		$scope.exams = Exams.query();
 	};
 
@@ -173,12 +192,6 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		return false;
 	};
 
-	$scope.changeUnique = function() {
-		if ($scope.split || $scope.courses.length !== 1) {
-			$scope.activities = [];
-		}
-	};
-
 	function findActivity(course, activity) {
 		for (var i = 0; i < course.activities.length; i++) {
 			if (course.activities[i]._id === activity._id) {
@@ -187,18 +200,6 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		}
 		return false;
 	}
-
-	$scope.changeCourse = function() {
-		$scope.activitiesList = [];
-		for (var i = 0; i < allActivities.length; i++) {
-			if (findActivity($scope.courses[0].course, allActivities[i])) {
-				$scope.activitiesList.push({
-					name: allActivities[i].ID,
-					activity: allActivities[i]
-				});
-			}
-		}
-	};
 
 	// Set the number of series
 	$scope.setSeries = function (activityID) {
