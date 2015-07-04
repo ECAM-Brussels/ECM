@@ -6,7 +6,7 @@
 	</div>
 
 	<div class="list-group" data-ng-if="! exams.$resolved || exams.length">
-		<a data-ng-repeat="exam in exams" data-ng-href="#!/exams/{{exam._id}}" class="list-group-item"><b>{{exam.course.ID}}</b> &mdash; {{exam.course.name}} on {{exam.date | date:'dd MMM yyyy H:mm'}} with<span ng-repeat="group in exam.groups"> {{group.name}}</span></a>
+		<a data-ng-repeat="exam in exams" data-ng-href="#!/exams/{{exam._id}}" class="list-group-item"><b>{{exam.course.ID}}</b> &mdash; {{exam.course.name}} on {{exam.date | date:'dd MMM yyyy H:mm'}}</a>
 	</div>
 	
 	<div data-ng-if="exams.$resolved && ! exams.length">{{'EXAMS.NO_EXAM_AVAILABLE' | translate}}</div>

@@ -18,11 +18,18 @@ app.config(['$translateProvider', function($translateProvider) {
 	$translateProvider.preferredLanguage('en_GB');
 	$translateProvider.useLocalStorage();
 }]);
-app.controller('LanguageController', ['$scope', '$translate', '$translateLocalStorage', function($scope, $translate, $translateLocalStorage) {
+app.controller('LanguageController', ['$scope', '$translate', '$translateLocalStorage', 'amMoment', function($scope, $translate, $translateLocalStorage, amMoment) {
 	$scope.lang = $translateLocalStorage.get('NG_TRANSLATE_LANG_KEY');
+	amMoment.changeLocale($scope.lang.substr(0, 2));
 	$scope.changeLanguage = function(lang) {
 		$translate.use(lang);
+		amMoment.changeLocale(lang.substr(0, 2));
 	};
+}]);
+
+// Initialise language for moment
+app.run(['$rootScope', 'amMoment', function($rootScope, amMoment) {
+	amMoment.changeLocale('en');
 }]);
 
 // Then define the function to start up the application

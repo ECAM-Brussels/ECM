@@ -65,36 +65,20 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 
 	// Create new exam
 	$scope.create = function() {
-		var activityIDs = [];
-		for (var i = 0; i < $scope.activities.length; i++) {
-			activityIDs.push($scope.activities[i].activity._id);
-		}
-		var roomIDs = [];
-		for (i = 0; i < $scope.rooms.length; i++) {
-			roomIDs.push($scope.rooms[i].room._id);
-		}
-		var groupIDs = [];
-		for (i = 0; i < $scope.groups.length; i++) {
-			groupIDs.push($scope.groups[i].group._id);
-		}
 		var course = [];
 		if ($scope.courses.length > 0) {
 			course = $scope.courses[0].course._id;
 		}
 		// Create new exam object
 		var exam = new Exams({
+			title: this.title,
 			course: course,
-			activities: this.split ? [] : activityIDs,
-			split: ! this.split,
 			date: this.date,
-			rooms: roomIDs,
-			groups: groupIDs
+			duration: this.duration
 		});
 		// Redirect after save
 		exam.$save(function(response) {
 			$location.path('exams/' + response._id);
-			// Clear form fields
-			$scope.name = '';
 		}, function(errorResponse) {
 			$scope.error = errorResponse.data.message;
 		});

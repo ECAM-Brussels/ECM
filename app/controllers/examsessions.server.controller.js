@@ -68,7 +68,6 @@ exports.delete = function(req, res) {
 exports.list = function(req, res) { 
 	ExamSession.find({}, 'name from to').exec(function(err, examsessions) {
 		if (err) {
-			console.log('ERRRROR : ' + err);
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
@@ -81,7 +80,7 @@ exports.list = function(req, res) {
  * Exam session middleware
  */
 exports.examSessionByID = function(req, res, next, id) { 
-	ExamSession.findById(id).populate('name').exec(function(err, examsession) {
+	ExamSession.findById(id, 'name description from to').exec(function(err, examsession) {
 		if (err) {
 			return next(err);
 		}

@@ -10,49 +10,38 @@ var mongoose = require('mongoose'),
  * Exam schema
  */
 var ExamSchema = new Schema({
+	title: {
+		type: String,
+		default: ''
+	},
 	course: {
 		type: Schema.ObjectId,
-		ref: 'Course'
+		ref: 'Course',
+		required: 'Please specify a course for the exam'
 	},
-	split: {
-		type: Boolean,
-		default: false
-	},
-	activities: [{
-		type: Schema.ObjectId,
-		ref: 'Activity'
-	}],
 	date: {
 		type: Date,
-		default: Date.now
+		required: 'Please specify a date for the exam',
+	},
+	duration: {
+		type: Number,
+		required: 'Please specify a duration for the exam',
 	},
 	rooms: [{
 		type: Schema.ObjectId,
 		ref: 'Room'
 	}],
-	groups: [{
-		type: Schema.ObjectId,
-		ref: 'Group'
-	}],
-	created: {
-		type: Date,
-		default: Date.now
-	},
-	user: {
-		type: Schema.ObjectId,
-		ref: 'User'
-	},
 	copies: [{
 		type: Schema.ObjectId,
 		ref: 'Copy'
 	}],
-	printed: {
-		type: Date,
-		default: null
-	},
 	ready: {
 		type: Boolean,
 		default: false
+	},
+	printed: {
+		type: Date,
+		default: null
 	},
 	affectation: {
 		type: [new Schema({
@@ -79,7 +68,16 @@ var ExamSchema = new Schema({
 				required: true,
 				default: 0
 			}
-		})]
+		})],
+		default: []
+	},
+	created: {
+		type: Date,
+		default: Date.now
+	},
+	user: {
+		type: Schema.ObjectId,
+		ref: 'User'
 	}
 });
 

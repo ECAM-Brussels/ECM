@@ -6,7 +6,7 @@
 	</div>
 
 	<div class="list-group" data-ng-if="! examsessions.$resolved || examsessions.length">
-		<a data-ng-repeat="examsession in examsessions" data-ng-href="#!/examsessions/{{examsession._id}}" class="list-group-item"><b>{{examsession.name}}</b></a>
+		<a data-ng-repeat="examsession in examsessions | orderBy: 'from'" data-ng-href="#!/examsessions/{{examsession._id}}" class="list-group-item"><b>{{examsession.name}}</b> ({{examsession.from | amDateFormat: 'ddd Do MMM YYYY'}} &mdash; {{examsession.to | amDateFormat: 'dddd Do MMM YYYY'}})</a>
 	</div>
 
 	<div data-ng-if="examsessions.$resolved && ! examsessions.length">{{'EXAMSESSIONS.NO_EXAMSESSION_AVAILABLE' | translate}}</div>

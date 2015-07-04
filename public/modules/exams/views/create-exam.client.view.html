@@ -5,37 +5,28 @@
 		<form class="form-horizontal" data-ng-submit="create()" novalidate>
 			<fieldset>
 				<div class="form-group">
+					<label class="control-label" for="title">{{'EXAMS.TITLE' | translate}}</label>
+					<div class="controls">
+						<input type="text" data-ng-model="title" id="title" class="form-control" placeholder="{{'EXAMS.TITLE' | translate}}" required>
+					</div>
+				</div>
+				<div class="form-group">
 					<label class="control-label">{{'EXAMS.COURSE' | translate}}</label>
 					<tags-input data-ng-model="courses" display-property="name" max-tags="1" add-from-autocomplete-only on-tag-added="changeCourse()" on-tag-removed="changeUnique()" placeholder="{{'EXAMS.ADD_COURSE' | translate}}">
 						<auto-complete source="loadCourses($query)"></auto-complete>
 					</tags-input>
 				</div>
 				<div class="form-group">
-					<label class="control-label">{{'EXAMS.ACTIVITIES' | translate}}</label>
-					<tags-input data-ng-model="activities" display-property="name" add-from-autocomplete-only placeholder="{{'EXAMS.ADD_ACTIVITY' | translate}}" data-ng-disabled="split || courses.length != 1">
-						<auto-complete source="loadActivities($query)"></auto-complete>
-					</tags-input>
-					<div class="checkbox">
-						<label><input type="checkbox" data-ng-model="split" data-ng-click="changeUnique()"> {{'EXAMS.UNIQUE_EXAM' | translate}}</label>
-					</div>
-				</div>
-				<div class="form-group">
-				<label class="control-label" for="date">{{'EXAMS.DATE' | translate}}</label>
+					<label class="control-label" for="date">{{'EXAMS.DATE' | translate}}</label>
 					<div class="controls">
 						<input type="datetime" data-ng-model="date" id="date" class="form-control" placeholder="2015-06-15 14:00" required>
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label">{{'EXAMS.ROOMS' | translate}}</label>
-					<tags-input data-ng-model="rooms" display-property="name" add-from-autocomplete-only placeholder="{{'EXAMS.ADD_ROOM' | translate}}">
-						<auto-complete source="loadRooms($query)"></auto-complete>
-					</tags-input>
-				</div>
-				<div class="form-group">
-					<label class="control-label">{{'EXAMS.GROUPS' | translate}}</label>
-					<tags-input data-ng-model="groups" display-property="name" add-from-autocomplete-only placeholder="{{'EXAMS.ADD_GROUP' | translate}}">
-						<auto-complete source="loadGroups($query)"></auto-complete>
-					</tags-input>
+					<label class="control-label" for="duration">{{'EXAMS.DURATION' | translate}}</label>
+					<div class="controls">
+						<input type="number" data-ng-model="duration" id="duration" class="form-control" placeholder="60" required>
+					</div>
 				</div>
 				<div class="form-group">
 					<button type="submit" class="btn btn-primary">{{'EXAMS.CREATE' | translate}}</button>

@@ -20,11 +20,13 @@ module.exports = {
 				'public/lib/nya-bootstrap-select/dist/css/nya-bs-select.min.css'
 			],
 			js: [
+				'public/lib/moment/min/moment-with-locales.min.js',
 				'public/lib/angular/angular.min.js',
 				'public/lib/angular-animate/angular-animate.min.js',
 				'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
 				'public/lib/angular-cookies/angular-cookies.min.js',
 				'public/lib/angular-mocks/angular-mocks.js',
+				'public/lib/angular-moment/angular-moment.min.js',
 				'public/lib/angular-resource/angular-resource.min.js',
 				'public/lib/angular-route/angular-route.min.js',
 				'public/lib/angular-sanitize/angular-sanitize.min.js',
