@@ -22,10 +22,10 @@ module.exports = function(app) {
 		.delete(users.hasAuthorization(canedit), exams.delete);
 
 	// Copies routes
-	app.route('/copies')
-		.post(users.hasAuthorization(['admin', 'teacher']), exams.createCopy);
 	app.route('/copies/validate')
 		.post(users.hasAuthorization(['admin', 'teacher']), exams.validateCopy);
+	app.route('/copies/add')
+		.post(users.hasAuthorization(['admin', 'teacher']), exams.addCopy);
 
 	app.route('/upload/copy')
 		.post(users.hasAuthorization(['admin', 'teacher']), multiparty(), exams.uploadCopy);

@@ -201,17 +201,13 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		return false;
 	}
 
-	// Add a questinnaire for the exam
+	// Add a questionnaire for the exam
 	$scope.addCopy = function() {
-		var exam = $scope.exam;
-		exam.copies.push({
-			name: null,
-			validated: false
-		});
-		exam.$update(function() {
-			// Copy added
-		}, function(errorResponse) {
-			$scope.error = errorResponse.data.message;
+		$http.post('/copies/add', {'exam': $scope.exam._id}).success(function(data, status, headers, config) {
+			$scope.exam.copies.push({
+				name: null,
+				validated: false
+			});
 		});
 	};
 
@@ -227,6 +223,7 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		return String.fromCharCode(65 + i);
 	};
 
+	// Upload a file for a questionnaire
 	$scope.fileSelected = function(files, event, index) {
 		if ($scope.uploading && ! $scope.uploading[index] && files && files.length === 1) {
 			// Reset form
@@ -252,7 +249,7 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		}
 	};
 
-	// Validate a file of a copy of an exam
+	// Validate a questionnaire for the exam
 	$scope.validate = function(index) {
 		if (0 <= index && index < $scope.exam.copies.length) {
 			$http.post('/copies/validate', {'exam': $scope.exam._id, 'index': index}).success(function(data, status, headers, config) {

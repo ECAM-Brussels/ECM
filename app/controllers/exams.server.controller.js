@@ -212,26 +212,6 @@ exports.listMyExams = function(req, res) {
 	});
 };
 
-/**
- * Create a copy
- */
-exports.createCopy = function(req, res) {
-/*	var copy = new Copy(req.body);
-	copy.user = req.user;
-	copy.files = new Array(copy.series);
-	for (var i = 0; i < copy.series; i++) {
-		copy.files[i] = null;
-	}
-	copy.save(function(err) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		}
-		res.jsonp(copy);
-	});*/
-};
-
 // Download a PDF copy for the exam
 exports.downloadCopy = function(req, res) {
 	var path = require('path');
@@ -352,17 +332,44 @@ exports.downloadCopies = function(req, res) {
 	});
 };
 
+// Add a questionnaire for the exam
+exports.addCopy = function(req, res) {
+	// Check exam
+	Exam.findById(req.body.exam, 'copies').exec(function(err, exam) {
+		if (err || ! exam) {
+			return res.status(400).send({
+				message: 'Error while retrieving the specified exam'
+			});
+		}
+		// Add a copy to the exam
+		exam.copies.push({
+			name: null,
+			validated: false
+		});
+		exam.save(function(err) {
+			if (err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			}
+			res.send('OK added');
+		});
+	});
+};
+
+// Validate a questionnaire for the exam
 exports.validateCopy = function(req, res) {
 	// Check exam
 	Exam.findById(req.body.exam, 'copies').exec(function(err, exam) {
-		if (err) {
+		if (err || ! exam) {
 			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
+				message: 'Error while retrieving the specified exam'
 			});
 		}
-		if (! exam) {
+		// Check arguments
+		if (! (0 <= req.body.index && req.body.index < exam.copies.length)) {
 			return res.status(400).send({
-				message: 'Impossible to find the specified exam'
+				message: 'Invalid arguments'
 			});
 		}
 		// Mark the copy as validated
@@ -378,18 +385,19 @@ exports.validateCopy = function(req, res) {
 	});
 };
 
-// Upload a PDF copy for the exam
+// Upload a file for a questionnaire
 exports.uploadCopy = function(req, res) {
 	// Check exam
 	Exam.findById(req.body.exam, 'course date copies').populate('course', 'ID name').exec(function(err, exam) {
-		if (err) {
+		if (err || ! exam) {
 			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
+				message: 'Error while retrieving the specified exam'
 			});
 		}
-		if (! exam) {
+		// Check arguments
+		if (! (0 <= req.body.index && req.body.index < exam.copies.length)) {
 			return res.status(400).send({
-				message: 'Impossible to find the specified exam'
+				message: 'Invalid arguments'
 			});
 		}
 		// Create directory if not existing
@@ -435,7 +443,7 @@ exports.uploadCopy = function(req, res) {
 						message: errorHandler.getErrorMessage(err)
 					});
 				}
-				// Update database and sa
+				// Update informations about the questionnaire
 				var copy = exam.copies[req.body.index];
 				copy.created = new Date();
 				copy.user = req.user;
