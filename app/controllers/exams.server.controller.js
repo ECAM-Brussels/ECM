@@ -6,7 +6,6 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Exam = mongoose.model('Exam'),
-	Copy = mongoose.model('Copy'),
 	fs = require('fs-extra'),
 	path = require('path'),
 	process = require('process'),
@@ -217,7 +216,7 @@ exports.listMyExams = function(req, res) {
  * Create a copy
  */
 exports.createCopy = function(req, res) {
-	var copy = new Copy(req.body);
+/*	var copy = new Copy(req.body);
 	copy.user = req.user;
 	copy.files = new Array(copy.series);
 	for (var i = 0; i < copy.series; i++) {
@@ -230,13 +229,13 @@ exports.createCopy = function(req, res) {
 			});
 		}
 		res.jsonp(copy);
-	});
+	});*/
 };
 
 // Download a PDF copy for the exam
 exports.downloadCopy = function(req, res) {
 	var path = require('path');
-	var dest = path.dirname(require.main.filename) + '/copies/' + req.body.copy + '/copy_' + req.body.index + '.pdf';
+	var dest = path.dirname(require.main.filename) + '/copies/' + req.body.exam + '/copy_' + req.body.index + '.pdf';
 	fs.readFile(dest, function(err, content) {
 		if (err) {
 			return res.status(400).send({
@@ -354,70 +353,27 @@ exports.downloadCopies = function(req, res) {
 };
 
 exports.validateCopy = function(req, res) {
-	var copies = req.body.copies;
-	var copyindex = req.body.copyindex;
-	var fileindex = req.body.fileindex;
-	// Check args
-	if (! (0 <= copyindex && copyindex < copies.length && 0 <= fileindex && fileindex < copies[copyindex].files.length)) {
-		return res.status(400).send({
-			message: 'Invalid arguments'
-		});
-	}
-	// Find the copy to validate
-	Copy.findById(copies[copyindex]._id).exec(function(err, copy) {
+	// Check exam
+	Exam.findById(req.body.exam, 'copies').exec(function(err, exam) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		}
-		if (! copy) {
+		if (! exam) {
 			return res.status(400).send({
-				message: 'Impossible to find the specified copy'
+				message: 'Impossible to find the specified exam'
 			});
 		}
 		// Mark the copy as validated
-		copies[copyindex].files[fileindex].validated = true;
-		copy.files[fileindex].validated = true;
-		Copy.update({'_id': copy._id}, {$set: {files: copy.files}}, function(err) {
+		exam.copies[req.body.index].validated = true;
+		exam.save(function(err) {
 			if (err) {
 				return res.status(400).send({
 					message: errorHandler.getErrorMessage(err)
 				});
 			}
-			// Check if all files have been validated
-			var ready = true;
-			for (var i = 0; i < copies.length && ready; i++) {
-				for (var j = 0; j < copies[i].files.length && ready; j++) {
-					if (! copies[i].files[j] || ! copies[i].files[j].validated) {
-						ready = false;
-					}
-				}
-			}
-			// Update the exam to mark it ready
-			if (ready) {
-				Exam.findById(copies[copyindex].exam).exec(function(err, exam){
-					if (err) {
-						return res.status(400).send({
-							message: errorHandler.getErrorMessage(err)
-						});
-					}
-					if (! exam) {
-						return res.status(400).send({
-							message: 'Impossible to find the specified exam'
-						});
-					}
-					Exam.update({'_id': exam._id}, {$set: {ready: true}}, function(err) {
-						if (err) {
-							return res.status(400).send({
-								message: errorHandler.getErrorMessage(err)
-							});
-						}
-						res.send('OK ready');
-					});
-				});
-			} else {
-				res.send('OK not ready');
-			}
+			res.send('OK validated');
 		});
 	});
 };
@@ -425,17 +381,23 @@ exports.validateCopy = function(req, res) {
 // Upload a PDF copy for the exam
 exports.uploadCopy = function(req, res) {
 	// Check exam
-	Exam.findById(req.body.exam, 'course date')
-		.populate('course', 'ID name')
-		.exec(function(err, exam) {
-		// Create directory if not existing
-		var dest = path.dirname(require.main.filename) + '/copies/' + req.body.copy;
-		if (! fs.existsSync(dest)) {
-			fs.mkdirSync (dest);
+	Exam.findById(req.body.exam, 'course date copies').populate('course', 'ID name').exec(function(err, exam) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
 		}
+		if (! exam) {
+			return res.status(400).send({
+				message: 'Impossible to find the specified exam'
+			});
+		}
+		// Create directory if not existing
+		var dest = path.dirname(require.main.filename) + '/copies/' + req.body.exam;
+		fs.ensureDirSync(dest);
 		// Copy PDF file
 		var file = req.files.file;
-		dest = dest + '/' + path.basename(file.path);
+		dest += '/' + path.basename(file.path);
 		fs.copy(file.path, dest, function(err) {
 			if (err) {
 				return res.status(400).send({
@@ -443,10 +405,10 @@ exports.uploadCopy = function(req, res) {
 				});
 			}
 			// Delete PDF file from /tmp
-			fs.unlink(file.path, function(err){});
+			fs.unlinkSync(file.path);
 			// Create the final PDF from text file
 			var src = path.dirname(require.main.filename) + '/pdfgen/templates/basic-template.tex';
-			var content = fs.readFileSync(src, {encoding: 'utf8', flag: 'r'}, function(err){});
+			var content = fs.readFileSync(src, {encoding: 'utf8', flag: 'r'});
 			content = content.replace(/!filename!/g, path.basename(file.path));
 			content = content.replace(/!filepath!/g, dest);
 			var examdate = moment(exam.date);
@@ -464,32 +426,27 @@ exports.uploadCopy = function(req, res) {
 			var now = new Date();
 			content = content.replace(/!gendate!/g, now.getDate() + '/' + now.getMonth() + '/' + now.getFullYear() + ' ' + now.getHours() + ':' + now.getMinutes());
 			// Compile the LaTeX file
-			dest = path.dirname(require.main.filename) + '/copies/' + req.body.copy + '/copy_' + req.body.index + '.tex';
-			fs.writeFileSync(dest, content, {encoding: 'utf8', flag: 'w'}, function(err){});
+			dest = path.dirname(require.main.filename) + '/copies/' + req.body.exam + '/copy_' + req.body.index + '.tex';
+			fs.writeFileSync(dest, content, {encoding: 'utf8', flag: 'w'});
 			process.chdir(path.dirname(dest));
 			child_process.execFile('pdflatex', [path.basename(dest)], function(err, stdout, stderr) {
 				if (err) {
-					console.log('ERROR : ' + err);
 					return res.status(400).send({
 						message: errorHandler.getErrorMessage(err)
 					});
 				}
-				// Update database
-				Copy.findById(req.body.copy)
-					.exec(function(err, copy) {
-					copy.files[req.body.index] = {
-						created: new Date(),
-						user: req.user,
-						name: path.basename(file.path)
-					};
-					Copy.update({_id: copy._id}, {$set: {files: copy.files}}, function(err) {
-						if (err) {
-							return res.status(400).send({
-								message: errorHandler.getErrorMessage(err)
-							});
-						}
-						res.jsonp(copy.files[req.body.index]);
-					});
+				// Update database and sa
+				var copy = exam.copies[req.body.index];
+				copy.created = new Date();
+				copy.user = req.user;
+				copy.name = path.basename(file.path);
+				exam.save(function(err) {
+					if (err) {
+						return res.status(400).send({
+							message: errorHandler.getErrorMessage(err)
+						});
+					}
+					res.jsonp(exam);
 				});
 			});
 		});

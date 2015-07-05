@@ -201,24 +201,15 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		return false;
 	}
 
-	// Set the number of series
-	$scope.setSeries = function (activityID) {
-		var series = this.series;
-		// Create new copy object
-		var copy = new Copies({
-			exam: $scope.exam._id,
-			activity: activityID === -1 ? null : activityID,
-			series: series
+	// Add a questinnaire for the exam
+	$scope.addCopy = function() {
+		var exam = $scope.exam;
+		exam.copies.push({
+			name: null,
+			validated: false
 		});
-		// Redirect after save
-		copy.$save(function(response) {
-			// Attach copy to exam
-			$scope.exam.copies.push(copy);
-			$scope.exam.$update(function() {
-//				$scope.exam.copies.push(copy);
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
+		exam.$update(function() {
+			// Copy added
 		}, function(errorResponse) {
 			$scope.error = errorResponse.data.message;
 		});
@@ -232,19 +223,22 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		return tab;
 	};
 
-	$scope.fileSelected = function(files, event, index, copy) {
+	$scope.getLetter = function(i) {
+		return String.fromCharCode(65 + i);
+	};
+
+	$scope.fileSelected = function(files, event, index) {
 		if ($scope.uploading && ! $scope.uploading[index] && files && files.length === 1) {
 			// Reset form
 			$scope.uploading[index] = true;
-			copy.files[index] = null;
+			$scope.exam.copies[index] = null;
 			$scope.progressValue[index] = 0;
 			// Launch the upload
 			Upload.upload({
 				url: 'upload/copy',
 				fields: {
 					'username': $scope.authentication.user._id,
-					'copy': copy._id,
-					'exam': copy.exam,
+					'exam': $scope.exam._id,
 					'index': index
 				},
 				file: files[0]
@@ -253,16 +247,16 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 			}).success(function(data, status, headers, config) {
 				$scope.progressValue[index] = null;
 				$scope.uploading[index] = false;
-				copy.files[index] = data;
+				$scope.exam.copies[index] = data.copies[index];
 			});
 		}
 	};
 
 	// Validate a file of a copy of an exam
-	$scope.validate = function(copies, copyindex, fileindex) {
-		if (0 <= copyindex && copyindex < copies.length && 0 <= fileindex && fileindex < copies[copyindex].files.length) {
-			$http.post('/copies/validate', {'copies': copies, 'copyindex': copyindex, 'fileindex': fileindex}).success(function(data, status, headers, config) {
-				copies[copyindex].files[fileindex].validated = true;
+	$scope.validate = function(index) {
+		if (0 <= index && index < $scope.exam.copies.length) {
+			$http.post('/copies/validate', {'exam': $scope.exam._id, 'index': index}).success(function(data, status, headers, config) {
+				$scope.exam.copies[index].validated = true;
 			});
 		}
 	};

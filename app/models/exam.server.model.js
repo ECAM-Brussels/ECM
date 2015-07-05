@@ -36,10 +36,27 @@ var ExamSchema = new Schema({
 		type: Schema.ObjectId,
 		ref: 'Room'
 	}],
-	copies: [{
-		type: Schema.ObjectId,
-		ref: 'Copy'
-	}],
+	copies: {
+		type: [new Schema({
+			name: {
+				type: String,
+				default: null
+			},
+			validated: {
+				type: Boolean,
+				default: false
+			},
+			created: {
+				type: Date,
+				default: null
+			},
+			user: {
+				type: Schema.ObjectId,
+				ref: 'User'
+			}
+		})],
+		default: []
+	},
 	ready: {
 		type: Boolean,
 		default: false

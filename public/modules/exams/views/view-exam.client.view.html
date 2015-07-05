@@ -23,32 +23,30 @@
 
 	<tabset>
 		<tab heading="Copies">
-			<p>Only one PDF has to be uploaded for all the activities of the course.</p>
+			<div>
+				<p class="text-right"><button data-ng-click="addCopy()" class="btn btn-success"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{'EXAMS.ADD_COPY' | translate}}</button></p>
+			</div>
 
-			<div data-ng-if="exam.copies.length === 1">
+			<div data-ng-if="! exam.copies || exam.copies.length === 0">
+				{{'EXAMS.NO_COPIES' | translate}}
+			</div>
+
+			<div data-ng-if="exam.copies && exam.copies.length > 0">
 				<ul class="list-group">
-					<li class="list-group-item" data-ng-repeat="i in getNumber(exam.copies[0].series) track by $index">
-						<p><b>Serie {{$index + 1}}</b></p>
-						<div data-ng-if="exam.copies[0].files[$index]">
+					<li class="list-group-item" data-ng-repeat="i in getNumber(exam.copies.length) track by $index">
+						<p><b>{{'EXAMS.QUESTIONNAIRE' | translate}} {{getLetter($index)}}</b></p>
+						<div data-ng-if="exam.copies[$index] && exam.copies[$index].name">
 							<form method="post" action="/download/copy" target="_blank">
-								<p>A file has been uploaded on {{exam.copies[0].files[$index].created | date: "dd MMM yyyy H:mm"}} (<input type="hidden" name="copy" data-ng-value="exam.copies[0]._id"><input type="hidden" name="index" data-ng-value="$index"><button type="submit" class="btn btn-link">Preview file</button>)</p>
+								<p>A file has been uploaded on {{exam.copies[$index].created | date: "dd MMM yyyy H:mm"}} (<input type="hidden" name="exam" data-ng-value="exam._id"><input type="hidden" name="index" data-ng-value="$index"><button type="submit" class="btn btn-link">{{'EXAMS.PREVIEW_COPY' | translate}}</button>)</p>
 							</form>
 						</div>
 						<progressbar data-ng-if="progressValue[$index]" class="progress-striped active" animate="true" max="100" value="progressValue[$index]" type="success"><i>{{progressValue[$index]}} %</i></progressbar>
-						<div data-ng-if="! exam.copies[0].files[$index].validated">
-							<button data-ng-if="! uploading[$index]" class="btn btn-primary" ngf-select accept="application/pdf" ngf-allow-dir="false" data-ng-model="files" ngf-change="fileSelected($files, $event, $index, exam.copies[0])">Upload file</button>
-							<button data-ng-if="exam.copies[0].files[$index]" data-ng-click="validate(exam.copies, 0, $index)" class="btn btn-success">Validate file</button>
+						<div data-ng-if="! exam.copies[$index].validated">
+							<button data-ng-if="! uploading[$index]" class="btn btn-primary" ngf-select accept="application/pdf" ngf-allow-dir="false" data-ng-model="files" ngf-change="fileSelected($files, $event, $index)">{{'EXAMS.UPLOAD_COPY' | translate}}</button>
+							<button data-ng-if="exam.copies[$index] && exam.copies[$index].name" data-ng-click="validate($index)" class="btn btn-success">{{'EXAMS.VALIDATE_COPY' | translate}}</button>
 						</div>
 					</li>
 				</ul>
-			</div>
-
-			<div data-ng-if="exam.copies.length === 0">
-				<form class="form-inline" data-ng-submit="setSeries(-1)" novalidate>
-					<div class="form-group">
-						<label>Number of series <input type="text" class="form-control" data-ng-model="series" placeholder="1" required></label> <button type="submit" class="btn btn-default">Create</button>
-					</div>
-				</form>
 			</div>
 		</tab>
 
