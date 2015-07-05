@@ -64,21 +64,6 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		return $filter('filter')(roomsList, query);
 	};
 
-	// Load groups
-	$scope.groups = [];
-	var groupsList = [];
-	$http.get('/groups').success(function(data, status, headers, config) {
-		data.forEach(function(group) {
-			groupsList.push({
-				name: group.name,
-				group: group
-			});
-		});
-	});
-	$scope.loadGroups = function(query) {
-		return $filter('filter')(groupsList, query);
-	};
-
 	// Create new exam
 	$scope.create = function() {
 		// Create new exam object

@@ -132,7 +132,10 @@
 		"QUESTIONNAIRE": "Questionnaire",
 		"UPLOAD_COPY": "Upload file",
 		"VALIDATE_COPY": "Validate file",
-		"PREVIEW_COPY": "Preview file"
+		"PREVIEW_COPY": "Preview file",
+		"COPIES": "Questionnaires",
+		"REGISTERED_STUDENTS": "Registered students",
+		"ROOMS": "Rooms"
 	},
 	"EXAMSESSIONS": {
 		"EXAMSESSIONS": "Exam sessions",

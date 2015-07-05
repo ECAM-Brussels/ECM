@@ -22,7 +22,7 @@
 	</dl>
 
 	<tabset>
-		<tab heading="Copies">
+		<tab heading="{{'EXAMS.COPIES' | translate}}">
 			<div>
 				<p class="text-right"><button data-ng-click="addCopy()" class="btn btn-success"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{'EXAMS.ADD_COPY' | translate}}</button></p>
 			</div>
@@ -50,7 +50,7 @@
 			</div>
 		</tab>
 
-		<tab heading="Registered students">
+		<tab heading="{{'EXAMS.REGISTERED_STUDENTS' | translate}}">
 			<div data-ng-if="! exam.affectation || exam.affectation.length">
 				<ul class="list-group">
 					<li class="list-group-item" data-ng-repeat="i in getNumber(exam.affectation.length) track by $index"><b>#{{exam.affectation[$index].number}}</b> {{exam.affectation[$index].student.firstname}} {{exam.affectation[$index].student.lastname}} with seat #{{exam.affectation[$index].seat}} in room {{exam.affectation[$index].room.ID}}</li>
@@ -60,7 +60,7 @@
 			<div data-ng-if="exam.affectation && ! exam.affectation.length">{{'EXAMS.NO_REGISTERED_STUDENT' | translate}}</div>
 		</tab>
 		
-		<tab heading="Rooms">
+		<tab heading="{{'EXAMS.ROOMS' | translate}}">
 			<div data-ng-if="exam.rooms && ! exam.rooms.length">{{'EXAMS.NO_ROOM' | translate}}</div>
 		</tab>
 	</tabset>

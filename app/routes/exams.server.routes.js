@@ -11,7 +11,7 @@ module.exports = function(app) {
 	// Exams routes
 	app.route('/exams')
 		.get(users.hasAuthorization(canview), exams.list)
-		.post(users.hasAuthorization(canedit), exams.create);
+		.post(users.hasAuthorization(['admin', 'manager']), exams.create);
 
 	app.route('/list/myExams')
 		.get(users.hasAuthorization(['teacher']), exams.listMyExams);
@@ -23,12 +23,12 @@ module.exports = function(app) {
 
 	// Copies routes
 	app.route('/copies/validate')
-		.post(users.hasAuthorization(['admin', 'teacher']), exams.validateCopy);
+		.post(users.hasAuthorization(['admin', 'manager', 'teacher']), exams.validateCopy);
 	app.route('/copies/add')
-		.post(users.hasAuthorization(['admin', 'teacher']), exams.addCopy);
+		.post(users.hasAuthorization(['admin', 'manager', 'teacher']), exams.addCopy);
 
 	app.route('/upload/copy')
-		.post(users.hasAuthorization(['admin', 'teacher']), multiparty(), exams.uploadCopy);
+		.post(users.hasAuthorization(['admin', 'manager', 'teacher']), multiparty(), exams.uploadCopy);
 
 	app.route('/download/copy')
 		.post(users.hasAuthorization(['admin', 'manager', 'teacher', 'printer']), exams.downloadCopy);
