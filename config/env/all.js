@@ -41,6 +41,7 @@ module.exports = {
 				'public/lib/ng-file-upload/ng-file-upload-all.min.js',
 				'public/lib/ng-tags-input/ng-tags-input.min.js',
 				'public/lib/nya-bootstrap-select/dist/js/nya-bs-select.min.js',
+				'public/lib/papaparse/papaparse.min.js',
 				'public/lib/bootstrap/dist/js/bootstrap.min.js'
 			]
 		},
