@@ -127,7 +127,7 @@
 		"MINUTES": "minutes",
 		"NO_REGISTERED_STUDENT": "No student registered yet.",
 		"NO_ROOM": "No room specified yet.",
-		"NO_COPIES": "No questionnaire has been uploaded for this exam yet.",
+		"NO_COPIES": "No questionnaire uploaded yet.",
 		"ADD_COPY": "Add a questionnaire",
 		"QUESTIONNAIRE": "Questionnaire",
 		"UPLOAD_COPY": "Upload file",
