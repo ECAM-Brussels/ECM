@@ -137,7 +137,9 @@
 		"REGISTERED_STUDENTS": "Étudiants inscrits",
 		"ROOMS": "Auditoires",
 		"IMPORT_STUDENTS": "Importer des étudiants",
-		"NB_REGISTERED_STUDENTS": "étudiants inscrits."
+		"NB_REGISTERED_STUDENTS": "étudiants inscrits.",
+		"COPY_NOT_VALIDATED": "Le questionnaire n'a pas encore été validé.",
+		"COPY_VALIDATED": "Le questionnaire a été validé le"
 	},
 	"EXAMSESSIONS": {
 		"EXAMSESSIONS": "Sessions d'examens",

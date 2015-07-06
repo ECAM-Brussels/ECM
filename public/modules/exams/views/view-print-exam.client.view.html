@@ -1,47 +1,48 @@
 <section data-ng-controller="ExamsController" data-ng-init="findOne()">
-	<h1>{{exam.course.ID}}</h1>
+	<h2>{{exam.course.ID}}</h2>
 
-	<h2>Information</h2>
+	<h3>{{'EXAMS.INFORMATION' | translate}}</h3>
 
 	<dl class="dl-horizontal">
-		<dt>Course</dt>
+		<dt>{{'EXAMS.TITLE' | translate}}</dt>
+		<dd>{{exam.title ? exam.title : '&mdash;'}}</dd>
+		<dt>{{'EXAMS.COURSE' | translate}}</dt>
 		<dd>{{exam.course.ID}} &mdash; {{exam.course.name}}</dd>
-		<dt>Coordinator</dt>
+		<dt>{{'EXAMS.COORDINATOR' | translate}}</dt>
 		<dd>{{exam.course.coordinator.username}}</dd>
-		<dt>Date</dt>
-		<dd>{{exam.date | date: "dd MMM yyyy H:mm"}}</dd>
-		<dt>Rooms</dt>
-		<dd><span data-ng-repeat="room in exam.rooms">{{room.ID}} </span></dd>
-		<dt>Groups</dt>
-		<dd><span data-ng-repeat="group in exam.groups">{{group.name}} </span></dd>
+		<dt>{{'EXAMS.EXAMSESSION' | translate}}</dt>
+		<dd>{{exam.examsession.name}}</dd>
+		<dt>{{'EXAMS.DATE' | translate}}</dt>
+		<dd>{{exam.date | amDateFormat: 'dddd Do MMMM YYYY HH:mm'}}</dd>
+		<dt>{{'EXAMS.DURATION' | translate}}</dt>
+		<dd>{{exam.duration}} {{'EXAMS.MINUTES' | translate}}</dd>
+		<dt>{{'EXAMS.ROOMS' | translate}}</dt>
+		<dd>{{exam.room ? '' : '&mdash;'}}<span data-ng-repeat="room in exam.rooms">{{room.ID}}{{$last ? '' : ', '}}</span></dd>
+		<dt>{{'EXAMS.REGISTERED_STUDENTS' | translate}}</dt>
+		<dd>{{exam.affectation ? exam.affectation.length : '&mdash;'}}</dd>
 	</dl>
 
-	<h2>Copies</h2>
+	<h3>{{'EXAMS.COPIES' | translate}}</h3>
 
-	<div data-ng-if="exam.split">
-		<p>One PDF file has to be uploaded for each activity of the course.</p>
+	<div data-ng-if="! exam.copies || exam.copies.length === 0">
+		{{'EXAMS.NO_COPIES' | translate}}
 	</div>
 
-	<div data-ng-if="! exam.split">
-		<div data-ng-if="exam.copies.length === 1">
-			<ul class="list-group">
-				<li class="list-group-item" data-ng-repeat="i in getNumber(exam.copies[0].series) track by $index">
-					<b>Serie {{$index + 1}}</b>
-					<span data-ng-if="exam.copies[0].files[$index].validated">Validated copy uploaded on {{exam.copies[0].files[$index].created | date: "dd MMM yyyy H:mm"}}</span>
-					<span data-ng-if="! exam.copies[0].files[$index].validated">The copy has not been validated yet.</span>
-					<span class="pull-right"><form method="post" action="/download/copy" target="_blank"><input type="hidden" name="copy" data-ng-value="exam.copies[0]._id"><input type="hidden" name="index" data-ng-value="$index"><input type="image" src="images/pdf.png" width="23" height="24" alt="PDF" data-ng-class="{grayscale: ! exam.copies[0].files[$index].validated}" data-ng-disabled="! exam.copies[0].files[$index].validated"></form></span>
-				</li>
-			</ul>
-		</div>
-
-		<div data-ng-if="exam.copies.length === 0" class="alert alert-warning" role="alert">
-			The number of series has not been defined yet.
-		</div>
+	<div data-ng-if="exam.copies && exam.copies.length > 0">
+		<ul class="list-group">
+			<li class="list-group-item" data-ng-repeat="i in getNumber(exam.copies.length) track by $index">
+				<b>{{'EXAMS.QUESTIONNAIRE' | translate}} {{getLetter($index)}}</b> &mdash; 
+				<span data-ng-if="exam.copies[$index].validated">{{'EXAMS.COPY_VALIDATED' | translate}} {{exam.copies[$index].created | amDateFormat: 'dddd Do MMMM YYYY HH:mm'}}</span>
+				<span data-ng-if="! exam.copies[$index].validated">{{'EXAMS.COPY_NOT_VALIDATED' | translate}}</span>
+				<span class="pull-right">
+					<form method="post" action="/download/copy" target="_blank"><input type="hidden" name="exam" data-ng-value="exam._id"><input type="hidden" name="index" data-ng-value="$index"><input type="image" src="images/pdf.png" width="23" height="24" alt="PDF" data-ng-class="{grayscale: ! exam.copies[$index].validated}" data-ng-disabled="! exam.copies[$index].validated"></form>
+				</span>
+			</li>
+		</ul>
 	</div>
-
 
 	<div data-ng-if="exam.ready">
-		<h2>Actions</h2>
+		<h3>Actions</h3>
 
 		<p>Download an archive with the exam copies for each student.</p>
 
@@ -50,9 +51,5 @@
 			<button type="submit" class="btn btn-primary">Download copies</button>
 		</form>
 		<button class="btn btn-success" data-ng-click="validatePrint()" data-ng-if="! exam.printed">Validate printing</button>
-	
-		<div data-ng-show="error" class="text-danger">
-			<strong data-ng-bind="error"></strong>
-		</div>
 	</div>
 </section>

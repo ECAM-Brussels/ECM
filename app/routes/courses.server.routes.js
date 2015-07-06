@@ -1,24 +1,26 @@
 'use strict';
 
 module.exports = function(app) {
-  var users = require('../../app/controllers/users.server.controller');
-  var courses = require('../../app/controllers/courses.server.controller');
-  var authorized = ['manager', 'admin'];
+	var users = require('../../app/controllers/users.server.controller');
+	var courses = require('../../app/controllers/courses.server.controller');
 
-  // Courses Routes
-  app.route('/courses')
-    .get(users.hasAuthorization(authorized), courses.list)
-    .post(users.hasAuthorization(authorized), courses.create);
+	var canview = ['admin', 'manager', 'printer'];
+	var canedit = ['admin'];
 
-  app.route('/list/myCourses')
-    .get(users.hasAuthorization(['teacher']), courses.listMyCourses);
+	// Courses routes
+	app.route('/courses')
+		.get(users.hasAuthorization(canview), courses.list)
+		.post(users.hasAuthorization(canedit), courses.create);
 
-  app.route('/courses/:courseId')
-    .post(users.hasAuthorization(authorized), courses.create)
-    .get(users.hasAuthorization(['manager', 'admin', 'teacher']), courses.read)
-    .put(users.hasAuthorization(authorized), courses.update)
-    .delete(users.hasAuthorization(authorized), courses.delete);
+	app.route('/list/myCourses')
+		.get(users.hasAuthorization(['teacher']), courses.listMyCourses);
 
-  // Finish by binding the Course middleware
-  app.param('courseId', courses.courseByID);
+	app.route('/courses/:courseId')
+		.get(users.hasAuthorization(['manager', 'admin', 'teacher']), courses.read)
+		.post(users.hasAuthorization(canedit), courses.create)
+		.put(users.hasAuthorization(canedit), courses.update)
+		.delete(users.hasAuthorization(canedit), courses.delete);
+
+	// Finish by binding the course middleware
+	app.param('courseId', courses.courseByID);
 };

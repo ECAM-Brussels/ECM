@@ -4,7 +4,7 @@ module.exports = function(app) {
 	var users = require('../../app/controllers/users.server.controller');
 	var examsessions = require('../../app/controllers/examsessions.server.controller');
 
-	var canview = ['admin', 'manager'];
+	var canview = ['admin', 'manager', 'printer'];
 	var canedit = ['admin'];
 
 	// Exam sessions routes

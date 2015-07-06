@@ -5,7 +5,7 @@ module.exports = function(app) {
 	var rooms = require('../../app/controllers/rooms.server.controller');
 	var multiparty = require('connect-multiparty');
 
-	var canview = ['admin', 'manager'];
+	var canview = ['admin', 'manager', 'printer'];
 	var canedit = ['admin'];
 
 	// Rooms Routes
