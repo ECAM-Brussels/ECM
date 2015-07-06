@@ -71,9 +71,7 @@ exports.delete = function(req, res) {
  * List of students
  */
 exports.list = function(req, res) { 
-	Student.find({}, 'firstname lastname matricule')
-		   .sort({'lastname': -1})
-		   .exec(function(err, students) {
+	Student.find({}, 'lastname firstname matricule').exec(function(err, students) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
@@ -90,29 +88,13 @@ exports.studentByID = function(req, res, next, id) {
 	if (req.method === 'POST') {
 		return next();	
 	}
-	Student.findOne({matricule: id}, 'firstname lastname matricule groups')
-	.populate('groups', 'name')
-	.exec(function(err, student) {
-		if (err) {
-			return next(err);
-		} 
-		if (! student) {
+	Student.findOne({matricule: id}, 'lastname firstname middlenames matricule groups').populate('groups', 'name').exec(function(err, student) {
+		if (err || ! student) {
 			return next(new Error('Failed to load Student ' + id));
 		}
-
 		req.student = student;
 		next();
 	});
-};
-
-/**
- * Student authorization middleware
- */
-exports.hasAuthorization = function(req, res, next) {
-	if (req.student.user.id !== req.user.id) {
-		return res.status(403).send('User is not authorized');
-	}
-	next();
 };
 
 function importStudent(i, data, user) {

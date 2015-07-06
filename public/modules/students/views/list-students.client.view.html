@@ -7,7 +7,7 @@
 	</div>
 
 	<div class="list-group" data-ng-if="! students.$resolved || students.length">
-		<a data-ng-repeat="student in students" data-ng-href="#!/students/{{student.matricule}}" class="list-group-item">{{student.firstname}} {{student.lastname}} ({{student.matricule}})</a>
+		<a data-ng-repeat="student in students | orderBy: '+lastname'" data-ng-href="#!/students/{{student.matricule}}" class="list-group-item">{{student.lastname.toUpperCase()}} {{student.firstname}} ({{student.matricule}})</a>
 	</div>
 	
 	<div data-ng-if="students.$resolved && ! students.length">{{'STUDENTS.NO_STUDENT_AVAILABLE' | translate}}</div>

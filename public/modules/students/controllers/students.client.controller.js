@@ -1,12 +1,5 @@
 'use strict';
 
-/*global Papa:false */
-function load_script(url) {
-	var s = document.createElement('script'); 
-	s.src = url;
-	document.body.appendChild(s);
-}
-
 // Students controller
 angular.module('students').controller('StudentsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Students', '$http', function($scope, $stateParams, $location, Authentication, Students, $http) {
 	$scope.authentication = Authentication;
@@ -112,6 +105,4 @@ angular.module('students').controller('StudentsController', ['$scope', '$statePa
 			// 
 		});
 	};
-
-	load_script('/serve/papaparse.min.js');
 }]);

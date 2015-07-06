@@ -4,6 +4,12 @@
 	<h3>{{'STUDENTS.INFORMATION' | translate}}</h3>
 
 	<dl class="dl-horizontal">
+		<dt>{{'STUDENTS.LASTNAME' | translate}}</dt>
+		<dd>{{student.lastname}}</dd>
+		<dt>{{'STUDENTS.FIRSTNAME' | translate}}</dt>
+		<dd>{{student.firstname}}</dd>
+		<dt>{{'STUDENTS.MIDDLE_NAMES' | translate}}</dt>
+		<dd><span data-ng-repeat="middlename in student.middlenames">{{middlename}}{{$last ? '' : ', '}}</span></dd>
 		<dt>{{'STUDENTS.MATRICULE' | translate}}</dt>
 		<dd>{{student.matricule}}</dd>
 		<dt>{{'STUDENTS.GROUPS' | translate}}</dt>
