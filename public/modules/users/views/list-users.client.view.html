@@ -6,7 +6,7 @@
 	</div>
 
 	<div class="list-group" data-ng-if="! users.$resolved || users.length">
-		<a data-ng-repeat="user in users | orderBy: '+serial'" data-ng-href="#!/users/{{user.serial}}" class="list-group-item"><b>{{user.serial}}</b> &mdash; {{user.displayname}}</a>
+		<a data-ng-repeat="user in users | orderBy: '+serial'" data-ng-href="#!/users/{{user.serial}}" class="list-group-item"><img data-ng-src="/images/users/{{user._id}}.jpg" width="25" height="25" class="iconuserpic" data-ng-if="user.picture" /> <b>{{user.serial}}</b> &mdash; {{user.displayname}}</a>
 	</div>
 
 	<div data-ng-if="users.$resolved && users.length == 0">{{'USERS.NO_USER_AVAILABLE' | translate}}</div>
