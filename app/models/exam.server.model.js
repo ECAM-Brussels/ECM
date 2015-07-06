@@ -32,10 +32,19 @@ var ExamSchema = new Schema({
 		type: Number,
 		required: 'Please specify a duration for the exam',
 	},
-	rooms: [{
-		type: Schema.ObjectId,
-		ref: 'Room'
-	}],
+	rooms: {
+		type: [new Schema({
+			room: {
+				type: Schema.ObjectId,
+				ref: 'Room'
+			},
+			layout: {
+				type: Number,
+				default: 0
+			}
+		})],
+		default: []
+	},
 	copies: {
 		type: [new Schema({
 			name: {

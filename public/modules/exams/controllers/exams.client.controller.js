@@ -125,23 +125,25 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 
 	// Find existing exam
 	$scope.findOne = function() {
-		$scope.exam = Exams.get({ 
-			examId: $stateParams.examId
-		}, function(err) {
+		$scope.exam = Exams.get({examId: $stateParams.examId}, function(err) {
 			var exam = $scope.exam;
 			// Fill uploading and progressValue
-			if (exam.split) {
-				console.log('Split');
-			} else {
-				if (exam.copies[0]) {
-					$scope.progressValue = new Array(exam.copies[0].series);
-					$scope.uploading = new Array(exam.copies[0].series);
-					for (var i = 0; i < $scope.exam.copies[0].series; i++) {
-						$scope.progressValue[i] = null;
-						$scope.uploading[i] = false;
-					}
+			if (exam.copies) {
+				$scope.progressValue = new Array(exam.copies.length);
+				$scope.uploading = new Array(exam.copies.length);
+				for (var i = 0; i < $scope.exam.copies.length; i++) {
+					$scope.progressValue[i] = null;
+					$scope.uploading[i] = false;
 				}
 			}
+			// Clear already affected rooms
+			for (var i = 0; i < exam.rooms.length; i++) {
+				var index = findRoom(exam.rooms[i].room);
+				if (index !== -1) {
+					roomsList.splice(index, 1);
+				}
+			}
+			// Loading data
 /*			// Build CSV with affectation
 			if (! exam.affectation || exam.affectation.length) {
 				$scope.affectationCSV = 'Num;Firstname;Lastname;Seat;Room\n';
@@ -186,7 +188,35 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		return false;
 	}
 
-	// Import students
+	// Add rooms for the exam
+	function findRoom(room) {
+		for (var i = 0; i < roomsList.length; i++) {
+			if (roomsList[i].room._id === room._id) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	$scope.addrooms = [];
+	$scope.addRooms = function(rooms) {
+		var roomstoadd = [];
+		rooms.forEach(function(room) {
+			roomstoadd.push(room.room);
+		});
+		$http.post('/exams/addrooms', {'exam': $scope.exam._id, 'rooms': roomstoadd}).success(function(data, status, headers, config) {
+			$scope.addrooms = [];
+			for (var i = 0; i < data.rooms.length; i++) {
+				var index = findRoom(data.rooms[i].room);
+				if (index !== -1) {
+					roomsList.splice(index, 1);
+				}
+			}
+			$scope.exam.rooms = data.rooms;
+		});
+	};
+
+	// Import students for the exam
 	$scope.importStudents = function(files) {
 		if (files.length === 1) {
 			Papa.parse(files[0], {

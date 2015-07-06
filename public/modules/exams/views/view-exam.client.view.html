@@ -63,7 +63,24 @@
 		</tab>
 		
 		<tab heading="{{'EXAMS.ROOMS' | translate}}">
-			<div data-ng-if="exam.rooms && ! exam.rooms.length">{{'EXAMS.NO_ROOM' | translate}}</div>
+			<div class="pull-right">
+				<form class="form-inline">
+					<tags-input style="display: inline-block; width: 250px; vertical-align: middle;" data-ng-model="addrooms" display-property="name" add-on-blur="false" add-from-autocomplete-only placeholder="{{'EXAMS.ADD_ROOM' | translate}}">
+						<auto-complete source="loadRooms($query)" min-length="0"></auto-complete>
+					</tags-input>
+					<button data-ng-click="addRooms(addrooms)" class="btn btn-primary">{{'EXAMS.ADD' | translate}}</button>
+				</form>
+			</div>
+
+			<div class="clearfix" data-ng-if="! exam.rooms || exam.rooms.length">
+				<tabset>
+					<tab data-ng-repeat="room in exam.rooms" heading="{{room.room.ID}}">
+						Layout : {{room.layout}}
+					</tab>
+				</tabset>
+			</div>
+
+			<div class="clearfix" data-ng-if="exam.rooms && ! exam.rooms.length">{{'EXAMS.NO_ROOM' | translate}}</div>
 		</tab>
 	</tabset>
 </section>

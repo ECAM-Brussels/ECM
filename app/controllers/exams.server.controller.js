@@ -91,74 +91,28 @@ exports.examByID = function(req, res, next, id) {
 	Exam.findById(id, 'title course examsession rooms date duration copies affectation ready printed')
 		.populate('course', 'ID name coordinator')
 		.populate('examsession', 'name')
-		.populate('rooms', 'ID')
-		.populate('copies', 'exam activity created user series files')
 		.exec(function(err, exam) {
-		if (err) {
-			return next(err);
+		if (err || ! exam) {
+			return next(new Error('Failed to load exam ' + id));
 		}
-		if (! exam) {
-			return next(new Error('Failed to load Exam ' + id));
-		}
-
-		Exam.populate(exam, {path: 'activities.teachers', select: 'username', model: 'User'}, function(err, exam) {
-			if (err) {
-				return next(err);
+		Exam.populate(exam, {path: 'course.coordinator', select: 'username', model: 'User'}, function (err, exam) {
+			if (err || ! exam) {
+				return next(new Error('Failed to load exam ' + id));
 			}
-			if (! exam) {
-				return next(new Error('Failed to load Exam ' + id));
-			}
-
-			Exam.populate(exam, {path: 'course.coordinator', select: 'username', model: 'User'}, function (err, exam) {
-				if (err) {
-					return next(err);
+			Exam.populate(exam, {path: 'affectation.student', select: 'firstname lastname', model: 'Student'}, function (err, exam) {
+				if (err || ! exam) {
+					return next(new Error('Failed to load exam ' + id));
 				}
-				if (! exam) {
-					return next(new Error('Failed to load Exam ' + id));
-				}
-
-				Exam.populate(exam, {path: 'copies.user', select: 'username', model: 'User'}, function (err, exam) {
-					if (err) {
-						return next(err);
+				Exam.populate(exam, {path: 'rooms.room', select: 'ID', model: 'Room'}, function (err, exam) {
+					if (err || ! exam) {
+						return next(new Error('Failed to load exam ' + id));
 					}
-					if (! exam) {
-						return next(new Error('Failed to load Exam ' + id));
-					}
-
-					Exam.populate(exam, {path: 'affectation.room', select: 'ID', model: 'Room'}, function (err, exam) {
-						if (err) {
-							return next(err);
-						}
-						if (! exam) {
-							return next(new Error('Failed to load Exam ' + id));
-						}
-
-						Exam.populate(exam, {path: 'affectation.student', select: 'firstname lastname', model: 'Student'}, function (err, exam) {
-							if (err) {
-								return next(err);
-							}
-							if (! exam) {
-								return next(new Error('Failed to load Exam ' + id));
-							}
-
-							req.exam = exam;
-							next();
-						});
-					});
+					req.exam = exam;
+					next();
 				});
 			});
 		});
 	});
-};
-
-/**
- * Exam authorization middleware
- */
-exports.hasAuthorization = function(req, res, next) {
-	if (req.exam.user.id !== req.user.id) {
-		return res.status(403).send('User is not authorized');
-	}
-	next();
 };
 
 function isTeacher(teacher, activities) {
@@ -213,6 +167,42 @@ exports.listMyExams = function(req, res) {
 	});
 };
 
+// Add rooms for the exam
+exports.addRooms = function(req, res) {
+	// Check exam
+	Exam.findById(req.body.exam, 'rooms').exec(function(err, exam) {
+		if (err || ! exam) {
+			return res.status(400).send({
+				message: 'Error while retrieving the specified exam'
+			});
+		}
+		var rooms = req.body.rooms;
+		for (var i = 0; i < rooms.length; i++) {
+			exam.rooms.push({
+				room: rooms[i]._id,
+				layout: 0
+			});
+		}
+		exam.save(function(err) {
+			if (err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			}
+			// Get firstname and lastname of students
+			Exam.populate(exam, {path: 'rooms.room', select: 'ID', model: 'Room'}, function(err, exam) {
+				if (err || ! exam) {
+					return res.status(400).send({
+						message: errorHandler.getErrorMessage(err)
+					});
+				}
+				res.jsonp(exam);
+			});
+		});
+	});
+};
+
+// Import students for the exam
 function findStudent(affectation, student) {
 	console.log('Comparing ' + student);
 	for (var i = 0; i < affectation.length; i++) {
