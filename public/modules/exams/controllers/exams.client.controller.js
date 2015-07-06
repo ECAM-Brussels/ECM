@@ -142,7 +142,7 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 					}
 				}
 			}
-			// Build CSV with affectation
+/*			// Build CSV with affectation
 			if (! exam.affectation || exam.affectation.length) {
 				$scope.affectationCSV = 'Num;Firstname;Lastname;Seat;Room\n';
 				for (var j = 0; j < exam.affectation.length; j++) {
@@ -151,7 +151,7 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 					$scope.affectationCSV += affectation.number + ';' + student.firstname + ';' + student.lastname + ';' + affectation.seat + ';' + affectation.room.ID + '\n';
 				}
 				$scope.affectationCSV = encodeURIComponent($scope.affectationCSV);
-			}
+			}*/
 		});
 	};
 
@@ -186,6 +186,19 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		return false;
 	}
 
+	// Import students
+	$scope.importStudents = function(files) {
+		if (files.length === 1) {
+			Papa.parse(files[0], {
+				complete: function(results) {
+					$http.post('/students/register', {'exam': $scope.exam._id, 'students': results.data}).success(function(data, status, headers, config) {
+						$scope.exam.affectation = data.affectation;
+					});
+				}
+			});
+		}
+	};
+
 	// Add a questionnaire for the exam
 	$scope.addCopy = function() {
 		$http.post('/copies/add', {'exam': $scope.exam._id}).success(function(data, status, headers, config) {
@@ -209,7 +222,7 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 	};
 
 	// Upload a file for a questionnaire
-	$scope.fileSelected = function(files, event, index) {
+	$scope.fileSelected = function(files, index) {
 		if ($scope.uploading && ! $scope.uploading[index] && files && files.length === 1) {
 			// Reset form
 			$scope.uploading[index] = true;

@@ -135,7 +135,9 @@
 		"PREVIEW_COPY": "Preview file",
 		"COPIES": "Questionnaires",
 		"REGISTERED_STUDENTS": "Registered students",
-		"ROOMS": "Rooms"
+		"ROOMS": "Rooms",
+		"IMPORT_STUDENTS": "Import students",
+		"NB_REGISTERED_STUDENTS": "registered students."
 	},
 	"EXAMSESSIONS": {
 		"EXAMSESSIONS": "Exam sessions",

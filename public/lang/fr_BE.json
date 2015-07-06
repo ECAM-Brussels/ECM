@@ -135,7 +135,9 @@
 		"PREVIEW_COPY": "Aperçu du fichier",
 		"COPIES": "Questionnaires",
 		"REGISTERED_STUDENTS": "Étudiants inscrits",
-		"ROOMS": "Auditoires"
+		"ROOMS": "Auditoires",
+		"IMPORT_STUDENTS": "Importer des étudiants",
+		"NB_REGISTERED_STUDENTS": "étudiants inscrits."
 	},
 	"EXAMSESSIONS": {
 		"EXAMSESSIONS": "Sessions d'examens",

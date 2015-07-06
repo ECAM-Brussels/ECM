@@ -83,7 +83,8 @@ var ExamSchema = new Schema({
 			},
 			room: {
 				type: Schema.ObjectId,
-				ref: 'Room'
+				ref: 'Room',
+				default: null
 			},
 			serie: {
 				type: Number,

@@ -26,14 +26,16 @@ module.exports = function(app) {
 		.post(users.hasAuthorization(['admin', 'manager', 'teacher']), exams.validateCopy);
 	app.route('/copies/add')
 		.post(users.hasAuthorization(['admin', 'manager', 'teacher']), exams.addCopy);
-
 	app.route('/upload/copy')
 		.post(users.hasAuthorization(['admin', 'manager', 'teacher']), multiparty(), exams.uploadCopy);
-
 	app.route('/download/copy')
 		.post(users.hasAuthorization(['admin', 'manager', 'teacher', 'printer']), exams.downloadCopy);
 	app.route('/download/copies')
 		.post(users.hasAuthorization(['admin', 'printer']), exams.downloadCopies);
+
+	// Registration routes
+	app.route('/students/register')
+		.post(users.hasAuthorization(['admin', 'manager']), exams.registerStudents);
 
 	// Finish by binding the exam middleware
 	app.param('examId', exams.examByID);

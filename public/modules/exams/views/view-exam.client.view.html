@@ -42,7 +42,7 @@
 						</div>
 						<progressbar data-ng-if="progressValue[$index]" class="progress-striped active" animate="true" max="100" value="progressValue[$index]" type="success"><i>{{progressValue[$index]}} %</i></progressbar>
 						<div data-ng-if="! exam.copies[$index].validated">
-							<button data-ng-if="! uploading[$index]" class="btn btn-primary" ngf-select accept="application/pdf" ngf-allow-dir="false" data-ng-model="files" ngf-change="fileSelected($files, $event, $index)">{{'EXAMS.UPLOAD_COPY' | translate}}</button>
+							<button data-ng-if="! uploading[$index]" class="btn btn-primary" ngf-select accept="application/pdf" ngf-allow-dir="false" data-ng-model="files" ngf-change="fileSelected($files, $index)">{{'EXAMS.UPLOAD_COPY' | translate}}</button>
 							<button data-ng-if="exam.copies[$index] && exam.copies[$index].name" data-ng-click="validate($index)" class="btn btn-success">{{'EXAMS.VALIDATE_COPY' | translate}}</button>
 						</div>
 					</li>
@@ -51,9 +51,14 @@
 		</tab>
 
 		<tab heading="{{'EXAMS.REGISTERED_STUDENTS' | translate}}">
+			<div>
+				<p class="text-right"><button class="btn btn-success" ngf-select accept="text/csv" ngf-allow-dir="false" ng-model="studentsfile" ngf-change="importStudents($files)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{'EXAMS.IMPORT_STUDENTS' | translate}}</button></p>
+			</div>
+
 			<div data-ng-if="! exam.affectation || exam.affectation.length">
+				<p><b>{{exam.affectation.length}}</b> {{'EXAMS.NB_REGISTERED_STUDENTS' | translate}}</p>
 				<ul class="list-group">
-					<li class="list-group-item" data-ng-repeat="i in getNumber(exam.affectation.length) track by $index"><b>#{{exam.affectation[$index].number}}</b> {{exam.affectation[$index].student.firstname}} {{exam.affectation[$index].student.lastname}} with seat #{{exam.affectation[$index].seat}} in room {{exam.affectation[$index].room.ID}}</li>
+					<li class="list-group-item" data-ng-repeat="affectation in exam.affectation | orderBy: '+student.lastname'">{{affectation.student.lastname.toUpperCase()}} {{affectation.student.firstname}}</li>
 				</ul>
 			</div>
 

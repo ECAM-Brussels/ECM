@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Exam = mongoose.model('Exam'),
+	Student = mongoose.model('Student'),
 	fs = require('fs-extra'),
 	path = require('path'),
 	process = require('process'),
@@ -207,6 +208,77 @@ exports.listMyExams = function(req, res) {
 					}
 				}
 				res.jsonp(tokeep);
+			});
+		});
+	});
+};
+
+function findStudent(affectation, student) {
+	console.log('Comparing ' + student);
+	for (var i = 0; i < affectation.length; i++) {
+		if (affectation[i].student.toString() === student.toString()) {
+			return true;
+		}
+	}
+	return false;
+}
+
+function handleStudent(student, exam, callback) {
+	if (student.length < 3) {
+		callback(false);
+	}
+	Student.findOne({'matricule': student[2]}, '_id').exec(function(err, student) {
+		if (err || ! student) {
+			return callback(false);
+		}
+		// Check if students not already registered
+		if (findStudent(exam.affectation, student._id)) {
+			return callback(false);
+		}
+		// Register student for the exam
+		exam.affectation.push({
+			student: student,
+			number: 1,
+			seat: 1,
+			room: null,
+			serie: 0
+		});
+		callback(true);
+	});
+}
+
+exports.registerStudents = function(req, res) {
+	// Check exam
+	Exam.findById(req.body.exam, 'affectation').exec(function(err, exam) {
+		if (err || ! exam) {
+			return res.status(400).send({
+				message: 'Error while retrieving the specified exam'
+			});
+		}
+		// Search each student in database
+		var importNb = req.body.students.length;
+		req.body.students.forEach(function(student) {
+			handleStudent(student, exam, function(result) {
+				importNb--;
+				// All students have been handled
+				if (importNb === 0) {
+					exam.save(function(err) {
+						if (err) {
+							return res.status(400).send({
+								message: errorHandler.getErrorMessage(err)
+							});
+						}
+						// Get firstname and lastname of students
+						Exam.populate(exam, {path: 'affectation.student', select: 'firstname lastname', model: 'Student'}, function(err, exam) {
+							if (err || ! exam) {
+								return res.status(400).send({
+									message: errorHandler.getErrorMessage(err)
+								});
+							}
+							res.jsonp(exam);
+						});
+					});
+				}
 			});
 		});
 	});
