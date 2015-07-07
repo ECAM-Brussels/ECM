@@ -24,10 +24,10 @@
 
 \fancyhead{}
 \fancyfoot{}
-\fancyhead[C]{\textbf{Classement} : N$^\circ$\oldstylenums{!classement!} --- \textbf{Auditoire} : !room! (siège !seatnumber!) \\[4mm] {\renewcommand{\arraystretch}{1.5}\begin{tabularx}{\textwidth}{|lXr|}
+\fancyhead[C]{\textbf{Classement} : N$^\circ${\Large\oldstylenums{!classement!}} --- \textbf{Auditoire} : !room! (siège !seatnumber!) \\[4mm] {\renewcommand{\arraystretch}{1.5}\begin{tabularx}{\textwidth}{|lXr|}
 \hline
-Nom : !firstname! \textsc{!lastname!} & & !datetime! \\
-Matricule : !matricule! & & Version \seriename{!serie!} \\
+Nom : \textsc{!lastname!} !firstname! & & !datetime! \\
+Matricule : !matricule! & & (!duration! minutes) \\
 \multicolumn{3}{|c|}{\large\bfseries !courseid! --- !coursename!} \\[2mm]
 \hline
 \end{tabularx}}}

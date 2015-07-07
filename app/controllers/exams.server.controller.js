@@ -344,6 +344,7 @@ exports.downloadCopies = function(req, res) {
 					content = content.replace(/!firstname!/g, affectation[i].student.firstname);
 					content = content.replace(/!lastname!/g, affectation[i].student.lastname);
 					content = content.replace(/!matricule!/g, affectation[i].student.matricule);
+					content = content.replace(/!duration!/g, exam.duration);
 					content = content.replace(/!courseid!/g, exam.course.ID);
 					content = content.replace(/!coursename!/g, exam.course.name);
 					content = content.replace(/!serie!/g, affectation[i].serie + 1);
@@ -450,7 +451,7 @@ exports.validateCopy = function(req, res) {
 // Upload a file for a questionnaire
 exports.uploadCopy = function(req, res) {
 	// Check exam
-	Exam.findById(req.body.exam, 'course date copies').populate('course', 'ID name').exec(function(err, exam) {
+	Exam.findById(req.body.exam, 'course date copies duration').populate('course', 'ID name').exec(function(err, exam) {
 		if (err || ! exam) {
 			return res.status(400).send({
 				message: 'Error while retrieving the specified exam'
@@ -487,6 +488,7 @@ exports.uploadCopy = function(req, res) {
 			content = content.replace(/!firstname!/g, '');
 			content = content.replace(/!lastname!/g, '');
 			content = content.replace(/!matricule!/g, '');
+			content = content.replace(/!duration!/g, exam.duration);
 			content = content.replace(/!courseid!/g, exam.course.ID);
 			content = content.replace(/!coursename!/g, exam.course.name);
 			content = content.replace(/!serie!/g, parseInt (req.body.index) + 1);
