@@ -79,6 +79,7 @@
 		"NAME": "Nom",
 		"NAME_EXAMPLE": "Salle de réunion du premier étage",
 		"SEATS": "Sièges",
+		"CONFIGURATIONS": "Configurations",
 		"PICTURE": "Photo",
 		"LOAD_ONE_PICTURE": "Vous pouvez télécharger une photo pour l'auditoire depuis votre ordinateur.",
 		"SELECT_FILE": "Sélectionner un fichier",
@@ -86,7 +87,10 @@
 		"INFORMATION": "Informations",
 		"PICTURE_OF": "Photo de",
 		"MAP": "Plan de l'auditoire",
-		"NO_MAP_AVAILABLE": "Aucun plan de l'auditoire disponible pour le moment."
+		"NO_MAP_AVAILABLE": "Aucun plan de l'auditoire disponible pour le moment.",
+		"NO_SELECTED_CONFIGURATION": "Aucune configuration sélectionnée",
+		"SELECT_CONFIGURATION": "Sélectionner une configuration",
+		"SELECTED_SEATS": "sièges disponibles"
 	},
 	"STUDENTS": {
 		"STUDENTS": "Étudiants",

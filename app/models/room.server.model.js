@@ -34,6 +34,28 @@ var RoomSchema = new Schema({
 		type: Boolean,
 		default: false
 	},
+	configuration: {
+		type: [new Schema({
+			name: {
+				type: String,
+				unique: true
+			},
+			seats: {
+				type: [new Schema({
+					seat: {
+						type: Number,
+						default: 1
+					},
+					serie: {
+						type: Number,
+						default: 0
+					}
+				})],
+				default: []
+			}
+		})],
+		default: []
+	},
 	created: {
 		type: Date,
 		default: Date.now

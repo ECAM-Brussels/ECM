@@ -82,23 +82,12 @@ var ExamSchema = new Schema({
 			},
 			number: {
 				type: Number,
-				required: true,
-				default: 1
-			},
-			seat: {
-				type: Number,
-				required: true,
 				default: 1
 			},
 			room: {
 				type: Schema.ObjectId,
 				ref: 'Room',
 				default: null
-			},
-			serie: {
-				type: Number,
-				required: true,
-				default: 0
 			}
 		})],
 		default: []

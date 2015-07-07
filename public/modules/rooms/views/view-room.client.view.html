@@ -15,11 +15,19 @@
 			<dd>{{room.name}}</dd>
 			<dt>{{'ROOMS.SEATS' | translate}}</dt>
 			<dd>{{room.seats}}</dd>
+			<dt>{{'ROOMS.CONFIGURATIONS' | translate}}</dt>
+			<dd>{{room.configuration.length}}</dd>
 		</dl>
 
 		<h3>{{'ROOMS.MAP' | translate}}</h3>
 
-		<canvas id="roomplaces" data-ng-if="room.map" data-ng-init="drawMap()"></canvas>
-		<p data-ng-if="! room.map">{{'ROOMS.NO_MAP_AVAILABLE' | translate}}</p>
+		<div>
+			<canvas id="roomplaces" data-ng-if="room.map" data-ng-init="drawMap()"></canvas>
+			<p data-ng-if="! room.map">{{'ROOMS.NO_MAP_AVAILABLE' | translate}}</p>
+		</div>
+
+		<form class="form-inline" data-ng-if="room.map && room.configuration && room.configuration.length > 0">
+			{{'ROOMS.SELECT_CONFIGURATION' | translate}} <select class="form-control" data-ng-options="i as room.configuration[i].name for i in getNumber(room.configuration.length)" data-ng-model="configuration" data-ng-change="changeConfiguration(configuration)"></select> <span data-ng-if="configuration !== -1">({{room.configuration[configuration].seats.length}} {{'ROOMS.SELECTED_SEATS' | translate}})</span>
+		</form>
 	</div>
 </section>
