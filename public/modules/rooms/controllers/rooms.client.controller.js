@@ -88,39 +88,46 @@ angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams',
 	};
 
 	// For the room map
-	$scope.drawMap = function() {
-		$http.get('images/rooms/' + $scope.room._id + '/map.json').success(function(data, status, headers, config) {
-			$scope.map = data;
-			// Set up canvas
-			var canvas = document.getElementById('roomplaces');
-			canvas.width = data.width;
-			canvas.height = data.height;
-			// Initialise context
-			var context = canvas.getContext('2d');
-			context.clearRect(0, 0, data.width, data.height);
-			context.strokeRect(0, 0, data.width, data.height);
-			context.scale(1, 1);
-			// Draw all shapes
-			data.shapes.forEach (function(shape) {
-				var attr = shape.attr;
-				switch (shape.type) {
-					case 'rectangle':
-						context.strokeRect(attr.x, attr.y, attr.width, attr.height);
-					break;
+	function drawMap() {
+		var map = $scope.map;
+		// Set up canvas
+		var canvas = document.getElementById('roomplaces');
+		canvas.width = map.width;
+		canvas.height = map.height;
+		// Initialise context
+		var context = canvas.getContext('2d');
+		context.clearRect(0, 0, map.width, map.height);
+		context.strokeRect(0, 0, map.width, map.height);
+		context.scale(1, 1);
+		// Draw all shapes
+		map.shapes.forEach (function(shape) {
+			var attr = shape.attr;
+			switch (shape.type) {
+				case 'rectangle':
+					context.strokeRect(attr.x, attr.y, attr.width, attr.height);
+				break;
 
-					case 'text':
-						context.strokeText(attr.value, attr.x, attr.y);
-					break;
-				}
-			});
-			// Draw configuration
-			if ($scope.configuration !== -1) {
-				$scope.room.configuration[$scope.configuration].seats.forEach(function(seat) {
-					var seatcoord = $scope.map.seats[seat.seat];
-					context.strokeText('X', seatcoord.x, seatcoord.y);
-				});
+				case 'text':
+					context.strokeText(attr.value, attr.x, attr.y);
+				break;
 			}
 		});
+		// Draw configuration
+		if ($scope.configuration !== -1) {
+			$scope.room.configuration[$scope.configuration].seats.forEach(function(seat) {
+				var seatcoord = $scope.map.seats[seat.seat];
+				context.strokeText('X', seatcoord.x, seatcoord.y);
+			});
+		}
+	};
+	
+	$scope.loadMap = function() {
+		if ($scope.map === null) {
+			$http.get('images/rooms/' + $scope.room._id + '/map.json').success(function(data, status, headers, config) {
+				$scope.map = data;
+				drawMap();
+			});
+		}
 	};
 
 	$scope.getNumber = function(n) {
@@ -134,6 +141,6 @@ angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams',
 	// Change room configuration
 	$scope.changeConfiguration = function(conf) {
 		$scope.configuration = conf;
-		$scope.drawMap();
+		drawMap();
 	};
 }]);

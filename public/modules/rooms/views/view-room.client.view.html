@@ -22,7 +22,7 @@
 		<h3>{{'ROOMS.MAP' | translate}}</h3>
 
 		<div>
-			<canvas id="roomplaces" data-ng-if="room.map" data-ng-init="drawMap()"></canvas>
+			<canvas id="roomplaces" data-ng-if="room.map" data-ng-init="loadMap()"></canvas>
 			<p data-ng-if="! room.map">{{'ROOMS.NO_MAP_AVAILABLE' | translate}}</p>
 		</div>
 
