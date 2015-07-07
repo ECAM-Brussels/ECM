@@ -21,7 +21,7 @@
 	<tabset>
 		<tab heading="{{'EXAMS.COPIES' | translate}}">
 			<div>
-				<p class="text-right"><button data-ng-click="addCopy()" class="btn btn-success"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{'EXAMS.ADD_COPY' | translate}}</button></p>
+				<p class="text-right" data-ng-if="! exam.ready"><button data-ng-click="addCopy()" class="btn btn-success"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{'EXAMS.ADD_COPY' | translate}}</button></p>
 			</div>
 
 			<div data-ng-if="! exam.copies || exam.copies.length === 0">
@@ -37,8 +37,8 @@
 								<p>A file has been uploaded on {{exam.copies[$index].created | date: "dd MMM yyyy H:mm"}} (<input type="hidden" name="exam" data-ng-value="exam._id"><input type="hidden" name="index" data-ng-value="$index"><button type="submit" class="btn btn-link">{{'EXAMS.PREVIEW_COPY' | translate}}</button>)</p>
 							</form>
 						</div>
-						<progressbar data-ng-if="progressValue[$index]" class="progress-striped active" animate="true" max="100" value="progressValue[$index]" type="success"><i>{{progressValue[$index]}} %</i></progressbar>
-						<div data-ng-if="! exam.copies[$index].validated">
+						<progressbar data-ng-if="progressValue[$index] && ! exam.ready" class="progress-striped active" animate="true" max="100" value="progressValue[$index]" type="success"><i>{{progressValue[$index]}} %</i></progressbar>
+						<div data-ng-if="! exam.copies[$index].validated && ! exam.ready">
 							<button data-ng-if="! uploading[$index]" class="btn btn-primary" ngf-select accept="application/pdf" ngf-allow-dir="false" data-ng-model="files" ngf-change="fileSelected($files, $index)">{{'EXAMS.UPLOAD_COPY' | translate}}</button>
 							<button data-ng-if="exam.copies[$index] && exam.copies[$index].name" data-ng-click="validate($index)" class="btn btn-success">{{'EXAMS.VALIDATE_COPY' | translate}}</button>
 						</div>
@@ -49,7 +49,7 @@
 
 		<tab heading="{{'EXAMS.REGISTERED_STUDENTS' | translate}}">
 			<div>
-				<p class="text-right"><button class="btn btn-success" ngf-select accept="text/csv" ngf-allow-dir="false" ng-model="studentsfile" ngf-change="importStudents($files)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{'EXAMS.IMPORT_STUDENTS' | translate}}</button></p>
+				<p class="text-right" data-ng-if="! exam.ready"><button class="btn btn-success" ngf-select accept="text/csv" ngf-allow-dir="false" ng-model="studentsfile" ngf-change="importStudents($files)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{'EXAMS.IMPORT_STUDENTS' | translate}}</button></p>
 			</div>
 
 			<div data-ng-if="! exam.affectation || exam.affectation.length">
@@ -63,7 +63,7 @@
 		</tab>
 		
 		<tab heading="{{'EXAMS.ROOMS' | translate}}">
-			<div class="pull-right">
+			<div class="pull-right" data-ng-if="! exam.ready">
 				<form class="form-inline">
 					<tags-input style="display: inline-block; width: 250px; vertical-align: middle;" data-ng-model="addrooms" display-property="name" add-on-blur="false" add-from-autocomplete-only placeholder="{{'EXAMS.ADD_ROOM' | translate}}">
 						<auto-complete source="loadRooms($query)" min-length="0"></auto-complete>
@@ -82,7 +82,7 @@
 							<p data-ng-if="! exam.rooms[i].room.map">{{'EXAMS.NO_MAP_AVAILABLE' | translate}}</p>
 						</div>
 
-						<div data-ng-if="exam.rooms[i].room.map && exam.rooms[i].room.configuration && exam.rooms[i].room.configuration.length > 0">
+						<div data-ng-if="! exam.ready && exam.rooms[i].room.map && exam.rooms[i].room.configuration && exam.rooms[i].room.configuration.length > 0">
 							<h4>{{'EXAMS.ROOM_CONFIGURATION' | translate}}</h4>
 
 							<div class="col-md-12">
@@ -114,6 +114,15 @@
 			</div>
 
 			<div class="clearfix" data-ng-if="exam.rooms && ! exam.rooms.length">{{'EXAMS.NO_ROOM' | translate}}</div>
+		</tab>
+
+		<tab heading="{{'EXAMS.SUMMARY' | translate}}">
+			<ul>
+				<li><b>{{'EXAMS.COPIES' | translate}}</b> <span class="glyphicon glyphicon-remove" aria-hidden="true" data-ng-if="! exam.copies || exam.copies.length === 0 || ! copiesOK"></span><span class="glyphicon glyphicon-ok" aria-hidden="true" data-ng-if="exam.copies && exam.copies.length > 0 && copiesOK"></span></li>
+				<li><b>{{'EXAMS.REGISTERED_STUDENTS' | translate}}</b> <span class="glyphicon glyphicon-remove" aria-hidden="true" data-ng-if="! exam.affectation || exam.affectation.length === 0"></span><span class="glyphicon glyphicon-ok" aria-hidden="true" data-ng-if="exam.affectation && exam.affectation.length > 0"></span></li>
+				<li><b>{{'EXAMS.ROOMS' | translate}}</b> <span class="glyphicon glyphicon-remove" aria-hidden="true" data-ng-if="! exam.rooms || exam.rooms.length === 0"></span><span class="glyphicon glyphicon-ok" aria-hidden="true" data-ng-if="exam.rooms && exam.rooms.length > 0"></span></li>
+			</ul>
+			<button data-ng-if="! exam.ready" type="submit" class="btn btn-success" data-ng-click="validateExam()">{{'EXAMS.VALIDATE' | translate}}</button>
 		</tab>
 	</tabset>
 </section>

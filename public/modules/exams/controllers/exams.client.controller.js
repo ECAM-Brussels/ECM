@@ -129,14 +129,21 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		$scope.exam = Exams.get({examId: $stateParams.examId}, function(err) {
 			var exam = $scope.exam;
 			// Fill uploading and progressValue
+			$scope.copiesOK = true;
+			console.log(exam.copies);
 			if (exam.copies) {
 				$scope.progressValue = new Array(exam.copies.length);
 				$scope.uploading = new Array(exam.copies.length);
-				for (var i = 0; i < $scope.exam.copies.length; i++) {
+				for (var i = 0; i < exam.copies.length; i++) {
 					$scope.progressValue[i] = null;
 					$scope.uploading[i] = false;
+					if (! exam.copies[i].validated) {
+						$scope.copiesOK = false;
+					}
 				}
 			}
+			console.log($scope.progressValue);
+			console.log($scope.uploading);
 			// Clear already affected rooms
 			for (var j = 0; j < exam.rooms.length; j++) {
 				var index = findRoom(exam.rooms[j].room);
@@ -188,6 +195,14 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		}
 		return false;
 	}
+
+	// Validate exam
+	$scope.validateExam = function() {
+		$http.post('/exams/validate', {'exam': $scope.exam._id}).success(function(data, status, headers, config) {
+			$scope.exam.ready = true;
+			console.log(data);
+		});
+	};
 
 	// Add rooms for the exam
 	function findRoom(room) {

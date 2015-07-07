@@ -167,6 +167,27 @@ exports.listMyExams = function(req, res) {
 	});
 };
 
+// Validate exam
+exports.validate = function(req, res) {
+	// Check exam
+	Exam.findById(req.body.exam, 'rooms').exec(function(err, exam) {
+		if (err || ! exam) {
+			return res.status(400).send({
+				message: 'Error while retrieving the specified exam'
+			});
+		}
+		exam.ready = true;
+		exam.save(function(err) {
+			if (err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			}
+			res.send('OK validated');
+		});
+	});
+};
+
 // Change room configuration
 exports.config = function(req, res) {
 	// Check exam

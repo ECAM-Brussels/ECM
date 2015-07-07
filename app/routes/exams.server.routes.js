@@ -42,6 +42,8 @@ module.exports = function(app) {
 		.post(users.hasAuthorization(['admin', 'manager']), exams.addRooms);
 	app.route('/exams/config')
 		.post(users.hasAuthorization(['admin', 'manager']), exams.config);
+	app.route('/exams/validate')
+		.post(users.hasAuthorization(['admin', 'manager']), exams.validate);
 
 	// Finish by binding the exam middleware
 	app.param('examId', exams.examByID);

@@ -151,7 +151,9 @@
 		"SELECT_CONFIGURATION": "Sélectionner une configuration",
 		"SELECTED_SEATS": "sièges disponibles",
 		"STARTING_SEAT": "Premier siège",
-		"CHANGE_CONFIGURATION": "Changer"
+		"CHANGE_CONFIGURATION": "Changer",
+		"SUMMARY": "Résumé",
+		"VALIDATE": "Valider l'examen"
 	},
 	"EXAMSESSIONS": {
 		"EXAMSESSIONS": "Sessions d'examens",
