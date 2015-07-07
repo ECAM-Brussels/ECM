@@ -114,10 +114,12 @@ angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams',
 		});
 		// Draw configuration
 		if ($scope.configuration !== -1) {
-			$scope.room.configuration[$scope.configuration].seats.forEach(function(seat) {
-				var seatcoord = $scope.map.seats[seat.seat];
-				context.fillText('X', seatcoord.x, seatcoord.y);
-			});
+			context.textAlign = 'center';
+			var seats = $scope.room.configuration[$scope.configuration].seats;
+			for (var i = 0; i < seats.length; i++) {
+				var seatcoord = $scope.map.seats[seats[i].seat];
+				context.fillText('#' + (i + 1), seatcoord.x, seatcoord.y);
+			}
 		}
 	}
 	
