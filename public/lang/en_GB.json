@@ -88,7 +88,6 @@
 		"PICTURE_OF": "Picture of",
 		"MAP": "Room map",
 		"NO_MAP_AVAILABLE": "No room map available yet.",
-		"NO_SELECTED_CONFIGURATION": "No selected configuration",
 		"SELECT_CONFIGURATION": "Select a configuration",
 		"SELECTED_SEATS": "available seats"
 	},
@@ -145,7 +144,14 @@
 		"COPY_NOT_VALIDATED": "The questionnaire has not been validated yet.",
 		"COPY_VALIDATED": "Validated questionnaire uploaded on",
 		"ADD_ROOM": "Add a room",
-		"ADD": "Add"
+		"ADD": "Add",
+		"ROOM_MAP": "Map",
+		"NO_MAP_AVAILABLE": "No room map available yet.",
+		"ROOM_CONFIGURATION": "Configuration",
+		"SELECT_CONFIGURATION": "Select a configuration",
+		"SELECTED_SEATS": "available seats",
+		"STARTING_SEAT": "Start seat",
+		"CHANGE_CONFIGURATION": "Change"
 	},
 	"EXAMSESSIONS": {
 		"EXAMSESSIONS": "Exam sessions",

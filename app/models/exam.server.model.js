@@ -41,6 +41,10 @@ var ExamSchema = new Schema({
 			layout: {
 				type: Number,
 				default: 0
+			},
+			start: {
+				type: Number,
+				default: 1
 			}
 		})],
 		default: []

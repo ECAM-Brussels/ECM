@@ -37,9 +37,11 @@ module.exports = function(app) {
 	app.route('/students/register')
 		.post(users.hasAuthorization(['admin', 'manager']), exams.registerStudents);
 
-	// Rooms routes
+	// Configuration routes
 	app.route('/exams/addrooms')
 		.post(users.hasAuthorization(['admin', 'manager']), exams.addRooms);
+	app.route('/exams/config')
+		.post(users.hasAuthorization(['admin', 'manager']), exams.config);
 
 	// Finish by binding the exam middleware
 	app.param('examId', exams.examByID);

@@ -108,7 +108,7 @@ angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams',
 				break;
 
 				case 'text':
-					context.strokeText(attr.value, attr.x, attr.y);
+					context.fillText(attr.value, attr.x, attr.y);
 				break;
 			}
 		});
@@ -116,10 +116,10 @@ angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams',
 		if ($scope.configuration !== -1) {
 			$scope.room.configuration[$scope.configuration].seats.forEach(function(seat) {
 				var seatcoord = $scope.map.seats[seat.seat];
-				context.strokeText('X', seatcoord.x, seatcoord.y);
+				context.fillText('X', seatcoord.x, seatcoord.y);
 			});
 		}
-	};
+	}
 	
 	$scope.loadMap = function() {
 		if ($scope.map === null) {

@@ -18,6 +18,7 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 	$scope.authentication = Authentication;
 	$scope.uploading = null;
 	$scope.progressValue = null;
+	$scope.map = [];
 
 	// Load courses
 	$scope.courses = [];
@@ -137,8 +138,8 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 				}
 			}
 			// Clear already affected rooms
-			for (var i = 0; i < exam.rooms.length; i++) {
-				var index = findRoom(exam.rooms[i].room);
+			for (var j = 0; j < exam.rooms.length; j++) {
+				var index = findRoom(exam.rooms[j].room);
 				if (index !== -1) {
 					roomsList.splice(index, 1);
 				}
@@ -191,7 +192,7 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 	// Add rooms for the exam
 	function findRoom(room) {
 		for (var i = 0; i < roomsList.length; i++) {
-			if (roomsList[i].room._id === room._id) {
+			if (roomsList[i].room.toString() === room.toString()) {
 				return i;
 			}
 		}
@@ -213,6 +214,55 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 				}
 			}
 			$scope.exam.rooms = data.rooms;
+		});
+	};
+
+	// Change room configuration
+	$scope.changeConfiguration = function(index) {
+		$http.post('exams/config', {'exam': $scope.exam._id, 'index' : index, 'layout': $scope.exam.rooms[index].layout, 'start': $scope.exam.rooms[index].start}).success(function(data, status, headers, config) {
+			$scope.exam.rooms = data.rooms;
+			drawMap(index);
+		});
+	};
+
+	// Draw room maps
+	function drawMap(index) {
+		var map = $scope.map[index];
+		// Set up canvas
+		var canvas = document.getElementById('roomplaces' + $scope.exam.rooms[index].room._id);
+		canvas.width = map.width;
+		canvas.height = map.height;
+		// Initialise context
+		var context = canvas.getContext('2d');
+		context.clearRect(0, 0, map.width, map.height);
+		context.strokeRect(0, 0, map.width, map.height);
+		context.scale(1, 1);
+		// Draw all shapes
+		map.shapes.forEach (function(shape) {
+			var attr = shape.attr;
+			switch (shape.type) {
+				case 'rectangle':
+					context.strokeRect(attr.x, attr.y, attr.width, attr.height);
+				break;
+
+				case 'text':
+					context.fillText(attr.value, attr.x, attr.y);
+				break;
+			}
+		});
+		// Draw configuration
+		context.textAlign = 'center';
+		var seats = $scope.exam.rooms[index].room.configuration[$scope.exam.rooms[index].layout].seats;
+		for (var i = 0; i < seats.length; i++) {
+			var seatcoord = $scope.map[index].seats[seats[i].seat];
+			context.fillText('#' + (i + 1), seatcoord.x, seatcoord.y);
+		}
+	}
+
+	$scope.loadMap = function(index) {
+		$http.get('images/rooms/' + $scope.exam.rooms[index].room._id + '/map.json').success(function(data, status, headers, config) {
+			$scope.map[index] = data;
+			drawMap(index);
 		});
 	};
 

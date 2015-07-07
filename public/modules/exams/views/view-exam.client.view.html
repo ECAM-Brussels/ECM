@@ -74,8 +74,41 @@
 
 			<div class="clearfix" data-ng-if="! exam.rooms || exam.rooms.length">
 				<tabset>
-					<tab data-ng-repeat="room in exam.rooms" heading="{{room.room.ID}}">
-						Layout : {{room.layout}}
+					<tab data-ng-repeat="i in getNumber(exam.rooms.length) track by $index" heading="{{exam.rooms[$index].room.ID}}">
+						<h4>{{'EXAMS.ROOM_MAP' | translate}}</h4>
+
+						<div>
+							<canvas id="{{'roomplaces' + exam.rooms[i].room._id}}" data-ng-if="exam.rooms[i].room.map" data-ng-init="loadMap(i)"></canvas>
+							<p data-ng-if="! exam.rooms[i].room.map">{{'EXAMS.NO_MAP_AVAILABLE' | translate}}</p>
+						</div>
+
+						<div data-ng-if="exam.rooms[i].room.map && exam.rooms[i].room.configuration && exam.rooms[i].room.configuration.length > 0">
+							<h4>{{'EXAMS.ROOM_CONFIGURATION' | translate}}</h4>
+
+							<div class="col-md-12">
+								<form class="form-horizontal">
+									<fieldset>
+										<div class="form-group">
+											<label class="control-label" for="configuration">{{'EXAMS.SELECT_CONFIGURATION' | translate}}</label>
+											<div class="controls">
+												<select id="configuration" class="form-control" data-ng-options="j as exam.rooms[i].room.configuration[j].name for j in getNumber(exam.rooms[i].room.configuration.length)" data-ng-model="exam.rooms[i].layout"></select>
+												<p class="help-block">({{exam.rooms[i].room.configuration[exam.rooms[i].layout].seats.length}} {{'EXAMS.SELECTED_SEATS' | translate}})</p>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label" for="startseat">{{'EXAMS.STARTING_SEAT' | translate}}</label>
+											<div class="controls">
+												<input type="number" data-ng-model="exam.rooms[i].start" id="startseat" class="form-control" >
+											</div>
+										</div>
+										<div class="form-group">
+											<button type="submit" class="btn btn-primary" data-ng-click="changeConfiguration(i)">{{'EXAMS.CHANGE_CONFIGURATION' | translate}}</button>
+										</div>
+									</fieldset>
+								</form>
+							</div>
+							<div class="clearfix"></div>
+						</div>
 					</tab>
 				</tabset>
 			</div>

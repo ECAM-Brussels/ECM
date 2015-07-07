@@ -103,7 +103,7 @@ exports.examByID = function(req, res, next, id) {
 				if (err || ! exam) {
 					return next(new Error('Failed to load exam ' + id));
 				}
-				Exam.populate(exam, {path: 'rooms.room', select: 'ID', model: 'Room'}, function (err, exam) {
+				Exam.populate(exam, {path: 'rooms.room', select: 'ID map configuration', model: 'Room'}, function (err, exam) {
 					if (err || ! exam) {
 						return next(new Error('Failed to load exam ' + id));
 					}
@@ -167,6 +167,37 @@ exports.listMyExams = function(req, res) {
 	});
 };
 
+// Change room configuration
+exports.config = function(req, res) {
+	// Check exam
+	Exam.findById(req.body.exam, 'rooms').exec(function(err, exam) {
+		if (err || ! exam) {
+			return res.status(400).send({
+				message: 'Error while retrieving the specified exam'
+			});
+		}
+		var room = exam.rooms[req.body.index];
+		room.layout = req.body.layout;
+		room.start = req.body.start;
+		exam.save(function(err) {
+			if (err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			}
+			// Get map and configuration information for rooms
+			Exam.populate(exam, {path: 'rooms.room', select: 'ID map configuration', model: 'Room'}, function(err, exam) {
+				if (err || ! exam) {
+					return res.status(400).send({
+						message: errorHandler.getErrorMessage(err)
+					});
+				}
+				res.jsonp(exam);
+			});
+		});
+	});
+};
+
 // Add rooms for the exam
 exports.addRooms = function(req, res) {
 	// Check exam
@@ -189,8 +220,8 @@ exports.addRooms = function(req, res) {
 					message: errorHandler.getErrorMessage(err)
 				});
 			}
-			// Get firstname and lastname of students
-			Exam.populate(exam, {path: 'rooms.room', select: 'ID', model: 'Room'}, function(err, exam) {
+			// Get map and configuration information for rooms
+			Exam.populate(exam, {path: 'rooms.room', select: 'ID map configuration', model: 'Room'}, function(err, exam) {
 				if (err || ! exam) {
 					return res.status(400).send({
 						message: errorHandler.getErrorMessage(err)
