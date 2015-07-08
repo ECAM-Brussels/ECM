@@ -130,7 +130,6 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 			var exam = $scope.exam;
 			// Fill uploading and progressValue
 			$scope.copiesOK = true;
-			console.log(exam.copies);
 			if (exam.copies) {
 				$scope.progressValue = new Array(exam.copies.length);
 				$scope.uploading = new Array(exam.copies.length);
@@ -142,8 +141,6 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 					}
 				}
 			}
-			console.log($scope.progressValue);
-			console.log($scope.uploading);
 			// Clear already affected rooms
 			for (var j = 0; j < exam.rooms.length; j++) {
 				var index = findRoom(exam.rooms[j].room);
@@ -267,10 +264,16 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		});
 		// Draw configuration
 		context.textAlign = 'center';
-		var seats = $scope.exam.rooms[index].room.configuration[$scope.exam.rooms[index].layout].seats;
+		var room = $scope.exam.rooms[index];
+		var seats = room.room.configuration[room.layout].seats;
 		for (var i = 0; i < seats.length; i++) {
 			var seatcoord = $scope.map[index].seats[seats[i].seat];
 			context.fillText('#' + (i + 1), seatcoord.x, seatcoord.y);
+		}
+		var affectation = $scope.exam.affectation;
+		for (var j = 0; j < affectation.length; j++) {
+			var seatcoord = $scope.map[index].seats[room.room.configuration[room.layout].seats[affectation[j].number].seat];
+			context.fillText(affectation[j].student.lastname, seatcoord.x, seatcoord.y + 10);
 		}
 	}
 

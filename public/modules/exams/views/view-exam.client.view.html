@@ -55,7 +55,7 @@
 			<div data-ng-if="! exam.affectation || exam.affectation.length">
 				<p><b>{{exam.affectation.length}}</b> {{'EXAMS.NB_REGISTERED_STUDENTS' | translate}}</p>
 				<ul class="list-group">
-					<li class="list-group-item" data-ng-repeat="affectation in exam.affectation | orderBy: '+student.lastname'">{{affectation.student.lastname.toUpperCase()}} {{affectation.student.firstname}}</li>
+					<li class="list-group-item" data-ng-repeat="affectation in exam.affectation | orderBy: '+student.lastname'">{{affectation.student.lastname.toUpperCase()}} {{affectation.student.firstname}} (seat {{exam.rooms[affectation.room].room.configuration[exam.rooms[affectation.room].layout].seats[affectation.number].seat + 1}} in {{exam.rooms[affectation.room].room.ID}})</li>
 				</ul>
 			</div>
 
