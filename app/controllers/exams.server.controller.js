@@ -203,7 +203,7 @@ exports.validate = function(req, res) {
 				// Place student
 				var affectation = exam.affectation[i];
 				affectation.number = nextseat;
-				affectation.room = currentroom;
+				affectation.room = roomindex;
 				nextseat++;
 			}
 			// Update database and validate exam
@@ -388,10 +388,7 @@ exports.downloadCopies = function(req, res) {
 		return res.sendFile(zippath);
 	}
 	// Find the exam from which to print the copies
-	Exam.findById(examid)
-		.populate('copies', 'files')
-		.populate('course', 'ID name')
-		.exec(function(err, exam) {
+	Exam.findById(examid).populate('course', 'ID name').exec(function(err, exam) {
 		Exam.populate(exam, {path: 'affectation.student', select: 'matricule firstname lastname', model: 'Student'}, function(err, exam) {
 			if (err) {
 				console.log('Populate student : ' + err);
@@ -399,7 +396,7 @@ exports.downloadCopies = function(req, res) {
 					message: 'Impossible to load registered students'
 				});
 			}
-			Exam.populate(exam, {path: 'affectation.room', select: 'ID', model: 'Room'}, function(err, exam) {
+			Exam.populate(exam, {path: 'affectation.room', select: 'ID configuration', model: 'Room'}, function(err, exam) {
 				if (err) {
 					console.log('Populate rooms : ' + err);
 					return res.status(400).send({
@@ -412,7 +409,7 @@ exports.downloadCopies = function(req, res) {
 					fs.mkdirSync (copiespath);
 				}
 				// For each student, generate his copy
-				var copies = exam.copies[0];
+				var copies = exam.copies;
 				var affectation = exam.affectation;
 				var totalGenerated = 0;
 				for (var i = 0; i < affectation.length; i++) {
@@ -427,8 +424,8 @@ exports.downloadCopies = function(req, res) {
 						}
 					});
 					// Fill in the template
-					content = content.replace(/!filename!/g, copies.files[affectation[i].serie].name);
-					content = content.replace(/!filepath!/g, path.dirname(require.main.filename) + '/copies/' + copies._id + '/' + copies.files[affectation[i].serie].name);
+					content = content.replace(/!filename!/g, copies[exam.rooms[affectation[i].room].room.configuration[exam.rooms[affectation[i].room].layout].seats[affectation[i].number].serie].name);
+					content = content.replace(/!filepath!/g, path.dirname(require.main.filename) + '/copies/' + copies._id + '/' + copies[exam.rooms[affectation[i].room].room.configuration[exam.rooms[affectation[i].room].layout].seats[affectation[i].number].serie].name);
 					var examdate = moment(exam.date);
 					content = content.replace(/!datetime!/g, examdate.format('DD/MM/YYYY HH:mm'));
 					content = content.replace(/!date!/g, examdate.format('DD/MM/YYYY'));
@@ -438,9 +435,9 @@ exports.downloadCopies = function(req, res) {
 					content = content.replace(/!duration!/g, exam.duration);
 					content = content.replace(/!courseid!/g, exam.course.ID);
 					content = content.replace(/!coursename!/g, exam.course.name);
-					content = content.replace(/!serie!/g, affectation[i].serie + 1);
+					content = content.replace(/!serie!/g, exam.rooms[affectation[i].room].room.configuration[exam.rooms[affectation[i].room].layout].seats[affectation[i].number].serie + 1);
 					content = content.replace(/!classement!/g, affectation[i].number);
-					content = content.replace(/!room!/g, affectation[i].room.ID);
+					content = content.replace(/!room!/g, exam.rooms[affectation[i].room].ID);
 					content = content.replace(/!seatnumber!/g, affectation[i].seat);
 					var now = moment();
 					content = content.replace(/!gendate!/g, now.format('DD/MM/YYYY HH:mm'));

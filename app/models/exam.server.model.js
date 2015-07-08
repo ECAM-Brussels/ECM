@@ -89,9 +89,8 @@ var ExamSchema = new Schema({
 				default: 1
 			},
 			room: {
-				type: Schema.ObjectId,
-				ref: 'Room',
-				default: null
+				type: Number,
+				default: 0
 			}
 		})],
 		default: []
