@@ -118,7 +118,7 @@ exports.examByID = function(req, res, next, id) {
 function isTeacher(teacher, activities) {
 	for (var i = 0; i < activities.length; i++) {
 		for (var j = 0; j < activities[i].teachers.length; j++) {
-			if (activities[i].teachers[j].toString() === teacher) { // == works but === do not work...
+			if (activities[i].teachers[j].toString() === teacher) {
 				return true;
 			}
 		}
@@ -153,7 +153,7 @@ exports.listMyExams = function(req, res) {
 				var tokeep = [];
 
 				for (var i = 0; i < exams.length; i++) {
-					if (exams[i].course.coordinator.toString() === req.user.id) { // == works but === do not work...
+					if (exams[i].course.coordinator.toString() === req.user.id) {
 						tokeep.push(exams[i]);
 					} else {
 						if (isTeacher(req.user.id, exams[i].course.activities)) {
@@ -386,23 +386,27 @@ exports.downloadCopies = function(req, res) {
 	}
 	// Find the exam from which to print the copies
 	Exam.findById(examid).populate('course', 'ID name').exec(function(err, exam) {
+		if (err || ! exam) {
+			return res.status(400).send({
+				message: 'Error while retrieving the specified exam'
+			});
+		}
 		Exam.populate(exam, {path: 'affectation.student', select: 'matricule firstname lastname', model: 'Student'}, function(err, exam) {
 			if (err) {
 				return res.status(400).send({
 					message: 'Impossible to load registered students'
 				});
 			}
-			Exam.populate(exam, {path: 'affectation.room', select: 'ID configuration', model: 'Room'}, function(err, exam) {
+			Exam.populate(exam, {path: 'rooms.room', select: 'ID configuration', model: 'Room'}, function(err, exam) {
 				if (err) {
+					console.log(err);
 					return res.status(400).send({
 						message: 'Impossible to load rooms'
 					});
 				}
 				// Create directory to store copies
 				var copiespath = path.dirname(require.main.filename) + '/copies/' + examid;
-				if (! fs.existsSync(copiespath)) {
-					fs.mkdirSync (copiespath);
-				}
+				fs.ensureDirSync(copiespath);
 				// For each student, generate his copy
 				var copies = exam.copies;
 				var affectation = exam.affectation;
@@ -419,7 +423,7 @@ exports.downloadCopies = function(req, res) {
 					});
 					// Fill in the template
 					content = content.replace(/!filename!/g, copies[exam.rooms[affectation[i].room].room.configuration[exam.rooms[affectation[i].room].layout].seats[affectation[i].number].serie].name);
-					content = content.replace(/!filepath!/g, path.dirname(require.main.filename) + '/copies/' + copies._id + '/' + copies[exam.rooms[affectation[i].room].room.configuration[exam.rooms[affectation[i].room].layout].seats[affectation[i].number].serie].name);
+					content = content.replace(/!filepath!/g, path.dirname(require.main.filename) + '/copies/' + examid + '/' + copies[exam.rooms[affectation[i].room].room.configuration[exam.rooms[affectation[i].room].layout].seats[affectation[i].number].serie].name);
 					var examdate = moment(exam.date);
 					content = content.replace(/!datetime!/g, examdate.format('DD/MM/YYYY HH:mm'));
 					content = content.replace(/!date!/g, examdate.format('DD/MM/YYYY'));
@@ -430,13 +434,13 @@ exports.downloadCopies = function(req, res) {
 					content = content.replace(/!courseid!/g, exam.course.ID);
 					content = content.replace(/!coursename!/g, exam.course.name);
 					content = content.replace(/!serie!/g, exam.rooms[affectation[i].room].room.configuration[exam.rooms[affectation[i].room].layout].seats[affectation[i].number].serie + 1);
-					content = content.replace(/!classement!/g, affectation[i].number);
-					content = content.replace(/!room!/g, exam.rooms[affectation[i].room].ID);
-					content = content.replace(/!seatnumber!/g, affectation[i].seat);
+					content = content.replace(/!classement!/g, affectation[i].number - exam.rooms[affectation[i].room].start + 2);
+					content = content.replace(/!room!/g, exam.rooms[affectation[i].room].room.ID);
+					content = content.replace(/!seatnumber!/g, exam.rooms[affectation[i].room].room.configuration[exam.rooms[affectation[i].room].layout].seats[affectation[i].number].seat);
 					var now = moment();
 					content = content.replace(/!gendate!/g, now.format('DD/MM/YYYY HH:mm'));
 					// Create the .tex file for the student
-					var texsrc = copiespath + '/' + (i + 1) + 'copy_' + (affectation[i].serie + 1) + '_student_' + affectation[i].number + '.tex';
+					var texsrc = copiespath + '/' + (i + 1) + 'copy_' + (exam.rooms[affectation[i].room].room.configuration[exam.rooms[affectation[i].room].layout].seats[affectation[i].number].serie + 1) + '_student_' + affectation[i].number + '.tex';
 					fs.writeFileSync(texsrc, content, {encoding: 'utf8', flag: 'w'}, function(err) {
 						if (err) {
 							return res.status(400).send({
