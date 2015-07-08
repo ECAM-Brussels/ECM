@@ -281,7 +281,11 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 			for (var j = 0; j < affectation.length; j++) {
 				if (affectation[j].room === index) {
 					var seatcoord = $scope.map[index].seats[room.room.configuration[room.layout].seats[affectation[j].number].seat];
-					context.fillText(affectation[j].student.lastname, seatcoord.x, seatcoord.y + 10);
+					var name = affectation[j].student.lastname;
+					while (context.measureText(name).width > seatcoord.maxwidth) {
+						name = name.substring(0, name.length - 1);
+					}
+					context.fillText(name, seatcoord.x, seatcoord.y + 10);
 				}
 			}
 		}
