@@ -248,7 +248,9 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		var context = canvas.getContext('2d');
 		context.clearRect(0, 0, map.width, map.height);
 		context.strokeRect(0, 0, map.width, map.height);
+		// Context style
 		context.scale(1, 1);
+		context.font = 'normal 7pt Arial';
 		// Draw all shapes
 		map.shapes.forEach (function(shape) {
 			var attr = shape.attr;
