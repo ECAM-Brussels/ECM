@@ -153,7 +153,9 @@
 		"STARTING_SEAT": "Premier siège",
 		"CHANGE_CONFIGURATION": "Changer",
 		"SUMMARY": "Résumé",
-		"VALIDATE": "Valider l'examen"
+		"VALIDATE": "Valider l'examen",
+		"SEAT": "siège",
+		"OF": "de"
 	},
 	"EXAMSESSIONS": {
 		"EXAMSESSIONS": "Sessions d'examens",

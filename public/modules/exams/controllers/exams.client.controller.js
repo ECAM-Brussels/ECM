@@ -198,6 +198,9 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		$http.post('/exams/validate', {'exam': $scope.exam._id}).success(function(data, status, headers, config) {
 			$scope.exam.ready = true;
 			$scope.exam.affectation = data.affectation;
+			for (var i = 0; i < $scope.exam.rooms.length; i++) {
+				drawMap(i);
+			}
 		});
 	};
 
@@ -268,14 +271,19 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 		context.textAlign = 'center';
 		var room = $scope.exam.rooms[index];
 		var seats = room.room.configuration[room.layout].seats;
-		for (var i = 0; i < seats.length; i++) {
+		for (var i = room.start - 1; i < seats.length; i++) {
 			var seatcoord = $scope.map[index].seats[seats[i].seat];
 			context.fillText('#' + (i + 1), seatcoord.x, seatcoord.y);
 		}
-		var affectation = $scope.exam.affectation;
-		for (var j = 0; j < affectation.length; j++) {
-			var seatcoord = $scope.map[index].seats[room.room.configuration[room.layout].seats[affectation[j].number].seat];
-			context.fillText(affectation[j].student.lastname, seatcoord.x, seatcoord.y + 10);
+		// Draw affectation
+		if ($scope.exam.ready) {
+			var affectation = $scope.exam.affectation;
+			for (var j = 0; j < affectation.length; j++) {
+				if (affectation[j].room === index) {
+					var seatcoord = $scope.map[index].seats[room.room.configuration[room.layout].seats[affectation[j].number].seat];
+					context.fillText(affectation[j].student.lastname, seatcoord.x, seatcoord.y + 10);
+				}
+			}
 		}
 	}
 
