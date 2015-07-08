@@ -200,7 +200,7 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 	$scope.validateExam = function() {
 		$http.post('/exams/validate', {'exam': $scope.exam._id}).success(function(data, status, headers, config) {
 			$scope.exam.ready = true;
-			console.log(data);
+			$scope.exam.affectation = data.affectation;
 		});
 	};
 

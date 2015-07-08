@@ -170,20 +170,59 @@ exports.listMyExams = function(req, res) {
 // Validate exam
 exports.validate = function(req, res) {
 	// Check exam
-	Exam.findById(req.body.exam, 'rooms').exec(function(err, exam) {
+	Exam.findById(req.body.exam, 'rooms affectation').exec(function(err, exam) {
 		if (err || ! exam) {
 			return res.status(400).send({
 				message: 'Error while retrieving the specified exam'
 			});
 		}
-		exam.ready = true;
-		exam.save(function(err) {
-			if (err) {
+		// Get map and configuration information for rooms
+		Exam.populate(exam, {path: 'rooms.room', select: 'configuration', model: 'Room'}, function(err, exam) {
+			if (err || ! exam) {
 				return res.status(400).send({
 					message: errorHandler.getErrorMessage(err)
 				});
 			}
-			res.send('OK validated');
+			// Compute affectation
+			var roomindex = -1;
+			var room = null;
+			var currentroom = null;
+			var nextseat = 0;
+			var totalseats = -1;
+			for (var i = 0; i < exam.affectation.length; i++) {
+				// Change to next room
+				if (nextseat > totalseats) {
+					console.log('Switch next room');
+					roomindex++;
+					room = exam.rooms[roomindex];
+					currentroom = room.room;
+					nextseat = room.start;
+					totalseats = currentroom.configuration[room.layout].seats.length;
+					console.log('Room ' + currentroom._id + ' starting at ' + nextseat + ' on ' + totalseats);
+				}
+				// Place student
+				var affectation = exam.affectation[i];
+				affectation.number = nextseat;
+				affectation.room = currentroom;
+				nextseat++;
+			}
+			// Update database and validate exam
+			exam.ready = true;
+			exam.save(function(err) {
+				if (err) {
+					return res.status(400).send({
+						message: errorHandler.getErrorMessage(err)
+					});
+				}
+				Exam.populate(exam, {path: 'affectation.student', select: 'firstname lastname', model: 'Student'}, function(err, exam) {
+					if (err || ! exam) {
+						return res.status(400).send({
+							message: errorHandler.getErrorMessage(err)
+						});
+					}
+					res.jsonp(exam);
+				});
+			});
 		});
 	});
 };
