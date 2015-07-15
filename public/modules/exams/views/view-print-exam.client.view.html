@@ -17,7 +17,7 @@
 		<dt>{{'EXAMS.DURATION' | translate}}</dt>
 		<dd>{{exam.duration}} {{'EXAMS.MINUTES' | translate}}</dd>
 		<dt>{{'EXAMS.ROOMS' | translate}}</dt>
-		<dd>{{exam.room ? '' : '&mdash;'}}<span data-ng-repeat="room in exam.rooms">{{room.ID}}{{$last ? '' : ', '}}</span></dd>
+		<dd>{{exam.rooms ? '' : '&mdash;'}}<span data-ng-repeat="room in exam.rooms">{{room.room.ID}}{{$last ? '' : ', '}}</span></dd>
 		<dt>{{'EXAMS.REGISTERED_STUDENTS' | translate}}</dt>
 		<dd>{{exam.affectation ? exam.affectation.length : '&mdash;'}}</dd>
 	</dl>
