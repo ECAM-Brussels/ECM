@@ -289,6 +289,9 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 				}
 			}
 		}
+		// Generate button
+		var downloadbtn = document.getElementById('roomplacesbtn' + $scope.exam.rooms[index].room._id);
+		downloadbtn.href = canvas.toDataURL("image/png");
 	}
 
 	$scope.loadMap = function(index) {

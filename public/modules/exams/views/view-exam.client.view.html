@@ -77,8 +77,9 @@
 					<tab data-ng-repeat="i in getNumber(exam.rooms.length) track by $index" heading="{{exam.rooms[$index].room.ID}}">
 						<h4>{{'EXAMS.ROOM_MAP' | translate}}</h4>
 
-						<div>
-							<canvas id="{{'roomplaces' + exam.rooms[i].room._id}}" data-ng-if="exam.rooms[i].room.map" data-ng-init="loadMap(i)"></canvas>
+						<div data-ng-init="loadMap(i)">
+							<canvas id="{{'roomplaces' + exam.rooms[i].room._id}}" data-ng-if="exam.rooms[i].room.map"></canvas>
+							<p><a href="#" class="btn btn-primary" id="{{'roomplacesbtn' + exam.rooms[i].room._id}}" target="_blank">Download</a></p>
 							<p data-ng-if="! exam.rooms[i].room.map">{{'EXAMS.NO_MAP_AVAILABLE' | translate}}</p>
 						</div>
 
