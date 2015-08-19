@@ -1,18 +1,5 @@
 'use strict';
 
-// Exams filter by session
-angular.module('exams').filter('filterBySession', function() {
-	return function(exams, examsession) {
-		var newItems = [];
-		exams.forEach(function(exam) {
-			if (exam.examsession.toString() === examsession._id) {
-				newItems.push(exam);
-			}
-		});
-		return newItems;
-	};
-});
-
 // Exams controller
 angular.module('exams').controller('ExamsController', ['$scope', '$stateParams', '$location', '$window', 'Authentication', 'Exams', 'MyExams', 'Copies', '$http', 'Upload', '$filter', function($scope, $stateParams, $location, $window, Authentication, Exams, MyExams, Copies, $http, Upload, $filter) {
 	$scope.authentication = Authentication;
@@ -110,14 +97,33 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 	};
 
 	// Find all exams
+	$scope.keys = function(obj) {
+		return obj ? Object.keys(obj).sort() : [];
+	}
 	$scope.find = function() {
 		// Load exam sessions
 		$scope.examsessions = [];
 		$http.get('/examsessions').success(function(data, status, headers, config) {
 			$scope.examsessions = data;
+			$scope.examBySession = {};
+			for (var j = 0; j < $scope.examsessions.length; j++) {
+				$scope.examBySession[$scope.examsessions[j]._id.toString()] = {};
+			}
+			// Load exams
+			$scope.exams = Exams.query(function() {
+				for (var i = 0; i < $scope.exams.length; i++) {
+					var session = $scope.examBySession[$scope.exams[i].examsession.toString()];
+					var date = moment($scope.exams[i].date).format('DD-MM-YYYY');
+					if (! (date in session)) {
+						session[date] = {
+							'date': $scope.exams[i].date,
+							'exams': []
+						};
+					}
+					session[date].exams.push($scope.exams[i]);
+				}
+			});
 		});
-		// Load exams
-		$scope.exams = Exams.query();
 	};
 
 	$scope.findMyExams = function(){
