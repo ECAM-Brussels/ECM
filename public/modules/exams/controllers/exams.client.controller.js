@@ -113,7 +113,7 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 			$scope.exams = Exams.query(function() {
 				for (var i = 0; i < $scope.exams.length; i++) {
 					var session = $scope.examBySession[$scope.exams[i].examsession.toString()];
-					var date = moment($scope.exams[i].date).format('DD-MM-YYYY');
+					var date = moment($scope.exams[i].date).format('YYYY-MM-DD');
 					if (! (date in session)) {
 						session[date] = {
 							'date': $scope.exams[i].date,

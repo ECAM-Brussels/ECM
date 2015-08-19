@@ -4,9 +4,12 @@
 	<div data-ng-if="! exams.$resolved || exams.length">
 		<tabset>
 			<tab data-ng-repeat="examsession in examsessions | orderBy: '+from'" heading="{{examsession.name}}">
-				<ul class="list-group">
-					<a data-ng-repeat="exam in exams | filterBySession: examsession | orderBy: '+date'" data-ng-href="#!/print/exams/{{exam._id}}" class="list-group-item"><b>{{exam.course.ID}}</b> &mdash; {{exam.course.name}} <span data-ng-if="exam.title">({{exam.title}})</span>, {{'EXAMS.ON' | translate}} {{exam.date | amDateFormat: 'ddd Do MMM YYYY HH:mm'}}<span class="pull-right"><img src="images/pdf.png" width="23" height="24" alt="PDF" data-ng-class="{grayscale: ! exam.ready}"> <img src="images/printed.png" width="25" height="24" alt="PDF" data-ng-class="{grayscale: ! exam.printed}"></span></a>
-				</ul>
+				<div data-ng-repeat="date in keys(examBySession[examsession._id.toString()])" data-ng-init="examByDate = examBySession[examsession._id.toString()][date]">
+					<h3>{{examByDate.date | amDateFormat: 'ddd Do MMM YYYY'}}</h3>
+					<ul class="list-group">
+						<a data-ng-repeat="exam in examByDate.exams | orderBy: '+date'" data-ng-href="#!/print/exams/{{exam._id}}" class="list-group-item"><b>{{exam.course.ID}}</b> &mdash; {{exam.course.name}} <span data-ng-if="exam.title">({{exam.title}})</span>, {{'EXAMS.ON' | translate}} {{exam.date | amDateFormat: 'ddd Do MMM YYYY HH:mm'}}<span class="pull-right"><img src="images/pdf.png" width="23" height="24" alt="PDF" data-ng-class="{grayscale: ! exam.ready}"> <img src="images/printed.png" width="25" height="24" alt="PDF" data-ng-class="{grayscale: ! exam.printed}"></span></a>
+					</ul>
+				</div>
 			</tab>
 		</tabset>
 	</div>
