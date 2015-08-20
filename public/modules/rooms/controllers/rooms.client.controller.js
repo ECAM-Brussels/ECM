@@ -121,6 +121,7 @@ angular.module('rooms').controller('RoomsController', ['$scope', '$stateParams',
 			for (var i = 0; i < seats.length; i++) {
 				var seatcoord = $scope.map.seats[seats[i].seat];
 				context.fillText('#' + (i + 1), seatcoord.x, seatcoord.y);
+				context.fillText(String.fromCharCode(65 + seats[i].serie), seatcoord.x, seatcoord.y + 15);
 			}
 		}
 	}
