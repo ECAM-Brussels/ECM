@@ -7,7 +7,7 @@
 
 	<div data-ng-if="! exams.$resolved || exams.length">
 		<tabset>
-			<tab data-ng-repeat="examsession in examsessions | orderBy: '+from'" heading="{{examsession.name}}">
+			<tab data-ng-repeat="examsession in examsessions | orderBy: '+from'" heading="{{examsession.name}}" active="activeState[$index]">
 				<div data-ng-repeat="date in keys(examBySession[examsession._id.toString()])" data-ng-init="examByDate = examBySession[examsession._id.toString()][date]">
 					<h3>{{examByDate.date | amDateFormat: 'ddd Do MMM YYYY'}}</h3>
 					<ul class="list-group">

@@ -6,6 +6,7 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 	$scope.uploading = null;
 	$scope.progressValue = null;
 	$scope.map = [];
+	$scope.activeState = [];
 
 	// Load courses
 	$scope.courses = [];
@@ -108,6 +109,7 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 			$scope.examBySession = {};
 			for (var j = 0; j < $scope.examsessions.length; j++) {
 				$scope.examBySession[$scope.examsessions[j]._id.toString()] = {};
+				$scope.activeState.push(false);
 			}
 			// Load exams
 			$scope.exams = Exams.query(function() {
@@ -123,6 +125,7 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 					session[date].exams.push($scope.exams[i]);
 				}
 			});
+			$scope.activeState[$scope.activeState.length - 1] = true;
 		});
 	};
 
