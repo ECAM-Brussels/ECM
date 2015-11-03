@@ -204,12 +204,15 @@ angular.module('exams').controller('ExamsController', ['$scope', '$stateParams',
 
 	// Validate exam
 	$scope.validateExam = function() {
-		$http.post('/exams/validate', {'exam': $scope.exam._id}).success(function(data, status, headers, config) {
+		$http.post('/exams/validate', {'exam': $scope.exam._id}).then(function(data, status, headers, config) {
+			console.log(data);
 			$scope.exam.ready = true;
 			$scope.exam.affectation = data.affectation;
 			for (var i = 0; i < $scope.exam.rooms.length; i++) {
 				drawMap(i);
 			}
+		}, function(data, status, headers, config) {
+			window.alert('Error: ' + data.data.message);
 		});
 	};
 

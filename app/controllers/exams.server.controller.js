@@ -170,7 +170,7 @@ exports.listMyExams = function(req, res) {
 // Validate exam
 exports.validate = function(req, res) {
 	// Check exam
-	Exam.findById(req.body.exam, 'rooms affectation').exec(function(err, exam) {
+	Exam.findById(req.body.exam, 'rooms affectation copies').exec(function(err, exam) {
 		if (err || ! exam) {
 			return res.status(400).send({
 				message: 'Error while retrieving the specified exam'
@@ -183,44 +183,66 @@ exports.validate = function(req, res) {
 					message: errorHandler.getErrorMessage(err)
 				});
 			}
-			// Compute affectation
-			var roomindex = -1;
-			var room = null;
-			var currentroom = null;
-			var nextseat = 0;
-			var totalseats = -1;
-			for (var i = 0; i < exam.affectation.length; i++) {
-				// Change to next room
-				if (nextseat > totalseats) {
-					roomindex++;
-					room = exam.rooms[roomindex];
-					currentroom = room.room;
-					nextseat = room.start - 1;
-					totalseats = currentroom.configuration[room.layout].seats.length - 1;
-				}
-				// Place student
-				var affectation = exam.affectation[i];
-				affectation.number = nextseat;
-				affectation.room = roomindex;
-				nextseat++;
-			}
-			// Update database and validate exam
-			exam.ready = true;
-			exam.save(function(err) {
-				if (err) {
+			try {
+				if (exam.copies.length === 0) {
 					return res.status(400).send({
-						message: errorHandler.getErrorMessage(err)
+						message: 'No copies'
 					});
 				}
-				Exam.populate(exam, {path: 'affectation.student', select: 'firstname lastname', model: 'Student'}, function(err, exam) {
-					if (err || ! exam) {
+				if (exam.affectation.length === 0) {
+					return res.status(400).send({
+						message: 'No registered students'
+					});
+				}
+				if (exam.rooms.length === 0) {
+					return res.status(400).send({
+						message: 'No rooms'
+					});
+				}
+				// Compute affectation
+				var roomindex = -1;
+				var room = null;
+				var currentroom = null;
+				var nextseat = 0;
+				var totalseats = -1;
+				for (var i = 0; i < exam.affectation.length; i++) {
+					// Change to next room
+					if (nextseat > totalseats) {
+						roomindex++;
+						room = exam.rooms[roomindex];
+						currentroom = room.room;
+						nextseat = room.start - 1;
+						totalseats = currentroom.configuration[room.layout].seats.length - 1;
+					}
+					// Place student
+					var affectation = exam.affectation[i];
+					affectation.number = nextseat;
+					affectation.room = roomindex;
+					nextseat++;
+				}
+				// Update database and validate exam
+				exam.ready = true;
+				exam.save(function(err) {
+					if (err) {
 						return res.status(400).send({
 							message: errorHandler.getErrorMessage(err)
 						});
 					}
-					res.jsonp(exam);
+					Exam.populate(exam, {path: 'affectation.student', select: 'firstname lastname', model: 'Student'}, function(err, exam) {
+						if (err || ! exam) {
+							return res.status(400).send({
+								message: errorHandler.getErrorMessage(err)
+							});
+						}
+						res.jsonp(exam);
+					});
 				});
-			});
+			}
+			catch (err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			}
 		});
 	});
 };
