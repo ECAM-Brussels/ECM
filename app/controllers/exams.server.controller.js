@@ -426,73 +426,94 @@ exports.downloadCopies = function(req, res) {
 						message: 'Impossible to load rooms'
 					});
 				}
-				// Create directory to store copies
-				var copiespath = path.dirname(require.main.filename) + '/copies/' + examid;
-				fs.ensureDirSync(copiespath);
-				// For each student, generate his copy
-				var copies = exam.copies;
-				var affectation = exam.affectation;
-				var totalGenerated = 0;
-				for (var i = 0; i < affectation.length; i++) {
-					// Create the final PDF from text file
-					var templatesrc = path.dirname(require.main.filename) + '/pdfgen/templates/basic-template.tex';
-					var content = fs.readFileSync(templatesrc, {encoding: 'utf8', flag: 'r'}, function(err) {
-						if (err) {
-							return res.status(400).send({
-								message: 'Error while copying the exam copy template'
-							});
-						}
+				try {
+					// Compute global ordering of students
+					var allstudents = [];
+					for (var y = 0; y < exam.affectation.length; y++) {
+						allstudents.push(exam.affectation[y].student); 
+					}
+					allstudents.sort(function(a, b) {
+						return a.lastname.toUpperCase() > b.lastname.toUpperCase();
 					});
-					// Fill in the template
-					content = content.replace(/!filename!/g, copies[exam.rooms[affectation[i].room].room.configuration[exam.rooms[affectation[i].room].layout].seats[affectation[i].number].serie].name);
-					content = content.replace(/!filepath!/g, path.dirname(require.main.filename) + '/copies/' + examid + '/' + copies[exam.rooms[affectation[i].room].room.configuration[exam.rooms[affectation[i].room].layout].seats[affectation[i].number].serie].name);
-					var examdate = moment(exam.date);
-					content = content.replace(/!datetime!/g, examdate.format('DD/MM/YYYY HH:mm'));
-					content = content.replace(/!date!/g, examdate.format('DD/MM/YYYY'));
-					content = content.replace(/!firstname!/g, affectation[i].student.firstname);
-					content = content.replace(/!lastname!/g, affectation[i].student.lastname);
-					content = content.replace(/!matricule!/g, affectation[i].student.matricule);
-					content = content.replace(/!duration!/g, exam.duration);
-					content = content.replace(/!courseid!/g, exam.course.ID);
-					content = content.replace(/!coursename!/g, exam.course.name);
-					content = content.replace(/!serie!/g, exam.rooms[affectation[i].room].room.configuration[exam.rooms[affectation[i].room].layout].seats[affectation[i].number].serie + 1);
-					content = content.replace(/!classement!/g, affectation[i].number - exam.rooms[affectation[i].room].start + 2);
-					content = content.replace(/!room!/g, exam.rooms[affectation[i].room].room.ID);
-					content = content.replace(/!seatnumber!/g, exam.rooms[affectation[i].room].room.configuration[exam.rooms[affectation[i].room].layout].seats[affectation[i].number].seat);
-					var now = moment();
-					content = content.replace(/!gendate!/g, now.format('DD/MM/YYYY HH:mm'));
-					// Create the .tex file for the student
-					var texsrc = copiespath + '/' + (i + 1) + 'copy_' + (exam.rooms[affectation[i].room].room.configuration[exam.rooms[affectation[i].room].layout].seats[affectation[i].number].serie + 1) + '_student_' + affectation[i].number + '.tex';
-					fs.writeFileSync(texsrc, content, {encoding: 'utf8', flag: 'w'}, function(err) {
-						if (err) {
-							return res.status(400).send({
-								message: 'Error while writing .tex file for a student'
-							});
-						}
-					});
-					// Compile the .tex file
-					process.chdir(path.dirname(texsrc));
-					child_process.execFile('pdflatex', [path.basename(texsrc)], function(err, stdout, stderr) {
-						if (err) {
-							return res.status(400).send({
-								message: 'Error while compiling the .tex file\n' + err
-							});
-						}
-						console.log('Progress: ' + (totalGenerated + 1) + '/' + affectation.length);
-						totalGenerated++;
-						// All .tex files have been compiled
-						if (totalGenerated === affectation.length) {
-							// Build a ZIP archive with all copies
-							process.chdir(path.dirname(require.main.filename) + '/copies');
-							child_process.execFile('zip', ['-r', 'copies-' + examid + '.zip', examid, '-i*.pdf'], function(err, stdout, stderr) {
-								if (err) {
-									return res.status(400).send({
-										message: 'Error while generating the ZIP file'
-									});
-								}
-								res.sendFile(zippath);
-							});
-						} 
+					var dico = {};
+					for (var w = 0; w < allstudents.length; w++) {
+						dico[allstudents[w].matricule] = w;
+					}
+					// Create directory to store copies
+					var copiespath = path.dirname(require.main.filename) + '/copies/' + examid;
+					fs.ensureDirSync(copiespath);
+					// For each student, generate his copy
+					var copies = exam.copies;
+					var affectation = exam.affectation;
+					var totalGenerated = 0;
+					for (var i = 0; i < affectation.length; i++) {
+						// Create the final PDF from text file
+						var templatesrc = path.dirname(require.main.filename) + '/pdfgen/templates/basic-template.tex';
+						var content = fs.readFileSync(templatesrc, {encoding: 'utf8', flag: 'r'}, function(err) {
+							if (err) {
+								return res.status(400).send({
+									message: 'Error while copying the exam copy template'
+								});
+							}
+						});
+						// Fill in the template
+						content = content.replace(/!filename!/g, copies[exam.rooms[affectation[i].room].room.configuration[exam.rooms[affectation[i].room].layout].seats[affectation[i].number].serie].name);
+						content = content.replace(/!filepath!/g, path.dirname(require.main.filename) + '/copies/' + examid + '/' + copies[exam.rooms[affectation[i].room].room.configuration[exam.rooms[affectation[i].room].layout].seats[affectation[i].number].serie].name);
+						var examdate = moment(exam.date);
+						content = content.replace(/!datetime!/g, examdate.format('DD/MM/YYYY HH:mm'));
+						content = content.replace(/!date!/g, examdate.format('DD/MM/YYYY'));
+						content = content.replace(/!firstname!/g, affectation[i].student.firstname);
+						content = content.replace(/!lastname!/g, affectation[i].student.lastname);
+						content = content.replace(/!matricule!/g, affectation[i].student.matricule);
+						content = content.replace(/!duration!/g, exam.duration);
+						content = content.replace(/!courseid!/g, exam.course.ID);
+						content = content.replace(/!coursename!/g, exam.course.name);
+						content = content.replace(/!serie!/g, exam.rooms[affectation[i].room].room.configuration[exam.rooms[affectation[i].room].layout].seats[affectation[i].number].serie + 1);
+						content = content.replace(/!classement!/g, affectation[i].number - exam.rooms[affectation[i].room].start + 2);
+						content = content.replace(/!room!/g, exam.rooms[affectation[i].room].room.ID);
+						content = content.replace(/!seatnumber!/g, exam.rooms[affectation[i].room].room.configuration[exam.rooms[affectation[i].room].layout].seats[affectation[i].number].seat);
+						var now = moment();
+						content = content.replace(/!gendate!/g, now.format('DD/MM/YYYY HH:mm'));
+						content = content.replace(/!globalorder!/g, dico[affectation[i].student.matricule]);
+						// Create the .tex file for the student
+						var texsrc = copiespath + '/' + (i + 1) + 'copy_' + (exam.rooms[affectation[i].room].room.configuration[exam.rooms[affectation[i].room].layout].seats[affectation[i].number].serie + 1) + '_student_' + affectation[i].number + '.tex';
+						fs.writeFileSync(texsrc, content, {encoding: 'utf8', flag: 'w'}, function(err) {
+							if (err) {
+								return res.status(400).send({
+									message: 'Error while writing .tex file for a student'
+								});
+							}
+						});
+						// Compile the .tex file
+						process.chdir(path.dirname(texsrc));
+						child_process.execFile('pdflatex', [path.basename(texsrc)], function(err, stdout, stderr) {
+							if (err) {
+								return res.status(400).send({
+									message: 'Error while compiling the .tex file\n' + err
+								});
+							}
+							console.log('Progress: ' + (totalGenerated + 1) + '/' + affectation.length);
+							totalGenerated++;
+							// All .tex files have been compiled
+							if (totalGenerated === affectation.length) {
+								// Build a ZIP archive with all copies
+								process.chdir(path.dirname(require.main.filename) + '/copies');
+								child_process.execFile('zip', ['-r', 'copies-' + examid + '.zip', examid, '-i*.pdf'], function(err, stdout, stderr) {
+									if (err) {
+										return res.status(400).send({
+											message: 'Error while generating the ZIP file'
+										});
+									}
+									res.sendFile(zippath);
+								});
+							} 
+						});
+					}
+				}
+				catch (err) {
+					console.log(err);
+					return res.status(400).send({
+						message: 'Error while generating the ZIP file'
 					});
 				}
 			});
