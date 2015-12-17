@@ -234,6 +234,7 @@ exports.validate = function(req, res) {
 								message: errorHandler.getErrorMessage(err)
 							});
 						}
+						console.log(exam.affectation);
 						res.jsonp(exam);
 					});
 				});
@@ -362,15 +363,20 @@ exports.registerStudents = function(req, res) {
 				importNb--;
 				// All students have been handled
 				if (importNb === 0) {
-					exam.save(function(err) {
-						if (err) {
+					// Get firstname and lastname of students
+					Exam.populate(exam, {path: 'affectation.student', select: 'firstname lastname', model: 'Student'}, function(err, exam) {
+						if (err || ! exam) {
 							return res.status(400).send({
 								message: errorHandler.getErrorMessage(err)
 							});
 						}
-						// Get firstname and lastname of students
-						Exam.populate(exam, {path: 'affectation.student', select: 'firstname lastname', model: 'Student'}, function(err, exam) {
-							if (err || ! exam) {
+						// Order students alphabetically
+						exam.affectation.sort(function(a, b) {
+							return a.student.lastname.toUpperCase() > b.student.lastname.toUpperCase();
+						});
+						// Save students
+						exam.save(function(err) {
+							if (err) {
 								return res.status(400).send({
 									message: errorHandler.getErrorMessage(err)
 								});
@@ -428,17 +434,17 @@ exports.downloadCopies = function(req, res) {
 				}
 				try {
 					// Compute global ordering of students
-					var allstudents = [];
-					for (var y = 0; y < exam.affectation.length; y++) {
-						allstudents.push(exam.affectation[y].student); 
-					}
-					allstudents.sort(function(a, b) {
-						return a.lastname.toUpperCase() > b.lastname.toUpperCase();
-					});
-					var dico = {};
-					for (var w = 0; w < allstudents.length; w++) {
-						dico[allstudents[w].matricule] = w;
-					}
+//					var allstudents = [];
+//					for (var y = 0; y < exam.affectation.length; y++) {
+//						allstudents.push(exam.affectation[y].student); 
+//					}
+//					allstudents.sort(function(a, b) {
+//						return a.lastname.toUpperCase() > b.lastname.toUpperCase();
+//					});
+//					var dico = {};
+//					for (var w = 0; w < allstudents.length; w++) {
+//						dico[allstudents[w].matricule] = w;
+//					}
 					// Create directory to store copies
 					var copiespath = path.dirname(require.main.filename) + '/copies/' + examid;
 					fs.ensureDirSync(copiespath);
@@ -474,7 +480,7 @@ exports.downloadCopies = function(req, res) {
 						content = content.replace(/!seatnumber!/g, exam.rooms[affectation[i].room].room.configuration[exam.rooms[affectation[i].room].layout].seats[affectation[i].number].seat);
 						var now = moment();
 						content = content.replace(/!gendate!/g, now.format('DD/MM/YYYY HH:mm'));
-						content = content.replace(/!globalorder!/g, dico[affectation[i].student.matricule]);
+						content = content.replace(/!globalorder!/g, i + 1);
 						// Create the .tex file for the student
 						var texsrc = copiespath + '/' + (i + 1) + 'copy_' + (exam.rooms[affectation[i].room].room.configuration[exam.rooms[affectation[i].room].layout].seats[affectation[i].number].serie + 1) + '_student_' + affectation[i].number + '.tex';
 						fs.writeFileSync(texsrc, content, {encoding: 'utf8', flag: 'w'}, function(err) {
