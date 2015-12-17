@@ -372,7 +372,12 @@ exports.registerStudents = function(req, res) {
 						}
 						// Order students alphabetically
 						exam.affectation.sort(function(a, b) {
-							return a.student.lastname.toUpperCase() > b.student.lastname.toUpperCase();
+							if (a.student.lastname.toUpperCase() > b.student.lastname.toUpperCase()) {
+								return 1;
+							} else if (a.student.lastname.toUpperCase() < b.student.lastname.toUpperCase()) {
+								return -1;
+							}
+							return 0;
 						});
 						// Save students
 						exam.save(function(err) {
