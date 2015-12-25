@@ -438,18 +438,6 @@ exports.downloadCopies = function(req, res) {
 					});
 				}
 				try {
-					// Compute global ordering of students
-//					var allstudents = [];
-//					for (var y = 0; y < exam.affectation.length; y++) {
-//						allstudents.push(exam.affectation[y].student); 
-//					}
-//					allstudents.sort(function(a, b) {
-//						return a.lastname.toUpperCase() > b.lastname.toUpperCase();
-//					});
-//					var dico = {};
-//					for (var w = 0; w < allstudents.length; w++) {
-//						dico[allstudents[w].matricule] = w;
-//					}
 					// Create directory to store copies
 					var copiespath = path.dirname(require.main.filename) + '/copies/' + examid;
 					fs.ensureDirSync(copiespath);
@@ -634,6 +622,7 @@ exports.uploadCopy = function(req, res) {
 			content = content.replace(/!seatnumber!/g, '\\hspace{1cm}');
 			var now = new Date();
 			content = content.replace(/!gendate!/g, now.getDate() + '/' + now.getMonth() + '/' + now.getFullYear() + ' ' + now.getHours() + ':' + now.getMinutes());
+			content = content.replace(/!globalorder!/g, '');
 			// Compile the LaTeX file
 			dest = path.dirname(require.main.filename) + '/copies/' + req.body.exam + '/copy_' + req.body.index + '.tex';
 			fs.writeFileSync(dest, content, {encoding: 'utf8', flag: 'w'});
